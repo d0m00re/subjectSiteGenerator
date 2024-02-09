@@ -57,7 +57,8 @@ export class AuthService {
         }
         throw new UnauthorizedException();
     }
-    // payload extract form refrsh jwt
+    
+    // payload extract form refresh jwt
     async refreshToken(user : any) {
         const payload = {
             username: user.username,

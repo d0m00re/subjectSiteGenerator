@@ -13,3 +13,6 @@ generate a subWebsite with only one phrase
 
 ## feature later
 * edit website with ai or custom element
+
+
+probably moove the request to api because this is like that
