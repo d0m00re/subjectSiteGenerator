@@ -4,6 +4,7 @@ import { Userv2Service } from 'src/userv2/userv2.service';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
+const EXPIRE_TIME = 20 * 1000;
 
 @Injectable()
 export class AuthService {
@@ -41,7 +42,8 @@ export class AuthService {
                 refreshToken: await this.jwtService.signAsync(payload, {
                     expiresIn: '70d',
                     secret: process.env.JWT_REFRESH_TOKEN_KEY
-                })
+                }),
+                expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME)
             }
         }
     }
@@ -57,7 +59,7 @@ export class AuthService {
         }
         throw new UnauthorizedException();
     }
-    
+
     // payload extract form refresh jwt
     async refreshToken(user : any) {
         const payload = {
@@ -73,7 +75,8 @@ export class AuthService {
             refreshToken: await this.jwtService.signAsync(payload, {
                 expiresIn: '70d',
                 secret: process.env.JWT_REFRESH_TOKEN_KEY
-            })
+            }),
+            expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME)
         }
     }
 }

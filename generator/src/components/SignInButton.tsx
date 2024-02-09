@@ -22,7 +22,7 @@ const SignInButton = ({ }: Props) => {
     return (
         <div className="flex gap-4 ml-auto items-center">
             <Link
-                href={"/auth/signin"}
+                href={"/api/auth/signin"}
                 className="flex gap-4 ml-auto text-green-600"
             >
                 Sign In
