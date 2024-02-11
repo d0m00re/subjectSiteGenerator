@@ -3,16 +3,13 @@ import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import * as networkAuth from "@/network/auth.network";
 
 
 async function refreshToken(token: JWT): Promise<JWT> {
-  const res = await fetch(BACKEND_URL + "/auth/refresh", {
-    method: "POST",
-    headers: {
-      authorization: `Refresh ${token.backendTokens.refreshToken}`,
-    },
-  });
-  console.log("refreshed");
+  const res = await networkAuth.refreshToken({refreshToken : token.backendTokens.refreshToken});
+  
+  console.log("refreshed")
 
   const response = await res.json();
 
@@ -31,21 +28,12 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        if (!credentials?.username || !credentials?.password) return null;
+        if (!credentials?.username || !credentials?.password)
+          return null;
         const { username, password } = credentials;
-        const res = await fetch(BACKEND_URL + "/auth/login", {
-          method: "POST",
-          body: JSON.stringify({
-            username,
-            password,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const res = await networkAuth.login({username, password});
         if (res.status == 401) {
           console.log(res.statusText);
-
           return null;
         }
         const user = await res.json();

@@ -4,26 +4,16 @@ import InputBox from "@/components/InputBox";
 import { BACKEND_URL } from "@/lib/constants";
 import Link from "next/link";
 import React, { useRef } from "react";
-
-type FormInputs = {
-  name: string;
-  email: string;
-  password: string;
-};
+import * as networkAuth from "@/network/auth.network";
 
 const SignupPage = () => {
   const register = async () => {
-    const res = await fetch(BACKEND_URL + "/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        name: data.current.name,
-        email: data.current.email,
-        password: data.current.password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const res = await networkAuth.register({
+      name: data.current.name,
+      email: data.current.email,
+      password: data.current.password,
     });
+
     if (!res.ok) {
       alert(res.statusText);
       return;
@@ -31,7 +21,7 @@ const SignupPage = () => {
     const response = await res.json();
     alert("User Registered!");
   };
-  const data = useRef<FormInputs>({
+  const data = useRef<networkAuth.IRegister>({
     name: "",
     email: "",
     password: "",
