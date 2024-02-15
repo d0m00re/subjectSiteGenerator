@@ -1,29 +1,28 @@
 import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException
-} from "@nestjs/common";
-import { Request } from "express";
-import { JwtService } from "@nestjs/jwt";
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class RefreshJwtGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
 
-    constructor(private jwtService: JwtService) { }
+  async canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractTokenFromHeader(request);
 
-    async canActivate(context: ExecutionContext) {
-        const request = context.switchToHttp().getRequest();
-        const token = this.extractTokenFromHeader(request);
+    if (!token) throw new UnauthorizedException();
 
-        if (!token) throw new UnauthorizedException();
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_REFRESH_TOKEN_KEY,
+      });
 
-        try {
-            const payload = await this.jwtService.verifyAsync(token, {
-                secret: process.env.JWT_REFRESH_TOKEN_KEY
-            });
-
-            /*
+      /*
             payload
             {
                 username: 'jacklapiquette@gm.com',
@@ -33,20 +32,19 @@ export class RefreshJwtGuard implements CanActivate {
             }
             */
 
-            console.log("payload");
-            console.log(payload);
+      console.log('payload');
+      console.log(payload);
 
-            request['user'] = payload;
-        }
-        catch (err) {
-            throw new UnauthorizedException();
-        }
-
-        return true;
+      request['user'] = payload;
+    } catch (err) {
+      throw new UnauthorizedException();
     }
 
-    private extractTokenFromHeader(request: Request) {
-        const [type, token] = request.headers.authorization.split(' ') ?? [];
-        return type === "Refresh" ? token : undefined;
-    }
+    return true;
+  }
+
+  private extractTokenFromHeader(request: Request) {
+    const [type, token] = request.headers.authorization.split(' ') ?? [];
+    return type === 'Refresh' ? token : undefined;
+  }
 }

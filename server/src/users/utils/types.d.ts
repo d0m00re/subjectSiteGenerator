@@ -1,4 +1,4 @@
-export type IUserCreate =  {
-    username : string;
-    email : string;
-}
+export type IUserCreate = {
+  username: string;
+  email: string;
+};
