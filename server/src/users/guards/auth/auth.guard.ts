@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
     console.log(request.headers);
 
     //
-    console.log(request.user)
+    console.log(request.user);
     return true;
     // false return forbiden ressource
   }

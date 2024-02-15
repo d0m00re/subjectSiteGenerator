@@ -11,8 +11,17 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique 
-  name String?
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  name     String?
   password String
+  websites Website[]
+}
+
+model Website {
+  id      Int    @id @default(autoincrement())
+  title   String
+  subject String
+  userId  Int // Foreign key to reference User
+  user    User   @relation(fields: [userId], references: [id])
 }

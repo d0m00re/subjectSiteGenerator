@@ -6,6 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 
 @Module({
   providers: [Userv2Service, PrismaService, JwtService],
-  controllers: [Userv2Controller]
+  controllers: [Userv2Controller],
 })
 export class Userv2Module {}
