@@ -24,4 +24,16 @@ model Website {
   subject String
   userId  Int // Foreign key to reference User
   user    User   @relation(fields: [userId], references: [id])
+  websiteSection WebsiteSection[]
+}
+
+model WebsiteSection {
+  id              Int      @id @default(autoincrement())
+  kind            String
+  title           String
+  desc            String
+  backgroundImage String
+
+  websiteId Int // Foreign key to reference User
+  website   Website @relation(fields: [websiteId], references: [id])
 }

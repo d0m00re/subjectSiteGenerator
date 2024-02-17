@@ -43,6 +43,11 @@ const customPrompts = {
     Output : json array object`
 }
 
+export interface ICreateCompletion {
+    title : string;
+    subject : string;
+}
+
 @Injectable()
 export class OpenAIService {
   private openai: OpenAIApi;
@@ -53,13 +58,18 @@ export class OpenAIService {
     });
   }
 
-  async createCompletion(prompt: string, context: string = '') {
+  async createCompletion(props : ICreateCompletion) {
    const chatCompletion = await this.openai.chat.completions.create({
     messages: [
         { role: "user", content: customPrompts.content},
-        { role: "user", content: '{"title": "woodcutting", "subject": "History"}'}],
+        { role: "user", content: JSON.stringify(props)}],
     model: 'gpt-3.5-turbo'
    });
-   return chatCompletion;
+
+
+   // parse and return content
+   let dataGenerateStringJsonArr = chatCompletion.choices[0].message.content;
+
+   return JSON.parse(dataGenerateStringJsonArr);
   }
 }
