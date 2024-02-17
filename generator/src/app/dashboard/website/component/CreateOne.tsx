@@ -48,7 +48,7 @@ function CreateOne({ }: Props) {
 
 
     return (
-        <div className="flex flex-col bg-cyan-500 border rounded-sm p-4">
+        <div className="flex flex-col items-center bg-cyan-500 border rounded-sm p-4">
             <h1 className="text-2xl">Create your website</h1>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-2 max-w-lg p-4">
                 <Label className="text-2xl">Title</Label>
