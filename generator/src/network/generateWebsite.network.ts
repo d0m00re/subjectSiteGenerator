@@ -52,7 +52,7 @@ export interface IWebsiteDb {
 interface IInfoPaginate {
     count : number;
     page : number;
-    pageSIze : number;
+    pageSize : number;
 }
 
 export interface IGenerateWebSiteOutput {
