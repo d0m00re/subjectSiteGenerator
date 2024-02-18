@@ -3,8 +3,8 @@ import OpenAIApi from 'openai';
 import { ChatCompletion, ChatCompletionMessageParam } from 'openai/resources';
 
 const customPrompts = {
-    role : "user",
-    content : `{
+    role: "user",
+    content: `{
     "title": "Website Section Creation",
     "subject": "Website Section Generation",
     "description": "As an agent capable of website creation, you're tasked with generating sections for a given topic. Each submission includes a title and subject. The structure follows:",
@@ -15,61 +15,74 @@ const customPrompts = {
     "mainSectionFormat": {
     "kind": "mainSection",
     "title": "Title of the Main Section",
-    "desc": "Brief description of the Main Section",
+    "description": "Brief description of the Main Section",
     "backgroundImage": "URL to the background image"
     },
     "subSectionFormat": {
     "kind": "subSection",
     "title": "Title of the Subsection",
-    "description": "Description of the Subsection"
+    "description": "Description of the Subsection",
+    "backgroundImage": "URL to the background image"
     },
     "instructionsDetail": "The main section requires a background image, title, and brief description. Additionally, five subsections are needed, starting with general information followed by other relevant facts.",
     "examplePrompt": {
     "title": "Example Title",
-    "subject": "Example Subject"
+    "subject": "Example Subject",
+    "backgroundImage": "URL to the background image"
     },
     "exampleMainSection": {
     "kind": "mainSection",
     "title": "Main Section Title",
-    "desc": "Main Section Description",
+    "description": "Main Section Description",
     "backgroundImage": "URL to the background image"
     },
     "exampleSubSection": {
     "kind": "subSection",
     "title": "Subsection Title",
-    "description": "Subsection Description"
-    }
+    "description": "Subsection Description",
+    "backgroundImage": "URL to the background image"
+}
     }
     Output : json array object`
 }
 
 export interface ICreateCompletion {
-    title : string;
-    subject : string;
+    title: string;
+    subject: string;
+}
+
+export type TSectionKind = "mainSection" | "subSection";
+
+export interface ICreateWebsiteSectionElem {
+    kind: TSectionKind,
+    title: string;
+    description: string;
+    backgroundImage: string;
 }
 
 @Injectable()
 export class OpenAIService {
-  private openai: OpenAIApi;
+    private openai: OpenAIApi;
 
-  constructor() {
-    this.openai = new OpenAIApi({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-  }
+    constructor() {
+        this.openai = new OpenAIApi({
+            apiKey: process.env.OPENAI_API_KEY,
+        });
+    }
 
-  async createCompletion(props : ICreateCompletion) {
-   const chatCompletion = await this.openai.chat.completions.create({
-    messages: [
-        { role: "user", content: customPrompts.content},
-        { role: "user", content: JSON.stringify(props)}],
-    model: 'gpt-3.5-turbo'
-   });
+    // todo : add zod data control verification
+    async createCompletion(props: ICreateCompletion): Promise<ICreateWebsiteSectionElem[]> {
+        const chatCompletion = await this.openai.chat.completions.create({
+            messages: [
+                { role: "user", content: customPrompts.content },
+                { role: "user", content: JSON.stringify(props) }],
+            model: 'gpt-3.5-turbo'
+        });
 
 
-   // parse and return content
-   let dataGenerateStringJsonArr = chatCompletion.choices[0].message.content;
+        // parse and return content
+        let dataGenerateStringJsonArr = chatCompletion.choices[0].message.content;
 
-   return JSON.parse(dataGenerateStringJsonArr);
-  }
+        return JSON.parse(dataGenerateStringJsonArr);
+    }
 }

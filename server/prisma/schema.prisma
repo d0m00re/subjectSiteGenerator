@@ -19,19 +19,19 @@ model User {
 }
 
 model Website {
-  id      Int    @id @default(autoincrement())
-  title   String
-  subject String
-  userId  Int // Foreign key to reference User
-  user    User   @relation(fields: [userId], references: [id])
+  id             Int              @id @default(autoincrement())
+  title          String
+  subject        String
+  userId         Int // Foreign key to reference User
+  user           User             @relation(fields: [userId], references: [id])
   websiteSection WebsiteSection[]
 }
 
 model WebsiteSection {
-  id              Int      @id @default(autoincrement())
+  id              Int    @id @default(autoincrement())
   kind            String
   title           String
-  desc            String
+  description     String
   backgroundImage String
 
   websiteId Int // Foreign key to reference User
