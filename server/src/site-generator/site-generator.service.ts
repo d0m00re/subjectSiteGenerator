@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import * as dto from "./dto/generate.dto"
+import { OpenAIService } from 'src/openai/openai.service';
 
 interface ICreateOne {
     subject: string;
@@ -16,7 +17,10 @@ interface IGetUserWebsite {
 
 @Injectable()
 export class SiteGeneratorService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private openAi: OpenAIService
+    ) {}
 
     createOne = async (props : ICreateOne) => {
         // check if user exist or not
@@ -30,13 +34,25 @@ export class SiteGeneratorService {
             throw new HttpException('No authroization', HttpStatus.UNAUTHORIZED);
         }
 
-        return await this.prisma.website.create({
+        // generate subsection
+        let sectionGenerate = await this.openAi.createCompletion({
+            title : props.title,
+            subject : props.subject
+        });
+
+        let data = await this.prisma.website.create({
             data : {
                 title : props.subject,
                 subject : props.subject,
-                userId : user.id
+                userId : user.id,
+                websiteSection : {
+                    create : sectionGenerate
+                }
+                //websiteSection : sectionGenerate
             }
         })
+
+        return data;
     }
 
     getUserWebsite = async (props : IGetUserWebsite) => {
@@ -74,5 +90,12 @@ export class SiteGeneratorService {
 
     generateAWebsite = async () => {
 
+    }
+
+    getWebsiteWtId = async(id : number) => {
+        return this.prisma.website.findUnique({
+            where : {id : id},
+            include : {websiteSection : true}
+        })
     }
 }

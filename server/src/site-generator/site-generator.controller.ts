@@ -40,10 +40,7 @@ export class SiteGeneratorController {
 
   @Get(':id')
   async getOne(@Param('id') id: number) {
-    return {
-      id: id,
-      title: 'light up',
-      desc: 'je suis une jolie description',
-    };
+    let website = await this.siteGenerator.getWebsiteWtId(id);
+    return website;
   }
 }

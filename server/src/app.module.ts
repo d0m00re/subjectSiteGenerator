@@ -7,10 +7,7 @@ import { PrismaService } from './prisma.service';
 import { SiteGeneratorController } from './site-generator/site-generator.controller';
 import { SiteGeneratorModule } from './site-generator/site-generator.module';
 import { JwtService } from '@nestjs/jwt';
-import { ChatGptController } from './chat-gpt/chat-gpt.controller';
-import { ChatGptService } from './chat-gpt/chat-gpt.service';
 import { OpenaiModule } from './openai/openai.module';
-import { ChatGptModule } from './chat-gpt/chat-gpt.module';
 
 @Module({
   imports: [
@@ -21,10 +18,9 @@ import { ChatGptModule } from './chat-gpt/chat-gpt.module';
     Userv2Module,
     AuthModule,
     SiteGeneratorModule,
-    ChatGptModule,
     OpenaiModule,
   ],
-  controllers: [ChatGptController],
-  providers: [PrismaService, JwtService, ChatGptService],
+  controllers: [],
+  providers: [PrismaService, JwtService, OpenaiModule],
 })
 export class AppModule {}
