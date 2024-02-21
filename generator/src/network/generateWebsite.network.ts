@@ -7,7 +7,7 @@ interface IGetOne {
 }
 
 export const getOne = (props: IGetOne) => {
-    return fetch(`${BACKEND_URL}/site-generator/${props.id}`,
+    return fetch(`${BACKEND_URL}//${props.id}`,
         {
             method: "GET",
             headers: BASE_HEADER
@@ -72,4 +72,35 @@ export const getMyWebsitePaginate = (props : IGenerateWebSiteInput) => {
             pageSize : props.pageSize
         })
     })
+}
+
+/**
+ * get website with id
+ * @param id number
+ * @returns 
+ */
+
+export interface ISection {
+    id : number;
+    kind : "mainSection" | "subSection";
+    title : string;
+    description : string;
+    backgroundImage : string;
+    websiteId : number;
+}
+
+export interface IWebsiteWtSection {
+    id : number;
+    title : string;
+    subject : string;
+    userId : number;
+    websiteSection : ISection[];
+}
+
+export const getWebsiteWtId = (id : number) : Promise<IWebsiteWtSection>  => {
+    return (fetch(`${BACKEND_URL}/site-generator/${id}`, {
+        method : "GET",
+        headers : BASE_HEADER
+    })
+    .then(resp => resp.json()))
 }
