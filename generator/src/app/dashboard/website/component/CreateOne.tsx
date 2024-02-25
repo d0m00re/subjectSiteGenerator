@@ -8,6 +8,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from "@/components/ui/label";
 import * as network from "@/network/generateWebsite.network";
 import { useSession } from 'next-auth/react'
+import { redirect } from "next/dist/server/api-utils";
+import navigate from "@/components/navigate";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { useState } from "react";
+import { LoaderIcon } from "lucide-react";
 
 const ValidateForm = z.object({
     title: z.string(),
@@ -15,10 +28,17 @@ const ValidateForm = z.object({
 })
 
 type TValidateForm = z.infer<typeof ValidateForm>;
-type Props = {}
 
-function CreateOne({ }: Props) {
+function LoaderIconH() {
+    return <LoaderIcon className="animate-spin" />
+}
+
+function CreateOne() {
     const { data: session } = useSession();
+    const [open, setOpen] = useState(false);
+    const onOpen = () => setOpen(true);
+    const onClose = () => setOpen(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
@@ -31,35 +51,50 @@ function CreateOne({ }: Props) {
     const submitForm: SubmitHandler<TValidateForm> = (data) => {
         console.log("submit form")
         console.log(data);
+        setIsLoading(true);
         network.generateOne({
             title: data.title,
             subject: data.subject,
             accessToken: session?.backendTokens?.accessToken ?? ""
         })
             .then(resp => {
-                console.log("resp : ")
-                console.log(resp)
+                console.log("generate one : ")
+                console.log(resp.id)
+                navigate(`/dashboard/website/${resp.id}`);
+                setIsLoading(false);
             })
             .catch(err => {
                 console.log("error")
-                console.log(err)
+                console.log(err);
+                setIsLoading(false);
             })
     }
 
-
+//<LoaderIcon className="animate-spin" />
     return (
-        <div className="flex flex-col items-center bg-cyan-500 border rounded-sm p-4">
-            <h1 className="text-2xl">Create your website</h1>
-            <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-2 max-w-lg p-4">
-                <Label className="text-2xl">Title</Label>
-                <Input {...register("title")}></Input>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger onClick={onOpen}>Generate a website</DialogTrigger>
+                <DialogContent>
+                    <DialogHeader >
+                        <DialogTitle>
+                            Generate your website
+                        </DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription className="flex flex-col gap-4 items-center">
+                        {isLoading ? <LoaderIconH /> : 
+                        <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-2 max-w-lg p-4">
+                            <Label className="text-2xl text-black">Title</Label>
+                            <Input {...register("title")}></Input>
 
-                <Label className="text-2xl">Description</Label>
-                <Input {...register("subject")}></Input>
+                            <Label className="text-2xl text-black">Description</Label>
+                            <Input {...register("subject")}></Input>
 
-                <Button type="submit">Generate</Button>
-            </form>
-        </div>
+                            <Button type="submit" className="mt-4">Generate</Button>
+                        </form>
+                        }
+                    </DialogDescription>
+                </DialogContent>
+            </Dialog>
     )
 }
 

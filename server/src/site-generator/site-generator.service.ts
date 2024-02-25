@@ -9,6 +9,14 @@ interface ICreateOne {
     email : string;
 }
 
+interface IUpdateSection {
+    sectionId : number | string;
+    title : string;
+    subject : string;
+
+    email : string; // email user
+}
+
 interface IGetUserWebsite {
     email : string;
     page : number;
@@ -21,6 +29,24 @@ export class SiteGeneratorService {
         private prisma: PrismaService,
         private openAi: OpenAIService
     ) {}
+
+    updateSection = async (props : IUpdateSection) => {
+        const user = await this.prisma.user.findFirst({
+            where : {email : props.email}
+        });
+
+        if (!user) {
+            throw new HttpException('No authroization', HttpStatus.UNAUTHORIZED);
+        }
+
+        // retrieve website and associate section
+        /*
+        let websiteWtSection = await this.prisma.website.findFirst({
+            where : {userId : user.id},
+            include : 
+        })
+        */
+    }
 
     createOne = async (props : ICreateOne) => {
         // check if user exist or not
