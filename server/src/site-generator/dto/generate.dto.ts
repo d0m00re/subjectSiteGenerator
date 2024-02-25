@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, isString } from 'class-validator';
 
 export class GenerateDto {
   @IsString()
@@ -12,4 +12,13 @@ export class GetUserWebsitesDto {
   page : number;
   @IsNumber()
   pageSize : number;
+}
+
+export class UpdateSectionDto {
+  @IsNumber()
+  sectionId : number;
+  @IsString()
+  title : string;
+  @IsString()
+  description : string;
 }
