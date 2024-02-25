@@ -10,9 +10,9 @@ interface ICreateOne {
 }
 
 interface IUpdateSection {
-    sectionId : number | string;
+    sectionId : number;
     title : string;
-    subject : string;
+    description : string;
 
     email : string; // email user
 }
@@ -40,12 +40,30 @@ export class SiteGeneratorService {
         }
 
         // retrieve website and associate section
-        /*
-        let websiteWtSection = await this.prisma.website.findFirst({
-            where : {userId : user.id},
-            include : 
-        })
-        */
+        
+        let websiteWtSection = await this.prisma.websiteSection.findFirst({
+            where : {id : props.sectionId},
+        });
+
+        if (!websiteWtSection)
+            throw new HttpException('No section found', HttpStatus.NOT_FOUND);
+
+        let website = await this.prisma.website.findFirst({
+            where : {id : websiteWtSection.websiteId}
+        });
+
+        if (!website)
+            throw new HttpException('No website found', HttpStatus.NOT_FOUND);
+
+        //---------------- update
+        let res = await this.prisma.websiteSection.update({
+            where : {id : websiteWtSection.id},
+            data : {
+                title : props.title,
+                description : props.description
+            }
+        });
+        return res;
     }
 
     createOne = async (props : ICreateOne) => {

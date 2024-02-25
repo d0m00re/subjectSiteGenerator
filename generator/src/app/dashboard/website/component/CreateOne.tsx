@@ -6,9 +6,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from "@/components/ui/label";
-import * as network from "@/network/generateWebsite.network";
+import * as generateWebsiteNetwork from "@/network/generateWebsite.network";
 import { useSession } from 'next-auth/react'
-import { redirect } from "next/dist/server/api-utils";
 import navigate from "@/components/navigate";
 
 import {
@@ -20,7 +19,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { useState } from "react";
-import { LoaderIcon } from "lucide-react";
+import IconLoaderSpin from "@/components/CustomIcon/IconLoaderSpin";
 
 const ValidateForm = z.object({
     title: z.string(),
@@ -28,10 +27,6 @@ const ValidateForm = z.object({
 })
 
 type TValidateForm = z.infer<typeof ValidateForm>;
-
-function LoaderIconH() {
-    return <LoaderIcon className="animate-spin" />
-}
 
 function CreateOne() {
     const { data: session } = useSession();
@@ -52,7 +47,7 @@ function CreateOne() {
         console.log("submit form")
         console.log(data);
         setIsLoading(true);
-        network.generateOne({
+        generateWebsiteNetwork.generateOne({
             title: data.title,
             subject: data.subject,
             accessToken: session?.backendTokens?.accessToken ?? ""
@@ -81,7 +76,7 @@ function CreateOne() {
                         </DialogTitle>
                     </DialogHeader>
                     <DialogDescription className="flex flex-col gap-4 items-center">
-                        {isLoading ? <LoaderIconH /> : 
+                        {isLoading ? <IconLoaderSpin /> : 
                         <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-2 max-w-lg p-4">
                             <Label className="text-2xl text-black">Title</Label>
                             <Input {...register("title")}></Input>

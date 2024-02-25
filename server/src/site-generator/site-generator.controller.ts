@@ -27,11 +27,21 @@ export class SiteGeneratorController {
     });
     return data;
   }
-/*
+
   @UseGuards(JwtGuard)
   @Patch("section")
-  async
-*/
+  async updateSection(@Request() req, @Body() dto: dto.UpdateSectionDto) {
+    let email = req.user.username; // come from jwt guard
+
+    let result = await this.siteGenerator.updateSection({
+      title : dto.title,
+      description : dto.description,
+      sectionId : dto.sectionId,
+      email : email
+    })
+
+    return result;
+  }
   
   @UseGuards(JwtGuard)
   @Post()
