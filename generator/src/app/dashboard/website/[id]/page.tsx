@@ -19,25 +19,20 @@ function page({}: Props) {
     useEffect(() => {
       getWebsiteWtId(parseInt(id))
       .then(resp => {
-        console.log("get website : ")
-        console.log(resp)
         setWebsite(resp);
       })
       .catch(err => {
-        console.error("error find website")
+        console.error("error find website : ")
       })
-    }, [])
+    }, []);
     
 
   return (
-    <>
-      <div>page : {id}</div>
-      <h1>{website?.title}</h1>
-      <p>{website?.subject}</p>
+    <section className='flex flex-col gap-4'>
       {
         website?.websiteSection?.map(resp => <SectionWebsite key={`section-website-${resp.id}`} {...resp} />)
       }
-    </>
+    </section>
   )
 }
 

@@ -5,24 +5,20 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from "react";
 import { IGenerateWebSiteOutput } from "@/network/generateWebsite.network";
 import Pagination from "@/components/Pagination";
+import navigate from "@/components/navigate";
+import Skeleton from 'react-loading-skeleton'
+import CardWebsite from "./CardWebsite";
 
-const CardWebsite = (props: network.IWebsiteDb) => {
-  return <section className="flex flex-col gap-2 bg-slate-400 p-2">
-    <h2 className="text-1xl">{props.title}</h2>
-    <p className="text-2sm">{props.subject}</p>
-  </section>
-}
 
 interface IFetchAndLoad {
-    page : number;
-    pageSize : number;
+  page: number;
+  pageSize: number;
 }
 
 const ListWebsite = () => {
   const { data: session } = useSession();
   const [listWebsite, setListWebsite] = useState<IGenerateWebSiteOutput | undefined>(undefined);
-
-  const fetchAndLoad = (props : IFetchAndLoad) => {
+  const fetchAndLoad = (props: IFetchAndLoad) => {
     network.getMyWebsitePaginate({
       page: props.page,
       pageSize: props.pageSize,
@@ -40,14 +36,14 @@ const ListWebsite = () => {
   }
 
   useEffect(() => {
-    fetchAndLoad({page : 0, pageSize : 5});
+    fetchAndLoad({ page: 0, pageSize: 5 });
   }, [session]);
 
   // retrieve current website
 
-  const changePage = (targetPage : number) => {
-    if (targetPage === listWebsite?.info.count) return ;
-    fetchAndLoad({page : targetPage, pageSize : 5});
+  const changePage = (targetPage: number) => {
+    if (targetPage === listWebsite?.info.count) return;
+    fetchAndLoad({ page: targetPage, pageSize: 5 });
   }
 
   return <div className="flex flex-col gap-4">
@@ -57,8 +53,10 @@ const ListWebsite = () => {
         <div className="flex flex-col gap-2">
           {
             listWebsite.rows.map(website =>
-              <section>
-                <CardWebsite {...website} />
+              <section className=" cursor-pointer" onClick={() => navigate(`/dashboard/website/${website.id}`)}>
+                <CardWebsite
+                  {...website}
+                />
               </section>)
           }
           <Pagination
@@ -68,7 +66,13 @@ const ListWebsite = () => {
           />
 
         </div>
-        : <> no data</>
+        : <div className='w-full flex flex-col gap-2'>
+          <Skeleton className='h-16' />
+          <Skeleton className='h-16' />
+          <Skeleton className='h-16' />
+          <Skeleton className='h-16' />
+          <Skeleton className='h-16' />
+        </div>
 
     }</div>
   </div>

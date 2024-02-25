@@ -32,6 +32,7 @@ export const generateOne = (props: IGenerateOne) => {
             subject : props.subject
         })
     })
+    .then(resp => resp.json());
 }
 
 //--------

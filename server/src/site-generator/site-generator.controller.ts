@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import * as dto from './dto/generate.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { SiteGeneratorService } from './site-generator.service';
@@ -10,6 +10,12 @@ export class SiteGeneratorController {
     private siteGenerator: SiteGeneratorService
   ) { }
 
+  /**
+   * search website with pagination
+   * @param req 
+   * @param dto 
+   * @returns 
+   */
   @UseGuards(JwtGuard)
   @Post("search")
   async searchWebsite(@Request() req, @Body() dto: dto.GetUserWebsitesDto) {
@@ -21,7 +27,11 @@ export class SiteGeneratorController {
     });
     return data;
   }
-
+/*
+  @UseGuards(JwtGuard)
+  @Patch("section")
+  async
+*/
   
   @UseGuards(JwtGuard)
   @Post()
