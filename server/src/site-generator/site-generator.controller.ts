@@ -48,7 +48,7 @@ export class SiteGeneratorController {
   async generate(@Request() req, @Body() dto: dto.GenerateDto) {
     let email = req.user.username; // come from jwt guard
 
-    let result = await this.siteGenerator.createOne({
+    let result = await this.siteGenerator.createOneV2({
       title: dto.title,
       subject: dto.subject,
       email: email
