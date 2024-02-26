@@ -23,11 +23,14 @@ function page({ }: Props) {
     currentWebsite.populate(parseInt(id));
   }, []);
 
-
   return (
-    <section className='flex flex-col gap-4'>
+    <section className='flex flex-col m-8'>
       {
-        currentWebsite?.website?.websiteSection?.map(resp => <SectionWebsite key={`section-website-${resp.id}`} {...resp} />)
+        currentWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
+            key={`section-website-${section.id}`}
+            section={section}
+            index={index}  
+          />)
       }
     </section>
   )
