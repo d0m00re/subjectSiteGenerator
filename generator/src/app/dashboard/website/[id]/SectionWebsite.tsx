@@ -1,7 +1,9 @@
 import { ISection } from '@/network/generateWebsite.network'
 import React, { useState } from 'react';
 import ModalEditSection from './ModalEditSection';
+import ModalCreateSection from './ModalCreateSection';
 import { Button } from '@/components/ui/button';
+import { number, tuple } from 'zod';
 
 type Props = {
   section : ISection
@@ -14,6 +16,16 @@ interface IButtonAddSection {
   index : number;
   onOpenModalAddSection : (index : number) => void;
 }
+
+interface IModalCreateSection {
+  index : number;
+  open : boolean;
+}
+
+const resetModalCreateSection = () : IModalCreateSection => ({
+  index : -1,
+  open : false
+});
 
 const ButtonAddSection = (props: IButtonAddSection) => {
   return (
@@ -28,6 +40,7 @@ const ButtonAddSection = (props: IButtonAddSection) => {
 
 function SectionWebsite(props: Props) {
   const [modalEdit, setModalEdit] = useState(false);
+  const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
   const [isHovered, setIsHovered] = useState(true);
 
   const handleHover = () => {
@@ -35,7 +48,10 @@ function SectionWebsite(props: Props) {
   };
 
   const onOpenModalAddSection = (index : number) => {
-    alert(index);
+    setModalAddSection({
+      open : true,
+      index : index
+    })
   }
 
   return (
@@ -56,6 +72,16 @@ function SectionWebsite(props: Props) {
               setOpen={setModalEdit}
               section={props.section}
             /> : <></>
+        }
+        {
+          modalAddSection.open ? 
+            <ModalCreateSection
+              open={modalAddSection.open}
+              order={modalAddSection.index}
+              websiteId={props.section.websiteId}
+              setOpen={(val : boolean) => setModalAddSection(old => ({...old, open : val}))}
+            /> :
+            <></>
         }
       </section>
       <ButtonAddSection show onOpenModalAddSection={onOpenModalAddSection} index={props.index + 1}/>

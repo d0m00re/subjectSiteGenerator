@@ -115,6 +115,8 @@ export type ISection = {
 
 export type ISectionUpdate = Pick<ISection, "id" | "title" | 'description'>;
 
+export type ISectionCreate = Pick<ISection, "title" | "description" | "kind">;
+
 export interface IWebsiteWtSection {
     id: number;
     title: string;
