@@ -30,14 +30,20 @@ export class SiteGeneratorService {
         private openAi: OpenAIService
     ) {}
 
-    updateSection = async (props : IUpdateSection) => {
+    private getUser = async (email : string) => {
         const user = await this.prisma.user.findFirst({
-            where : {email : props.email}
-        });
+            where : {email}
+        })
 
         if (!user) {
             throw new HttpException('No authroization', HttpStatus.UNAUTHORIZED);
         }
+
+        return user;
+    }
+    // should control user
+    updateSection = async (props : IUpdateSection) => {
+        const user = await this.getUser(props.email);
 
         // retrieve website and associate section
         
@@ -66,23 +72,77 @@ export class SiteGeneratorService {
         return res;
     }
 
-    createOne = async (props : ICreateOne) => {
-        // check if user exist or not
+    createOneV2 = async (props : ICreateOne) => {
+        let user = await this.getUser(props.email);
 
-        // find user
-        const user = await this.prisma.user.findFirst({
-            where : {email : props.email}
+        /*
+          // Fetch the existing sections count for the website
+          const existingSectionsCount = await prisma.section.count({ where: { websiteId } });
+        */
+        // generate subsection
+        let initOrder = 0;
+        let sectionGenerate = await this.openAi.createCompletion({
+            title : props.title,
+            subject : props.subject,
+        });
+
+        const promiseArr = [];
+
+        // create website
+        let websiteCreate = await this.prisma.website.create({
+            data : {
+                title : props.subject,
+                subject : props.subject,
+                userId : user.id
+            }
         })
 
-        if (!user) {
-            throw new HttpException('No authroization', HttpStatus.UNAUTHORIZED);
-        }
+        // create section
+        sectionGenerate.forEach((sectionElem, index) => {
+            const order = index;
+            const sectionPromise = this.prisma.websiteSection.create({
+                data: {
+                    ...sectionElem,
+                    websiteId : websiteCreate.id,
+                    websiteSectionOrder : {
+                         create : {order : index}
+                    }
+                }
+            });
+            promiseArr.push(sectionPromise);
+        })
+
+        // consume all promise
+        console.log("consume promise : ")
+        const createdSectionOrder =  await Promise.all(promiseArr);
+
+        // tmp - re get the website and return with section order
+        return await this.prisma.website.findUnique({
+            where : {id : websiteCreate.id},
+            include : {
+                websiteSection : {
+                    include : { websiteSectionOrder : true}
+                }
+            }
+        })
+
+
+        return createdSectionOrder;
+    }
+
+    createOne = async (props : ICreateOne) => {
+        // find user
+        let user = await this.getUser(props.email);
 
         // generate subsection
         let sectionGenerate = await this.openAi.createCompletion({
             title : props.title,
-            subject : props.subject
+            subject : props.subject,
         });
+
+        // await section order creation
+
+        // --------------
 
         let data = await this.prisma.website.create({
             data : {
@@ -101,13 +161,7 @@ export class SiteGeneratorService {
 
     getUserWebsite = async (props : IGetUserWebsite) => {
         // find user
-        const user = await this.prisma.user.findFirst({
-            where : {email : props.email}
-        })
-
-        if (!user) {
-            throw new HttpException('No authroization', HttpStatus.UNAUTHORIZED);
-        }
+        let user = await this.getUser(props.email);
 
         // get count elem
         const websiteCount = await this.prisma.website.count({
@@ -132,14 +186,14 @@ export class SiteGeneratorService {
         }
     }
 
-    generateAWebsite = async () => {
-
-    }
-
     getWebsiteWtId = async(id : number) => {
         return this.prisma.website.findUnique({
             where : {id : id},
-            include : {websiteSection : true}
+            include : {websiteSection : {
+                include : {
+                    websiteSectionOrder : true
+                }
+            }}
         })
     }
 }
