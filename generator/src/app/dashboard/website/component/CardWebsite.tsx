@@ -1,6 +1,6 @@
 "use client"
 
-import * as network from "@/network/generateWebsite.network";
+import * as network from "@/network/generateWebsite/generateWebsite.network";
 import { Button } from "@/components/Button";
 
 const CardWebsite = (props: network.IWebsiteDb) => {

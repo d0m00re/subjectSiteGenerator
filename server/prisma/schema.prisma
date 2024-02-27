@@ -25,6 +25,7 @@ model Website {
   userId         Int // Foreign key to reference User
   user           User             @relation(fields: [userId], references: [id])
   websiteSection WebsiteSection[]
+  websiteSectionOrder WebsiteSectionOrder[]
 }
 
 model WebsiteSection {
@@ -34,7 +35,7 @@ model WebsiteSection {
   description     String
   backgroundImage String
 
-  websiteId Int // Foreign key to reference User
+  websiteId Int// Foreign key to reference User
   website   Website @relation(fields: [websiteId], references: [id])
 
   websiteSectionOrder WebsiteSectionOrder?
@@ -45,4 +46,7 @@ model WebsiteSectionOrder {
   order Int
   websiteSectionId Int @unique
   websiteSection WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+
+  websiteId Int// Foreign key to reference User
+  website   Website @relation(fields: [websiteId], references: [id])
 }

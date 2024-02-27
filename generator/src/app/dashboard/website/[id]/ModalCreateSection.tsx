@@ -1,14 +1,13 @@
-import { ISection } from '@/network/generateWebsite.network'
-import React, { useState, useEffect } from 'react';
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { useForm, SubmitHandler } from "react-hook-form"
+import React, { useState } from 'react';
 import { z } from "zod";
+import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea"
-import * as generateWebsiteNetwork from "@/network/generateWebsite.network";
+import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
 import useCurrentWebsite from "./currentWebsite.zustand.store";
 
 import {
@@ -22,6 +21,7 @@ import {
 import { LoaderIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
+import { ISectionCreate } from '@/network/generateWebsite/generateWebsite.entity';
 
 const ValidateForm = z.object({
     title: z.string(),
@@ -45,7 +45,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
     const { data: session } = useSession();
     const [isLoading, setIsLoading] = useState(false);
     const currentWebsite = useCurrentWebsite();
-    const [section, setSection] = useState<generateWebsiteNetwork.ISectionCreate>({title : "", description : "", kind : "subSection"})
+    const [section, setSection] = useState<ISectionCreate>({title : "", description : "", kind : "subSection"})
 
     const {
         register,
@@ -59,7 +59,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
     const submitForm: SubmitHandler<TValidateForm> = (data) => {
         alert(JSON.stringify({
             order : props.order,
-            websiteid : props.websiteId,
+            websiteId : props.websiteId,
             title : data.title,
             description : data.description,
             accessToken : session?.backendTokens.accessToken

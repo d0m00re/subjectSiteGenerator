@@ -1,12 +1,12 @@
-import { ISection } from '@/network/generateWebsite.network'
 import React, { useState } from 'react';
 import ModalEditSection from './ModalEditSection';
 import ModalCreateSection from './ModalCreateSection';
 import { Button } from '@/components/ui/button';
 import { number, tuple } from 'zod';
+import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 
 type Props = {
-  section : ISection
+  section : I_WebsiteSection;
   index : number;
 }
 

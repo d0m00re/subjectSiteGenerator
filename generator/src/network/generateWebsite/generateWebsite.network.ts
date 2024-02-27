@@ -1,6 +1,7 @@
 import { BACKEND_URL } from "@/lib/constants";
-import { BASE_HEADER } from "./contants.network";
+import { BASE_HEADER } from "./../contants.network";
 import { headers } from "next/headers";
+import { A_I_WebsiteSection, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
 
 const generateBearerToken = (accessToken: string) => `Bearer ${accessToken}`;
 const generateRefreshToken = (refreshToken: string) => `Refresh ${refreshToken}`;
@@ -11,7 +12,7 @@ interface IGetOne {
 }
 
 export const getOne = (props: IGetOne) => {
-    return fetch(`${BACKEND_URL}//${props.id}`,
+    return fetch(`${BACKEND_URL}/${props.id}`,
         {
             method: "GET",
             headers: BASE_HEADER
@@ -104,28 +105,8 @@ export const getMyWebsitePaginate = (props: IGenerateWebSiteInput) => {
  * @returns 
  */
 
-export type ISection = {
-    id: number;
-    kind: "mainSection" | "subSection";
-    title: string;
-    description: string;
-    backgroundImage: string;
-    websiteId: number;
-}
 
-export type ISectionUpdate = Pick<ISection, "id" | "title" | 'description'>;
-
-export type ISectionCreate = Pick<ISection, "title" | "description" | "kind">;
-
-export interface IWebsiteWtSection {
-    id: number;
-    title: string;
-    subject: string;
-    userId: number;
-    websiteSection: ISection[];
-}
-
-export const getWebsiteWtId = (id: number): Promise<IWebsiteWtSection> => {
+export const getWebsiteWtId = (id: number): Promise<I_Website> => {
     return (fetch(`${BACKEND_URL}/site-generator/${id}`, {
         method: "GET",
         headers: BASE_HEADER
