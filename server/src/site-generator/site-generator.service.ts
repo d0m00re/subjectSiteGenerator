@@ -85,31 +85,46 @@ export class SiteGeneratorService {
 
         let currentOrder = props.order;
 
-        /*
-                // Increment the order of SectionOrders starting from the new position
-                await prisma.sectionOrder.updateMany({
-                where: {
-                    order: { gte: newPosition },
-                },
-                data: {
-                    order: {
-                        increment: 1,
-                    },
-                },
-            });
-        */
         // reorder section
-        let allWebsiteSection = await this.prisma.websiteSection.findMany({
+        await this.prisma.websiteSectionOrder.updateMany({
             where : {
                 websiteId : props.websiteId,
-                
+                order : {gte : currentOrder} // greater than or egual
             },
-            include : {
-                websiteSectionOrder : true
+            data: {
+                order: {
+                    increment: 1
+                }
             }
-        })
-        // create subsection
+        });
 
+        // create subsection
+        await this.prisma.websiteSection.create({
+            data : {
+                kind : "subSection",
+                title : props.title,
+                description : props.description,
+                websiteId : props.websiteId,
+                backgroundImage : "useless",
+                websiteSectionOrder : {
+                    create : {
+                        websiteId : props.websiteId,
+                        order : props.order
+                    }
+                }
+            }
+        });
+
+        let newData = await this.prisma.website.findUnique({
+            where : {id : props.websiteId},
+            include : {websiteSection : {
+                include : {
+                    websiteSectionOrder : true
+                }
+            }}
+        })
+
+        return newData;
         // reorder and update
     }
 
@@ -139,7 +154,6 @@ export class SiteGeneratorService {
 
         // create section
         sectionGenerate.forEach((sectionElem, index) => {
-            const order = index;
             const sectionPromise = this.prisma.websiteSection.create({
                 data: {
                     ...sectionElem,
@@ -168,9 +182,6 @@ export class SiteGeneratorService {
                 }
             }
         })
-
-
-        return createdSectionOrder;
     }
 
     getUserWebsite = async (props : IGetUserWebsite) => {

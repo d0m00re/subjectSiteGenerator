@@ -45,7 +45,6 @@ const ModalCreateSection = (props: IModalCreateSection) => {
     const { data: session } = useSession();
     const [isLoading, setIsLoading] = useState(false);
     const currentWebsite = useCurrentWebsite();
-    const [section, setSection] = useState<ISectionCreate>({title : "", description : "", kind : "subSection"})
 
     const {
         register,
@@ -57,34 +56,21 @@ const ModalCreateSection = (props: IModalCreateSection) => {
     });
 
     const submitForm: SubmitHandler<TValidateForm> = (data) => {
-        alert(JSON.stringify({
-            order : props.order,
-            websiteId : props.websiteId,
+        generateWebsiteNetwork.createWebsiteSection({
             title : data.title,
             description : data.description,
-            accessToken : session?.backendTokens.accessToken
-        }))
-       // setIsLoading(true);
-        /*
-        generateWebsiteNetwork.updateWebsiteSection({
-            title: data.title,
-            description: data.description,
-            accessToken: session?.backendTokens?.accessToken ?? ""
+            order : props.order,
+            websiteId : props.websiteId,
+            accessToken : session?.backendTokens?.accessToken ?? ""
         })
-            .then(resp => {
-                console.log("success edit section")
-                console.log(resp);
-                currentWebsite.updateSection(resp);
-            })
-            .catch(err => {
-                console.log("fail edit section")
-                console.log(err)
-            })
-            .finally(() => {
-                setIsLoading(false);
-                props.setOpen(false);
-            })
-            */
+        .then(resp => {
+            console.log("inject some data :")
+            console.log(resp);
+            currentWebsite.resetWtData(resp); //.rese(resp);
+        })
+        .catch(err => {
+            console.log("err : ", err)
+        })
     }
 
     return (

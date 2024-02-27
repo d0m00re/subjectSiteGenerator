@@ -62,7 +62,6 @@ function CreateOne() {
             })
     }
 
-//<LoaderIcon className="animate-spin" />
     return (
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger onClick={onOpen}>Generate a website</DialogTrigger>
