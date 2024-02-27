@@ -28,6 +28,7 @@ export class SiteGeneratorController {
     return data;
   }
 
+  // update a section
   @UseGuards(JwtGuard)
   @Patch("section")
   async updateSection(@Request() req, @Body() dto: dto.UpdateSectionDto) {
@@ -42,7 +43,25 @@ export class SiteGeneratorController {
 
     return result;
   }
+
+  // add a section
+  @UseGuards(JwtGuard)
+  @Post("add")
+  async addSection(@Request() req, @Body() dto : dto.CreateSectionDto) {
+    let email = req.user.email;
+    console.log('add section')
+    let result = await this.siteGenerator.createNewSection({
+      websiteId : dto.websiteId,
+      title : dto.title,
+      description : dto.description,
+      order : dto.order,
+      email : email
+    });
+
+    return result;
+  }
   
+  // generate website
   @UseGuards(JwtGuard)
   @Post()
   async generate(@Request() req, @Body() dto: dto.GenerateDto) {

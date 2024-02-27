@@ -2,6 +2,7 @@ import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER } from "./../contants.network";
 import { headers } from "next/headers";
 import { A_I_WebsiteSection, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
+import { number } from "zod";
 
 const generateBearerToken = (accessToken: string) => `Bearer ${accessToken}`;
 const generateRefreshToken = (refreshToken: string) => `Refresh ${refreshToken}`;
@@ -57,6 +58,31 @@ export const updateWebsiteSection = (props: { title: string, description: string
         })
     })
         .then(resp => resp.json())
+}
+
+interface ICreateWebsiteSection {
+    title : string;
+    description : string;
+    order : number;
+    websiteId : number;
+    accessToken : string;
+}
+
+export const createWebsiteSection = (props : ICreateWebsiteSection) : Promise<I_Website> => {
+    return fetch(`${BACKEND_URL}/site-generator/add`, {
+        method : "POST",
+        headers: {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken)
+        },
+        body: JSON.stringify({
+            title : props.title,
+            description : props.description,
+            websiteId : props.websiteId,
+            order : props.order
+        })
+    })
+    .then(resp =>resp.json());
 }
 
 //--------

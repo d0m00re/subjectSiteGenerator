@@ -1,13 +1,15 @@
 "use client"
 
 import { create } from 'zustand'
-import { IWebsiteWtSection, ISection, getWebsiteWtId, ISectionUpdate } from '@/network/generateWebsite/generateWebsite.network'
+import { getWebsiteWtId,  } from '@/network/generateWebsite/generateWebsite.network'
+import { ISectionUpdate, I_Website } from '@/network/generateWebsite/generateWebsite.entity';
 
 interface WebsiteZustand {
     websiteisLoading : "loading" | "done" | "error";
-    website: IWebsiteWtSection | undefined;
+    website: I_Website | undefined;
     populate: (websiteId: number) => void;
     updateSection: (section: ISectionUpdate) => void;
+    resetWtData: (data : I_Website) => void;
     //incr : () => void;
     //decr : () => void;
 }
@@ -15,9 +17,16 @@ interface WebsiteZustand {
 const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
     websiteisLoading : "loading",
     website: undefined,
+    
     populate: (websiteId) => {
         getWebsiteWtId(websiteId)
             .then(resp => {
+                let newSec = resp.websiteSection.sort(
+                    (s1, s2) =>
+                        s1.websiteSectionOrder.order - s2.websiteSectionOrder.order);
+                
+                resp.websiteSection = newSec;
+                
                 set((state) => ({
                     ...state,
                     websiteisLoading : "done",
@@ -33,6 +42,19 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
                 }))
             })
     },
+
+    resetWtData : (data) => {
+
+        data.websiteSection = data.websiteSection.sort(
+            (s1, s2) =>
+                s1.websiteSectionOrder.order - s2.websiteSectionOrder.order);
+        set((state) => ({
+            ...state,
+            ...data,
+            websiteisLoading : "done",
+        }))
+    },
+
     updateSection: (section) => {     
         set((state) => {
             if (!state.website)
@@ -47,6 +69,7 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
             return {...state, website : newWebsite}
         })
     }
+
     //incr: () => set((state) => ({ bear: state.bear + 1 })),
     //decr: () => set((state) => ({ bear : state.bear - 1}))
 }))

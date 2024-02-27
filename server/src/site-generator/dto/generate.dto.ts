@@ -22,3 +22,14 @@ export class UpdateSectionDto {
   @IsString()
   description : string;
 }
+
+export class CreateSectionDto {
+  @IsString()
+  title : string;
+  @IsString()
+  description : string;
+  @IsNumber()
+  order : number;
+  @IsNumber()
+  websiteId : number;
+}
