@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from "@/components/ui/label";
-import * as generateWebsiteNetwork from "@/network/generateWebsite.network";
+import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
 import { useSession } from 'next-auth/react'
 import navigate from "@/components/navigate";
 
@@ -32,7 +32,6 @@ function CreateOne() {
     const { data: session } = useSession();
     const [open, setOpen] = useState(false);
     const onOpen = () => setOpen(true);
-    const onClose = () => setOpen(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const {
@@ -44,8 +43,6 @@ function CreateOne() {
     });
 
     const submitForm: SubmitHandler<TValidateForm> = (data) => {
-        console.log("submit form")
-        console.log(data);
         setIsLoading(true);
         generateWebsiteNetwork.generateOne({
             title: data.title,

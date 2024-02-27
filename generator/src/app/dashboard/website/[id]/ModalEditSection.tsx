@@ -1,4 +1,3 @@
-import { ISection } from '@/network/generateWebsite.network'
 import React, { useState, useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -8,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea"
-import * as generateWebsiteNetwork from "@/network/generateWebsite.network";
+import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
 import useCurrentWebsite from "./currentWebsite.zustand.store";
 
 import {
@@ -22,6 +21,7 @@ import {
 import { LoaderIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
+import { A_I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 
 const ValidateForm = z.object({
     title: z.string(),
@@ -37,14 +37,13 @@ function LoaderIconH() {
 interface IModalEdit {
     open: boolean;
     setOpen: (val: boolean) => void;
-    section: ISection;
+    section: A_I_WebsiteSection;
 }
 
 const ModalEditSection = (props: IModalEdit) => {
     const { data: session } = useSession();
     const [isLoading, setIsLoading] = useState(false);
     const currentWebsite = useCurrentWebsite();
-
 
     const {
         register,

@@ -1,7 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { BACKEND_URL } from "@/lib/constants";
 import { me } from "@/network/user.network";
-import { getServerSession } from "next-auth";
 
 type Props = {
   params: {
@@ -9,13 +6,8 @@ type Props = {
   };
 };
 const ProfilePage = async (props: Props) => {
-    const session = await getServerSession(authOptions);
     const response = await me({id : props.params.id, accessToken : props.params.id})
-
     const user = await response.json();
-  
-    console.log("user fetch : ", props.params.id)
-    console.log(user)
 
     return (
       <div className="m-2 border rounded shadow overflow-hidden">

@@ -1,7 +1,7 @@
 "use client"
 
 import { create } from 'zustand'
-import { IWebsiteWtSection, ISection, getWebsiteWtId, ISectionUpdate } from '@/network/generateWebsite.network'
+import { IWebsiteWtSection, ISection, getWebsiteWtId, ISectionUpdate } from '@/network/generateWebsite/generateWebsite.network'
 
 interface WebsiteZustand {
     websiteisLoading : "loading" | "done" | "error";
@@ -12,7 +12,7 @@ interface WebsiteZustand {
     //decr : () => void;
 }
 
-const useBearStore = create<WebsiteZustand>()((set) => ({
+const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
     websiteisLoading : "loading",
     website: undefined,
     populate: (websiteId) => {
@@ -51,4 +51,4 @@ const useBearStore = create<WebsiteZustand>()((set) => ({
     //decr: () => set((state) => ({ bear : state.bear - 1}))
 }))
 
-export default useBearStore;
+export default useCurrentWebsiteStore;

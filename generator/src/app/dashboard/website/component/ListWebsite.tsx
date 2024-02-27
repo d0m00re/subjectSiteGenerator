@@ -1,9 +1,9 @@
 "use client"
 
-import * as network from "@/network/generateWebsite.network";
+import * as network from "@/network/generateWebsite/generateWebsite.network";
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from "react";
-import { IGenerateWebSiteOutput } from "@/network/generateWebsite.network";
+import { IGenerateWebSiteOutput } from "@/network/generateWebsite/generateWebsite.network";
 import Pagination from "@/components/Pagination";
 import navigate from "@/components/navigate";
 import Skeleton from 'react-loading-skeleton'

@@ -23,6 +23,14 @@ interface IGetUserWebsite {
     pageSize : number;
 }
 
+interface ICreateNewSection {
+    email : string;
+    order : number;
+    websiteId : number;
+    title : string;
+    description : string;
+}
+
 @Injectable()
 export class SiteGeneratorService {
     constructor(
@@ -71,6 +79,39 @@ export class SiteGeneratorService {
         });
         return res;
     }
+    // probably should rework data model for reduce amount or data load perform
+    createNewSection = async (props : ICreateNewSection) => {
+        const user = await this.getUser(props.email);
+
+        let currentOrder = props.order;
+
+        /*
+                // Increment the order of SectionOrders starting from the new position
+                await prisma.sectionOrder.updateMany({
+                where: {
+                    order: { gte: newPosition },
+                },
+                data: {
+                    order: {
+                        increment: 1,
+                    },
+                },
+            });
+        */
+        // reorder section
+        let allWebsiteSection = await this.prisma.websiteSection.findMany({
+            where : {
+                websiteId : props.websiteId,
+                
+            },
+            include : {
+                websiteSectionOrder : true
+            }
+        })
+        // create subsection
+
+        // reorder and update
+    }
 
     createOneV2 = async (props : ICreateOne) => {
         let user = await this.getUser(props.email);
@@ -80,7 +121,6 @@ export class SiteGeneratorService {
           const existingSectionsCount = await prisma.section.count({ where: { websiteId } });
         */
         // generate subsection
-        let initOrder = 0;
         let sectionGenerate = await this.openAi.createCompletion({
             title : props.title,
             subject : props.subject,
@@ -105,7 +145,10 @@ export class SiteGeneratorService {
                     ...sectionElem,
                     websiteId : websiteCreate.id,
                     websiteSectionOrder : {
-                         create : {order : index}
+                         create : {
+                            order : index,
+                            websiteId : websiteCreate.id
+                        }
                     }
                 }
             });
@@ -128,35 +171,6 @@ export class SiteGeneratorService {
 
 
         return createdSectionOrder;
-    }
-
-    createOne = async (props : ICreateOne) => {
-        // find user
-        let user = await this.getUser(props.email);
-
-        // generate subsection
-        let sectionGenerate = await this.openAi.createCompletion({
-            title : props.title,
-            subject : props.subject,
-        });
-
-        // await section order creation
-
-        // --------------
-
-        let data = await this.prisma.website.create({
-            data : {
-                title : props.subject,
-                subject : props.subject,
-                userId : user.id,
-                websiteSection : {
-                    create : sectionGenerate
-                }
-                //websiteSection : sectionGenerate
-            }
-        })
-
-        return data;
     }
 
     getUserWebsite = async (props : IGetUserWebsite) => {
