@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
 import { useSession } from 'next-auth/react'
 import navigate from "@/components/navigate";
+import toast from 'react-hot-toast';
 
 import {
     Dialog,
@@ -50,15 +51,13 @@ function CreateOne() {
             accessToken: session?.backendTokens?.accessToken ?? ""
         })
             .then(resp => {
-                console.log("generate one : ")
-                console.log(resp.id)
                 navigate(`/dashboard/website/${resp.id}`);
                 setIsLoading(false);
+                toast("Success");
             })
             .catch(err => {
-                console.log("error")
-                console.log(err);
                 setIsLoading(false);
+                toast("Error");
             })
     }
 

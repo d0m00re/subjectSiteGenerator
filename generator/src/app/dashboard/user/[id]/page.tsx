@@ -6,7 +6,7 @@ type Props = {
   };
 };
 const ProfilePage = async (props: Props) => {
-    const response = await me({id : props.params.id, en : props.params.id})
+    const response = await me({id : props.params.id, accessToken : props.params.id})
     const user = await response.json();
 
     return (

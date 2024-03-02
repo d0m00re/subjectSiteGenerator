@@ -56,6 +56,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
     });
 
     const submitForm: SubmitHandler<TValidateForm> = (data) => {
+        setIsLoading(true);
         generateWebsiteNetwork.createWebsiteSection({
             title : data.title,
             description : data.description,
@@ -69,7 +70,11 @@ const ModalCreateSection = (props: IModalCreateSection) => {
             currentWebsite.resetWtData(resp); //.rese(resp);
         })
         .catch(err => {
-            console.log("err : ", err)
+            console.log("err modal create section : ", err)
+        })
+        .finally(() => {
+            props.setOpen(false);
+            setIsLoading(false);
         })
     }
 

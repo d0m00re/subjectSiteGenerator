@@ -10,8 +10,9 @@ import "./globals.css";
 import ProviderNextAuth from "@/components/ProviderNextAuth";
 import AppBar, { Header } from "@/components/AppBar";
 
-import "react-loading-skeleton/dist/skeleton.css";
+import toast, { Toaster } from 'react-hot-toast';
 
+import "react-loading-skeleton/dist/skeleton.css";
 
 const inter = Inter({ subsets: ["latin"] });
 /*
@@ -32,6 +33,7 @@ function RootLayout({
           <Header />
           <section className="flex flex-row">
             <AppBar />
+            <Toaster />
             <div className={`${inter.className} grow`}>{children}</div>
           </section>
         </ProviderNextAuth>

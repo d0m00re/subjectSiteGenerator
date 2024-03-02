@@ -26,8 +26,6 @@ const ListWebsite = () => {
     })
       .then(resp => resp.json())
       .then(resp => {
-        console.log("all website")
-        console.log(resp)
         setListWebsite(resp);
       })
       .catch(err => {

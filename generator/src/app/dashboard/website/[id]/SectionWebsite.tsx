@@ -6,25 +6,25 @@ import { number, tuple } from 'zod';
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 
 type Props = {
-  section : I_WebsiteSection;
-  index : number;
+  section: I_WebsiteSection;
+  index: number;
 }
 
 interface IButtonAddSection {
- // isHovered: boolean;
-  show : boolean;
-  index : number;
-  onOpenModalAddSection : (index : number) => void;
+  // isHovered: boolean;
+  show: boolean;
+  index: number;
+  onOpenModalAddSection: (index: number) => void;
 }
 
 interface IModalCreateSection {
-  index : number;
-  open : boolean;
+  index: number;
+  open: boolean;
 }
 
-const resetModalCreateSection = () : IModalCreateSection => ({
-  index : -1,
-  open : false
+const resetModalCreateSection = (): IModalCreateSection => ({
+  index: -1,
+  open: false
 });
 
 const ButtonAddSection = (props: IButtonAddSection) => {
@@ -44,21 +44,26 @@ function SectionWebsite(props: Props) {
   const [isHovered, setIsHovered] = useState(true);
 
   const handleHover = () => {
-   // setIsHovered(!isHovered);
+    // setIsHovered(!isHovered);
   };
 
-  const onOpenModalAddSection = (index : number) => {
+  const onOpenModalAddSection = (index: number) => {
     setModalAddSection({
-      open : true,
-      index : index
+      open: true,
+      index: index
     })
   }
 
   return (
     <>
-      <ButtonAddSection show={props.index === 0 } onOpenModalAddSection={onOpenModalAddSection} index={props.index} />
+      <ButtonAddSection show={props.index === 0} onOpenModalAddSection={onOpenModalAddSection} index={props.index} />
       <section
-        onClick={() => { if (!modalEdit) setModalEdit(true) }}
+        onClick={() => {
+          if (!modalEdit && !modalAddSection.open) {
+            alert("onclick modal edit open")
+            setModalEdit(true)
+          }
+        }}
         onMouseEnter={handleHover}
         onMouseLeave={handleHover}
         className='flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer'>
@@ -74,17 +79,22 @@ function SectionWebsite(props: Props) {
             /> : <></>
         }
         {
-          modalAddSection.open ? 
+          modalAddSection.open ?
             <ModalCreateSection
               open={modalAddSection.open}
               order={modalAddSection.index}
               websiteId={props.section.websiteId}
-              setOpen={(val : boolean) => setModalAddSection(old => ({...old, open : val}))}
+              setOpen={(val: boolean) => {
+                //alert("onclick modal add section")
+                if (modalEdit === false || val === false)
+                  setModalAddSection(old => ({ ...old, open: val }))
+              }
+              }
             /> :
             <></>
         }
       </section>
-      <ButtonAddSection show onOpenModalAddSection={onOpenModalAddSection} index={props.index + 1}/>
+      <ButtonAddSection show onOpenModalAddSection={onOpenModalAddSection} index={props.index + 1} />
     </>
   )
 }
