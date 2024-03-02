@@ -68,11 +68,10 @@ const ModalEditSection = (props: IModalEdit) => {
                 currentWebsite.updateSection(resp);
             })
             .catch(err => {
-                console.log("fail edit section")
-                console.log(err)
+                console.log("err modalEditSection : ", err);
             })
             .finally(() => {
-                setIsLoading(false);
+                    setIsLoading(false);
                 props.setOpen(false);
             })
     }

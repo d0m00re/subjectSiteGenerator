@@ -32,9 +32,6 @@ export class RefreshJwtGuard implements CanActivate {
             }
             */
 
-      console.log('payload');
-      console.log(payload);
-
       request['user'] = payload;
     } catch (err) {
       throw new UnauthorizedException();

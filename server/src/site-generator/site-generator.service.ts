@@ -170,8 +170,7 @@ export class SiteGeneratorService {
         })
 
         // consume all promise
-        console.log("consume promise : ")
-        const createdSectionOrder =  await Promise.all(promiseArr);
+        await Promise.all(promiseArr);
 
         // tmp - re get the website and return with section order
         return await this.prisma.website.findUnique({

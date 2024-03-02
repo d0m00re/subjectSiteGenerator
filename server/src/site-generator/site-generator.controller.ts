@@ -19,7 +19,6 @@ export class SiteGeneratorController {
   @UseGuards(JwtGuard)
   @Post("search")
   async searchWebsite(@Request() req, @Body() dto: dto.GetUserWebsitesDto) {
-    console.log("seartch website")
     let data = await this.siteGenerator.getUserWebsite({
       email: req.user.email,
       page: dto.page,
@@ -49,7 +48,6 @@ export class SiteGeneratorController {
   @Post("add")
   async addSection(@Request() req, @Body() dto : dto.CreateSectionDto) {
     let email = req.user.email;
-    console.log('add section')
     let result = await this.siteGenerator.createNewSection({
       websiteId : dto.websiteId,
       title : dto.title,
