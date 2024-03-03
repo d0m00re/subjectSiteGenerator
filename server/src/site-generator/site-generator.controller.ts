@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import * as dto from './dto/generate.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { SiteGeneratorService } from './site-generator.service';
@@ -70,6 +70,19 @@ export class SiteGeneratorController {
       subject: dto.subject,
       email: email
     });
+
+    return result;
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete()
+  async deleteSection(@Request() req, @Body() dto: dto.DeleteDto) {
+    let email = req.user.username; // come from jwt guard
+
+    let result  =await this.siteGenerator.deleteSection({
+      email,
+      sectionId : dto.sectionId
+    })
 
     return result;
   }

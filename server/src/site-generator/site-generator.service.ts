@@ -31,6 +31,16 @@ interface ICreateNewSection {
     description : string;
 }
 
+interface IDeleteSection {
+    email : string;
+    sectionId : number
+}
+
+interface IMooveSection {
+    dir : "top" | "bottom",
+
+}
+
 @Injectable()
 export class SiteGeneratorService {
     constructor(
@@ -126,6 +136,54 @@ export class SiteGeneratorService {
 
         return newData;
         // reorder and update
+    }
+
+    deleteSection = async (props : IDeleteSection) => {
+        console.log(`delete section id : ${props.sectionId}`);
+        // delete section with order and decr all element up
+        const user = await this.getUser(props.email);
+
+        // get current seciton info
+        let sectionToDelete = await this.prisma.websiteSection.findUnique({
+            where : {id : props.sectionId},
+            include : {websiteSectionOrder : true}
+        });
+
+        // section not found
+        if (!sectionToDelete) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
+
+
+        // delete section
+        await this.prisma.websiteSection.delete({
+            where : {id : props.sectionId},
+            include : {websiteSectionOrder : true}
+        });
+
+        // reorder section order
+        // decr all table order > oldOrder
+        await this.prisma.websiteSectionOrder.updateMany({
+            where : {
+                websiteId : sectionToDelete.websiteId,
+                order : {gte : sectionToDelete.websiteSectionOrder.order} // greater than or egual
+            },
+            data: {
+                order: {
+                    decrement: 1
+                }
+            }
+        });
+
+        return {sectionId : props.sectionId};
+    }
+
+    mooveSection = async (props : any) => {
+        // moove top or bottom
+        // if moove bottom :
+            //  curr : order - 1
+            // element bottom : + 1
+        // else if moove top :
+            // curr : order + 1
+            // element top : - 1 
     }
 
     createOneV2 = async (props : ICreateOne) => {

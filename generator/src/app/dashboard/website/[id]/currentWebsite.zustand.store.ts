@@ -1,7 +1,7 @@
 "use client"
 
 import { create } from 'zustand'
-import { getWebsiteWtId, } from '@/network/generateWebsite/generateWebsite.network'
+import { deleteWebsiteSection, getWebsiteWtId, } from '@/network/generateWebsite/generateWebsite.network'
 import { ISectionUpdate, I_Website } from '@/network/generateWebsite/generateWebsite.entity';
 
 interface WebsiteZustand {
@@ -10,6 +10,7 @@ interface WebsiteZustand {
     populate: (websiteId: number) => void;
     updateSection: (section: ISectionUpdate) => void;
     resetWtData: (data: I_Website) => void;
+    deleteWebsiteSection: (sectionId: number) => Promise<void>
     //incr : () => void;
     //decr : () => void;
 }
@@ -66,10 +67,31 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
             newWebsite.websiteSection[id] = { ...newWebsite?.websiteSection[id], ...section };
             return { ...state, website: newWebsite }
         })
-    }
+    },
 
-    //incr: () => set((state) => ({ bear: state.bear + 1 })),
-    //decr: () => set((state) => ({ bear : state.bear - 1}))
+    deleteWebsiteSection: async (sectionId : number) => {
+        set((state) => {
+            let newWebsite = state.website;
+
+            if (!newWebsite) return state;
+            let indexSectionDelete = newWebsite.websiteSection.findIndex(e => e.id === sectionId);
+            if (indexSectionDelete === -1) return state;
+
+            let orderSectionDelete = newWebsite.websiteSection[indexSectionDelete].websiteSectionOrder.order;
+            newWebsite.websiteSection = newWebsite.websiteSection
+                .filter(wSection => wSection.id !== sectionId)
+                .map(wSection => {
+                    if (orderSectionDelete > wSection.websiteSectionOrder.order)
+                        return wSection;
+                    wSection.websiteSectionOrder.order -= 1;
+                    return wSection;
+                })
+            return {
+                ...state,
+                website : newWebsite
+            }
+        })
+    }
 }))
 
 export default useCurrentWebsiteStore;

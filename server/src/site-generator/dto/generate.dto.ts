@@ -7,6 +7,11 @@ export class GenerateDto {
   title : string;
 }
 
+export class DeleteDto {
+  @IsNumber()
+  sectionId : number;
+}
+
 export class GetUserWebsitesDto {
   @IsNumber()
   page : number;

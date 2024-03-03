@@ -36,7 +36,7 @@ model WebsiteSection {
   backgroundImage String
 
   websiteId Int// Foreign key to reference User
-  website   Website @relation(fields: [websiteId], references: [id])
+  website   Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
   websiteSectionOrder WebsiteSectionOrder?
 }
@@ -45,8 +45,8 @@ model WebsiteSectionOrder {
   id    Int @id @default(autoincrement())
   order Int
   websiteSectionId Int @unique
-  websiteSection WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+  websiteSection WebsiteSection @relation(fields: [websiteSectionId], references: [id], onDelete: Cascade)
 
   websiteId Int// Foreign key to reference User
-  website   Website @relation(fields: [websiteId], references: [id])
+  website   Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 }
