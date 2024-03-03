@@ -41,6 +41,25 @@ export const generateOne = (props: IGenerateOne) => {
         .then(resp => resp.json());
 }
 
+interface IDeleteOneWebsiteSection {
+    sectionId : number;
+    accessToken : string;
+}
+
+export const deleteWebsiteSection = (props : IDeleteOneWebsiteSection) : Promise<{sectionId : number}> => {
+    return fetch(`${BACKEND_URL}/site-generator`, {
+        method : "DELETE",
+        headers: {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken),
+        },
+        body: JSON.stringify({
+            sectionId : props.sectionId
+        })
+    }).then(resp => resp.json());
+
+}
+
 /*
  user update own website section
 */
@@ -130,8 +149,6 @@ export const getMyWebsitePaginate = (props: IGenerateWebSiteInput) => {
  * @param id number
  * @returns 
  */
-
-
 export const getWebsiteWtId = (id: number): Promise<I_Website> => {
     return (fetch(`${BACKEND_URL}/site-generator/${id}`, {
         method: "GET",

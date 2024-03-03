@@ -65,8 +65,6 @@ const ModalCreateSection = (props: IModalCreateSection) => {
             accessToken : session?.backendTokens?.accessToken ?? ""
         })
         .then(resp => {
-            console.log("inject some data :")
-            console.log(resp);
             currentWebsite.resetWtData(resp); //.rese(resp);
         })
         .catch(err => {

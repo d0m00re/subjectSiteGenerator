@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import ModalEditSection from './ModalEditSection';
 import ModalCreateSection from './ModalCreateSection';
 import { Button } from '@/components/ui/button';
-import { number, tuple } from 'zod';
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
+import * as networkGenerateWeb from "@/network/generateWebsite/generateWebsite.network";
+import SectionActionBar from '@/components/WebsiteSection/SectionActionBar';
+import ContainerSectionActionBar from '@/components/WebsiteSection/SectionActionBar';
+import useCurrentWebsite from "./currentWebsite.zustand.store";
+import { useSession } from 'next-auth/react';
 
-type Props = {
+
+type Props = { 
   section: I_WebsiteSection;
   index: number;
 }
@@ -31,20 +36,23 @@ const ButtonAddSection = (props: IButtonAddSection) => {
   return (
     (props.show) ?
       <span className="relative flex justify-center">
-        <Button onClick={() => props.onOpenModalAddSection(props.index)} className='absolute -top-5'>add section</Button>
+        <Button className='absolute -top-5' onClick={() => props.onOpenModalAddSection(props.index)}>add section</Button>
       </span>
       : <></>
-
   )
 }
 
 function SectionWebsite(props: Props) {
   const [modalEdit, setModalEdit] = useState(false);
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
-  const [isHovered, setIsHovered] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const currentWebsite = useCurrentWebsite();
+  const { data: session } = useSession();
+
+
 
   const handleHover = () => {
-    // setIsHovered(!isHovered);
+    setIsHovered(!isHovered);
   };
 
   const onOpenModalAddSection = (index: number) => {
@@ -53,23 +61,37 @@ function SectionWebsite(props: Props) {
       index: index
     })
   }
-
+  
+  const onDeleteSection = () => {
+    networkGenerateWeb.deleteWebsiteSection({sectionId : props.section.id, accessToken : session?.backendTokens?.accessToken ?? ""})
+    .then(res => {
+      currentWebsite.deleteWebsiteSection(props.section.id);
+    })
+    .catch(err => {
+      console.info("error delete website section : ", err);
+    })
+  }
+/*
+*/
   return (
     <>
       <ButtonAddSection show={props.index === 0} onOpenModalAddSection={onOpenModalAddSection} index={props.index} />
       <section
-        onClick={() => {
-          if (!modalEdit && !modalAddSection.open) {
-            alert("onclick modal edit open")
-            setModalEdit(true)
-          }
-        }}
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
+        onPointerEnter={handleHover}
+        onPointerLeave={handleHover}
+        style={{ height: "500px" }}
         className='flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer'>
+
+        <ContainerSectionActionBar
+            onOpenEdit = {() => {setModalEdit(true)}}
+            onOpenDelete = {onDeleteSection}
+            onOpenDuplicate = {() => {alert("duplicate")}}
+            onMooveTop = {() => {alert("moove top")}}
+            onMooveBottom = {() => {alert("moove bottom")}}
+        />
+
         <h2 className='text-xl'>{props.section.title}</h2>
         <p>{props.section.description}</p>
-
         {
           modalEdit ?
             <ModalEditSection
