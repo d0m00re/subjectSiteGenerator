@@ -1,4 +1,4 @@
-import { IsNumber, IsString, isString } from 'class-validator';
+import { IsNumber, IsString, IsIn } from 'class-validator';
 
 export class GenerateDto {
   @IsString()
@@ -10,6 +10,13 @@ export class GenerateDto {
 export class DeleteDto {
   @IsNumber()
   sectionId : number;
+}
+
+export class MooveDto {
+    @IsNumber()
+    sectionId : number;
+    @IsIn(["top", "bottom"])
+    dir: "top" | "bottom";
 }
 
 export class GetUserWebsitesDto {

@@ -71,6 +71,46 @@ function SectionWebsite(props: Props) {
       console.info("error delete website section : ", err);
     })
   }
+
+  const onSwitchWebsitePositionTop = () => {
+    console.log("switch top")
+    networkGenerateWeb.switchPosWebsiteSection({
+      dir : "top",
+      sectionId : props.section.id,
+      accessToken :  session?.backendTokens?.accessToken ?? ""
+    })
+    .then(resp => {
+      console.log("section switch");
+      console.log(resp);
+      currentWebsite.sectionOrderSwitch(resp);
+    })
+    .catch((err : any) => {
+      console.log("error switching section")
+      console.log(err)
+    })
+  }
+
+  const onSwitchWebsitePositionBottom = () => {
+    console.log("switch bottom")
+    networkGenerateWeb.switchPosWebsiteSection({
+      dir : "bottom",
+      sectionId : props.section.id,
+      accessToken :  session?.backendTokens?.accessToken ?? ""
+    })
+    .then(resp => {
+      console.log("section switch");
+      console.log(resp);
+      currentWebsite.sectionOrderSwitch(resp);
+    })
+    .catch((err : any) => {
+      console.log("error switching section")
+      console.log(err)
+    })
+  }
+
+  const onDuplicate = () => {
+    alert("duplicate");
+  }
 /*
 */
   return (
@@ -85,9 +125,9 @@ function SectionWebsite(props: Props) {
         <ContainerSectionActionBar
             onOpenEdit = {() => {setModalEdit(true)}}
             onOpenDelete = {onDeleteSection}
-            onOpenDuplicate = {() => {alert("duplicate")}}
-            onMooveTop = {() => {alert("moove top")}}
-            onMooveBottom = {() => {alert("moove bottom")}}
+            onOpenDuplicate = {onDuplicate}
+            onMooveTop = {onSwitchWebsitePositionTop}
+            onMooveBottom = {onSwitchWebsitePositionBottom}
         />
 
         <h2 className='text-xl'>{props.section.title}</h2>
