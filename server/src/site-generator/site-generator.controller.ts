@@ -100,6 +100,19 @@ export class SiteGeneratorController {
 
     return result;
   }
+
+  @UseGuards(JwtGuard)
+  @Post("section/duplicate")
+  async duplicateSection(@Request() req, @Body() dto : dto.DuplicateDto) {
+    let email = req.user.username;
+
+    let website = await this.siteGenerator.duplicateSection({
+      email,
+      sectionId : dto.sectionId
+    });
+
+    return website;
+  }
   
 
   @Get(':id')

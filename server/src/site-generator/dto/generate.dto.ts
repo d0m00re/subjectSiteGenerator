@@ -19,6 +19,11 @@ export class MooveDto {
     dir: "top" | "bottom";
 }
 
+export class DuplicateDto {
+  @IsNumber()
+  sectionId : number;
+}
+
 export class GetUserWebsitesDto {
   @IsNumber()
   page : number;
