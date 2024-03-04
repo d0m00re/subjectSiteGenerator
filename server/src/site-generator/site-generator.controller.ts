@@ -86,6 +86,20 @@ export class SiteGeneratorController {
 
     return result;
   }
+
+  @UseGuards(JwtGuard)
+  @Patch("section/moove")
+  async mooveSection(@Request() req, @Body() dto : dto.MooveDto) {
+    let email = req.user.username;
+
+    let result = await this.siteGenerator.mooveSection({
+      email,
+      sectionId : dto.sectionId,
+      dir : dto.dir
+    });
+
+    return result;
+  }
   
 
   @Get(':id')

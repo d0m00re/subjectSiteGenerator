@@ -1,7 +1,7 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER } from "./../contants.network";
 import { headers } from "next/headers";
-import { A_I_WebsiteSection, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
+import { A_I_WebsiteSection, A_I_WebsiteSectionOrder, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
 import { number } from "zod";
 
 const generateBearerToken = (accessToken: string) => `Bearer ${accessToken}`;
@@ -47,7 +47,7 @@ interface IDeleteOneWebsiteSection {
 }
 
 export const deleteWebsiteSection = (props : IDeleteOneWebsiteSection) : Promise<{sectionId : number}> => {
-    return fetch(`${BACKEND_URL}/site-generator`, {
+    return fetch(`${BACKEND_URL}`, {
         method : "DELETE",
         headers: {
             ...BASE_HEADER,
@@ -73,6 +73,28 @@ export const updateWebsiteSection = (props: { title: string, description: string
         body: JSON.stringify({
             title: props.title,
             description: props.description,
+            sectionId: props.sectionId
+        })
+    })
+        .then(resp => resp.json())
+}
+
+/*
+ switch pos website
+ id	29
+order	2
+websiteSectionId	95
+websiteId	44
+*/
+export const switchPosWebsiteSection = (props: { sectionId: number, dir : "top" | "bottom", accessToken: string }) : Promise<A_I_WebsiteSectionOrder[]> => {
+    return fetch(`${BACKEND_URL}/site-generator/section/moove`, {
+        method: "PATCH",
+        headers: {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken),
+        },
+        body: JSON.stringify({
+            dir: props.dir,
             sectionId: props.sectionId
         })
     })

@@ -2,15 +2,16 @@
 
 import { create } from 'zustand'
 import { deleteWebsiteSection, getWebsiteWtId, } from '@/network/generateWebsite/generateWebsite.network'
-import { ISectionUpdate, I_Website } from '@/network/generateWebsite/generateWebsite.entity';
-
+import { A_I_WebsiteSectionOrder, ISectionUpdate, I_Website } from '@/network/generateWebsite/generateWebsite.entity';
+import cloneDeep from "lodash/cloneDeep";
 interface WebsiteZustand {
     websiteisLoading: "loading" | "done" | "error";
     website: I_Website | undefined;
     populate: (websiteId: number) => void;
     updateSection: (section: ISectionUpdate) => void;
     resetWtData: (data: I_Website) => void;
-    deleteWebsiteSection: (sectionId: number) => Promise<void>
+    deleteWebsiteSection: (sectionId: number) => Promise<void>;
+    sectionOrderSwitch: (data : A_I_WebsiteSectionOrder[]) => void;
     //incr : () => void;
     //decr : () => void;
 }
@@ -53,6 +54,37 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
             website : data,
             websiteisLoading: "done",
         }))
+    },
+
+    sectionOrderSwitch: (data) => {
+        set((state) => {
+            console.log("switch")
+            console.log(data)
+            console.log(data.length)
+            if (data.length !== 2) return state;
+
+            let website = state.website;
+
+            let i1 = website?.websiteSection.findIndex((sectionElem) => sectionElem.websiteSectionOrder.id === data[0].id);
+            let i2 = website?.websiteSection.findIndex((sectionElem) => sectionElem.websiteSectionOrder.id === data[1].id);
+
+            if (!website?.websiteSection || i1 === undefined || i2 === undefined) return state;
+
+            console.log("i1 : ")
+            console.log(i1)
+            console.log("i2 : ")
+            console.log(i2)
+            website.websiteSection[i1].websiteSectionOrder.order = data[0].order;
+            website.websiteSection[i2].websiteSectionOrder.order = data[1].order;
+
+            console.log("generate new")
+            console.log(website)
+
+            return {
+                ...state,
+                website : cloneDeep(website)
+            }
+        })
     },
 
     updateSection: (section) => {
