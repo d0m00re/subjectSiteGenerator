@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { IGenerateWebSiteOutput } from "@/network/generateWebsite/generateWebsite.network";
 import Pagination from "@/components/Pagination";
 import navigate from "@/components/navigate";
-import Skeleton from 'react-loading-skeleton'
 import CardWebsite from "./CardWebsite";
+import TemplateSkeleton from "@/components/Templates/TemplateSkeleton";
 
 
 interface IFetchAndLoad {
@@ -62,15 +62,8 @@ const ListWebsite = () => {
             totalPage={Math.floor(listWebsite.info.count / listWebsite.info.pageSize)}
             changePage={changePage}
           />
-
         </div>
-        : <div className='w-full flex flex-col gap-2'>
-          <Skeleton className='h-16' />
-          <Skeleton className='h-16' />
-          <Skeleton className='h-16' />
-          <Skeleton className='h-16' />
-          <Skeleton className='h-16' />
-        </div>
+        : <TemplateSkeleton />
 
     }</div>
   </div>

@@ -4,7 +4,6 @@ import ModalCreateSection from './ModalCreateSection';
 import { Button } from '@/components/ui/button';
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import * as networkGenerateWeb from "@/network/generateWebsite/generateWebsite.network";
-import SectionActionBar from '@/components/WebsiteSection/SectionActionBar';
 import ContainerSectionActionBar from '@/components/WebsiteSection/SectionActionBar';
 import useCurrentWebsite from "./currentWebsite.zustand.store";
 import { useSession } from 'next-auth/react';
@@ -128,11 +127,14 @@ function SectionWebsite(props: Props) {
 */
   return (
     <>
-      <ButtonAddSection show={props.index === 0} onOpenModalAddSection={onOpenModalAddSection} index={props.index} />
+      <ButtonAddSection
+        show={props.index === 0}
+        onOpenModalAddSection={onOpenModalAddSection}
+        index={props.index}
+      />
       <section
         onPointerEnter={handleHover}
         onPointerLeave={handleHover}
-        style={{ height: "500px" }}
         className='flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer'>
 
         <ContainerSectionActionBar

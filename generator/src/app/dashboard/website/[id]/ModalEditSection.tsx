@@ -71,7 +71,7 @@ const ModalEditSection = (props: IModalEdit) => {
                 console.log("err modalEditSection : ", err);
             })
             .finally(() => {
-                    setIsLoading(false);
+                setIsLoading(false);
                 props.setOpen(false);
             })
     }
@@ -79,7 +79,7 @@ const ModalEditSection = (props: IModalEdit) => {
     useEffect(() => {
         setValue('title', props.section.title);
         setValue('description', props.section.description);
-    }, [props])
+    }, [])
 
 
     return (
