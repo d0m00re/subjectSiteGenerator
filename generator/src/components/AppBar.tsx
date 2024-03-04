@@ -48,13 +48,13 @@ const LinkInfoList = [
 
 const AppBar = () => {
   return (
-    <header className="flex flex-col gap-4 p-4 bg-gradient-to-b from-white to-gray-200 shadow">
+    <main className="flex flex-col gap-4 p-4 bg-gradient-to-b from-white to-gray-200 shadow">
       {
         LinkInfoList.map(elem => <Link key={elem.id} className="transition-colors hover:text-blue-500 flex flex-row gap-2" href={elem.href}>
         <elem.icon /> {elem.name}
       </Link>)
       }
-    </header>
+    </main>
   );
 };
 
