@@ -226,7 +226,6 @@ export class SiteGeneratorService {
 
         let result = await Promise.all(arrProm);
 
-        console.log(`section to update with switch order : ${currentOrder} ${targetOrder} real ---> ${currentSection.websiteSectionOrder.order} ${targetSection.websiteSectionOrder.order}`)
         return result;
         // go switch order
 
@@ -283,6 +282,65 @@ export class SiteGeneratorService {
             include: {
                 websiteSection: {
                     include: { websiteSectionOrder: true }
+                }
+            }
+        })
+    }
+
+    duplicateSection = async (props: {sectionId : number, email : string}) => {
+        let user = await this.getUser(props.email);
+
+        // get target section  with order
+        let websiteSection = await this.prisma.websiteSection.findUnique({
+            where : { id : props.sectionId},
+            include : {websiteSectionOrder : true}});
+        
+        if (!websiteSection) {
+            throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
+        }
+
+        
+        
+        // check auth
+        // ....
+
+        // increment order
+        await this.prisma.websiteSectionOrder.updateMany({
+            where : {
+                websiteId : websiteSection.websiteId,
+                order : {gt : websiteSection.websiteSectionOrder.order}
+            },
+            data : {
+                order : {
+                    increment : 2
+                }
+            }
+        })
+
+        // create section
+        await this.prisma.websiteSection.create({
+            data: {
+                kind: "subSection",
+                title: websiteSection.title,
+                description: websiteSection.description,
+                websiteId: websiteSection.websiteId,
+                backgroundImage: "useless",
+                websiteSectionOrder: {
+                    create: {
+                        websiteId: websiteSection.websiteId,
+                        order: websiteSection.websiteSectionOrder.order + 1
+                    }
+                }
+            }    
+        })
+        // return all website section
+        return this.prisma.website.findUnique({
+            where: { id: websiteSection.websiteId },
+            include: {
+                websiteSection: {
+                    include: {
+                        websiteSectionOrder: true
+                    }
                 }
             }
         })

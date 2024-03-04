@@ -101,6 +101,20 @@ export const switchPosWebsiteSection = (props: { sectionId: number, dir : "top" 
         .then(resp => resp.json())
 }
 
+export const duplicateWebsiteSection = (props: { sectionId: number, accessToken: string }) : Promise<I_Website> => {
+    return fetch(`${BACKEND_URL}/site-generator/section/duplicate`, {
+        method: "POST",
+        headers: {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken),
+        },
+        body: JSON.stringify({
+            sectionId: props.sectionId
+        })
+    })
+        .then(resp => resp.json())
+}
+
 interface ICreateWebsiteSection {
     title : string;
     description : string;

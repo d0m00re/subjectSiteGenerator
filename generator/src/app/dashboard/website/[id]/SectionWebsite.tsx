@@ -109,7 +109,20 @@ function SectionWebsite(props: Props) {
   }
 
   const onDuplicate = () => {
-    alert("duplicate");
+      console.log("onDuplicate");
+      networkGenerateWeb.duplicateWebsiteSection({
+        sectionId : props.section.id,
+        accessToken : session?.backendTokens?.accessToken ?? ""
+      })
+      .then(resp => {
+        console.log("success duplicate : ")
+        console.log(resp);
+        currentWebsite.resetWtData(resp);
+      })
+      .catch(err => {
+        console.log("error duplicate section :", props.section.id);
+        console.log(err);
+      })
   }
 /*
 */
