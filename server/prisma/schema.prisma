@@ -19,12 +19,12 @@ model User {
 }
 
 model Website {
-  id             Int              @id @default(autoincrement())
-  title          String
-  subject        String
-  userId         Int // Foreign key to reference User
-  user           User             @relation(fields: [userId], references: [id])
-  websiteSection WebsiteSection[]
+  id                  Int                   @id @default(autoincrement())
+  title               String
+  subject             String
+  userId              Int // Foreign key to reference User
+  user                User                  @relation(fields: [userId], references: [id])
+  websiteSection      WebsiteSection[]
   websiteSectionOrder WebsiteSectionOrder[]
 }
 
@@ -35,18 +35,66 @@ model WebsiteSection {
   description     String
   backgroundImage String
 
-  websiteId Int// Foreign key to reference User
+  websiteId Int // Foreign key to reference User
   website   Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
   websiteSectionOrder WebsiteSectionOrder?
+
+  buttons          TemplateElemButton[]
+  typographies     TemplateElemTypography[]
+  configTemplateId Int // foreign key
+  configTemplate   TemplateVariant @relation(fields: [configTemplateId], references: [id])
 }
 
 model WebsiteSectionOrder {
-  id    Int @id @default(autoincrement())
-  order Int
-  websiteSectionId Int @unique
-  websiteSection WebsiteSection @relation(fields: [websiteSectionId], references: [id], onDelete: Cascade)
+  id               Int            @id @default(autoincrement())
+  order            Int
+  websiteSectionId Int            @unique
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id], onDelete: Cascade)
 
-  websiteId Int// Foreign key to reference User
+  websiteId Int // Foreign key to reference User
   website   Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 }
+
+//---------------------------------------------
+model TemplateGroup {
+  id   Int    @id @default(autoincrement())
+  kind String
+  templateVariant TemplateVariant[]
+}
+
+model TemplateVariant {
+  id     Int    @id @default(autoincrement())
+  name   String
+  kind   String
+  config String // maybe as a json later
+  websiteSections WebsiteSection[]
+
+  templateGroupId Int
+  templateGroup   TemplateGroup @relation(fields: [templateGroupId], references: [id])
+
+}
+
+model TemplateElemTypography {
+  id      Int    @id @default(autoincrement())
+  order   Int
+  variant String
+  text    String
+  path    String
+
+  websiteSectionId Int
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+}
+
+model TemplateElemButton {
+  id         Int    @id @default(autoincrement())
+  order      Int
+  label      String
+  actionType String
+  path       String
+
+  websiteSectionId Int
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+}
+
+///
