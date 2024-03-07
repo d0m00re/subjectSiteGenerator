@@ -42,6 +42,12 @@ interface IMooveSection {
     dir: "top" | "bottom",
 }
 
+interface IGenerateSectionWithVariantV1 {
+    websiteId : number;
+    templateGroup : string;
+    templateVariant : string;
+}
+
 @Injectable()
 export class SiteGeneratorService {
     constructor(
@@ -60,6 +66,11 @@ export class SiteGeneratorService {
 
         return user;
     }
+
+    generateSectionWithVariantV1 = async (props : IGenerateSectionWithVariantV1) => {
+
+    }
+
     // should control user
     updateSection = async (props: IUpdateSection) => {
         const user = await this.getUser(props.email);
@@ -117,6 +128,7 @@ export class SiteGeneratorService {
                 description: props.description,
                 websiteId: props.websiteId,
                 backgroundImage: "useless",
+                configTemplateId : 0,
                 websiteSectionOrder: {
                     create: {
                         websiteId: props.websiteId,
@@ -262,12 +274,15 @@ export class SiteGeneratorService {
                 data: {
                     ...sectionElem,
                     websiteId: websiteCreate.id,
+                    configTemplateId : 0,
                     websiteSectionOrder: {
                         create: {
                             order: index,
-                            websiteId: websiteCreate.id
+                            websiteId: websiteCreate.id,
+                                  
                         }
-                    }
+                    },
+                    
                 }
             });
             promiseArr.push(sectionPromise);
@@ -325,6 +340,7 @@ export class SiteGeneratorService {
                 description: websiteSection.description,
                 websiteId: websiteSection.websiteId,
                 backgroundImage: "useless",
+                configTemplateId : 0,
                 websiteSectionOrder: {
                     create: {
                         websiteId: websiteSection.websiteId,

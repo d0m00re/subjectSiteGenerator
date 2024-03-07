@@ -8,6 +8,7 @@ import { SiteGeneratorController } from './site-generator/site-generator.control
 import { SiteGeneratorModule } from './site-generator/site-generator.module';
 import { JwtService } from '@nestjs/jwt';
 import { OpenaiModule } from './openai/openai.module';
+import { ConfigTemplateModule } from './config-template/config-template.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { OpenaiModule } from './openai/openai.module';
     AuthModule,
     SiteGeneratorModule,
     OpenaiModule,
+    ConfigTemplateModule,
   ],
   controllers: [],
   providers: [PrismaService, JwtService, OpenaiModule],

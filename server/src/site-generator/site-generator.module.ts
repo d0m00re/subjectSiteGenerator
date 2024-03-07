@@ -5,9 +5,10 @@ import { Userv2Service } from 'src/userv2/userv2.service';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { OpenAIService } from 'src/openai/openai.service';
+import { ConfigTemplateService } from 'src/config-template/config-template.service';
 
 @Module({
-  providers: [SiteGeneratorService, OpenAIService, Userv2Service, PrismaService, JwtService],
+  providers: [SiteGeneratorService, OpenAIService, Userv2Service, PrismaService, JwtService, ConfigTemplateService],
   controllers: [SiteGeneratorController],
 })
 export class SiteGeneratorModule {}
