@@ -45,7 +45,7 @@ export class SiteGeneratorController {
 
   // add a section
   @UseGuards(JwtGuard)
-  @Post("add")
+  @Post("section/add")
   async addSection(@Request() req, @Body() dto : dto.CreateSectionDto) {
     let email = req.user.email;
     let result = await this.siteGenerator.createNewSection({
@@ -54,6 +54,22 @@ export class SiteGeneratorController {
       description : dto.description,
       order : dto.order,
       email : email
+    });
+
+    return result;
+  }
+
+  @UseGuards(JwtGuard)
+  @Post("section/add-v2")
+  async addSectionV2(@Request() req, @Body() dto : dto.CreateSectionDtoV2) {
+    let email = req.user.email;
+  
+    let result = await this.siteGenerator.createNewSectionV2({
+      email,
+      data : dto.data,
+      order : dto.order,
+      websiteId : dto.websiteId,
+      templateId : dto.templateId
     });
 
     return result;

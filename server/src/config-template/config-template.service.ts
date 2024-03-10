@@ -42,7 +42,9 @@ export class ConfigTemplateService {
     }
 
     public getTemplateGroupAll = async () => {
-        let templateGroup = await this.prisma.templateGroup.findMany();
+        let templateGroup = await this.prisma.templateGroup.findMany({
+            include : {templateVariant : true}
+        });
         return templateGroup;
     }
 
