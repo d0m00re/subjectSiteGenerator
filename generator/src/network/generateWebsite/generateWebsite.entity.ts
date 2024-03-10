@@ -1,4 +1,5 @@
 /**
+ * rework this notation probably
  * I -> INTERFACE
  * A -> ATOM
  * E -> ENTITY
@@ -19,6 +20,34 @@ export interface A_I_WebsiteSectionOrder extends A_I_WebsiteSectionOrder_E {
 export interface I_WebsiteSectionOrder_E extends A_I_WebsiteSectionOrder_E {};
 export interface I_WebsiteSectionOrder extends A_I_WebsiteSectionOrder {};
 
+// button
+export interface A_I_TemplateElemButton_E {
+    order : number;
+    label : string;
+    text : string;
+    path : string;
+}
+
+export interface I_TemplateElemButton_E extends A_I_TemplateElemButton_E {}
+
+export interface I_TemplateElemButton extends A_I_TemplateElemButton_E {
+    id : number;
+    websiteSectionId : number;
+}
+
+// typography
+export interface I_TemplateElemTypography_E {
+    order : number;
+    variant : string;
+    text : string;
+    path : string;
+}
+
+export interface I_TemplateElemTypography extends I_TemplateElemTypography_E {
+    id : number;
+    websiteSectionId : number;
+}
+
 // ----------------------
 // ------------- websiteSection
 export type TWebsiteSectionKind = "mainSection" | "subSection";
@@ -28,6 +57,8 @@ export interface A_I_WebsiteSection_E {
     title : string;
     description : string;
     backgroundImage : string;
+    buttons : I_TemplateElemButton[];
+    typographies : I_TemplateElemTypography[];
 }
 
 export interface A_I_WebsiteSection extends A_I_WebsiteSection_E {
