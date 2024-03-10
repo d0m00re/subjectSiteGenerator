@@ -1,9 +1,10 @@
 "use client"
 
 import { create } from 'zustand'
-import { deleteWebsiteSection, getWebsiteWtId, } from '@/network/generateWebsite/generateWebsite.network'
+import { deleteWebsiteSection } from '@/network/generateWebsite/generateWebsite.network'
 import { A_I_WebsiteSectionOrder, ISectionUpdate, I_Website, I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import cloneDeep from "lodash/cloneDeep";
+import { getWebsiteWtId } from '@/network/website/website.network';
 interface WebsiteZustand {
     websiteisLoading: "loading" | "done" | "error";
     website: I_Website | undefined;

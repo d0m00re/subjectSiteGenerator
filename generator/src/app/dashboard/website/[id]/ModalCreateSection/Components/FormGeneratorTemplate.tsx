@@ -93,10 +93,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
         Return
       </Button>
 
-      <p>
-        {props.selectedTemplate?.config}
-      </p>
-      form generator : {props.selectedTemplate?.name}
       <form
         onSubmit={submitForm}
         className='flex flex-col gap-2'>
