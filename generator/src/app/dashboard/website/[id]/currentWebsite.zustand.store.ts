@@ -13,8 +13,6 @@ interface WebsiteZustand {
     deleteWebsiteSection: (sectionId: number) => Promise<void>;
     sectionOrderSwitch: (data : A_I_WebsiteSectionOrder[]) => void;
     sectionDuplicate: (sectionid : I_WebsiteSection) => void;
-    //incr : () => void;
-    //decr : () => void;
 }
 
 const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({

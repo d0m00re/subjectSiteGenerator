@@ -1,8 +1,6 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER } from "./../contants.network";
-import { headers } from "next/headers";
 import { A_I_WebsiteSection, A_I_WebsiteSectionOrder, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
-import { number } from "zod";
 
 const generateBearerToken = (accessToken: string) => `Bearer ${accessToken}`;
 const generateRefreshToken = (refreshToken: string) => `Refresh ${refreshToken}`;
@@ -18,6 +16,7 @@ export const getOne = (props: IGetOne) => {
             method: "GET",
             headers: BASE_HEADER
         })
+        .then(resp => resp.json());
 }
 
 interface IGenerateOne {
@@ -123,8 +122,16 @@ interface ICreateWebsiteSection {
     accessToken : string;
 }
 
+export interface ICreateWebsiteSectionV2 {
+    data : any[],
+    order : number;
+    websiteId : number;
+    templateId : number;
+    accessToken : string;
+}
+
 export const createWebsiteSection = (props : ICreateWebsiteSection) : Promise<I_Website> => {
-    return fetch(`${BACKEND_URL}/site-generator/add`, {
+    return fetch(`${BACKEND_URL}/site-generator/section/add`, {
         method : "POST",
         headers: {
             ...BASE_HEADER,
@@ -138,6 +145,23 @@ export const createWebsiteSection = (props : ICreateWebsiteSection) : Promise<I_
         })
     })
     .then(resp =>resp.json());
+};
+
+export const createWebsiteSectionV2 = (props : ICreateWebsiteSectionV2) : Promise<I_Website> => {
+    return fetch(`${BACKEND_URL}/site-generator/section/add-v2`, {
+        method : "POST",
+        headers: {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken)
+        },
+        body : JSON.stringify({
+            data : props.data,
+            order : props.order,
+            websiteId : props.websiteId,
+            templateId : props.templateId
+        })
+    })
+    .then(resp => resp.json());
 }
 
 //--------

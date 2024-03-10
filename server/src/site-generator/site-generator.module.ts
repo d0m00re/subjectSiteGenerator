@@ -8,7 +8,14 @@ import { OpenAIService } from 'src/openai/openai.service';
 import { ConfigTemplateService } from 'src/config-template/config-template.service';
 
 @Module({
-  providers: [SiteGeneratorService, OpenAIService, Userv2Service, PrismaService, JwtService, ConfigTemplateService],
+  providers: [
+    SiteGeneratorService,
+    OpenAIService,
+    Userv2Service,
+    PrismaService,
+    JwtService,
+    ConfigTemplateService
+  ],
   controllers: [SiteGeneratorController],
 })
 export class SiteGeneratorModule {}

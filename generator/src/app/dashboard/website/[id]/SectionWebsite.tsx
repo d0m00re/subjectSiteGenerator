@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import ModalEditSection from './ModalEditSection';
-import ModalCreateSection from './ModalCreateSection';
+import ModalCreateSection from './ModalCreateSection/ModalCreateSection';
 import { Button } from '@/components/ui/button';
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import * as networkGenerateWeb from "@/network/generateWebsite/generateWebsite.network";
 import ContainerSectionActionBar from '@/components/WebsiteSection/SectionActionBar';
 import useCurrentWebsite from "./currentWebsite.zustand.store";
 import { useSession } from 'next-auth/react';
-
 
 type Props = { 
   section: I_WebsiteSection;
@@ -47,8 +46,6 @@ function SectionWebsite(props: Props) {
   const [isHovered, setIsHovered] = useState(false);
   const currentWebsite = useCurrentWebsite();
   const { data: session } = useSession();
-
-
 
   const handleHover = () => {
     setIsHovered(!isHovered);

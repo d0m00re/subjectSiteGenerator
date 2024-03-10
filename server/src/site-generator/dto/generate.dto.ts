@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsIn } from 'class-validator';
+import { IsNumber, IsString, IsIn, IsArray, IsNotEmpty } from 'class-validator';
 
 export class GenerateDto {
   @IsString()
@@ -49,4 +49,15 @@ export class CreateSectionDto {
   order : number;
   @IsNumber()
   websiteId : number;
+}
+
+export class CreateSectionDtoV2 {
+  @IsNotEmpty()
+  data : any;
+  @IsNumber()
+  order: number;
+  @IsNumber()
+  websiteId : number;
+  @IsNumber()
+  templateId : number;
 }
