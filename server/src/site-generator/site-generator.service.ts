@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import * as dto from "./dto/generate.dto"
 import { OpenAIService } from 'src/openai/openai.service';
 import { ConfigTemplateService } from 'src/config-template/config-template.service';
 import z from "zod";
+import { WebsiteService } from 'src/website/website.service';
 
-//----------------
 /*
 buttons : {
                     create : [
@@ -141,7 +140,8 @@ export class SiteGeneratorService {
     constructor(
         private prisma: PrismaService,
         private configTemplateService : ConfigTemplateService,
-        private openAi: OpenAIService
+        private openAiService: OpenAIService,
+        private websiteService: WebsiteService
     ) { }
 
     private getUser = async (email: string) => {
@@ -257,7 +257,6 @@ export class SiteGeneratorService {
             }
         });
         
-
         let data = await this.prisma.websiteSection.create({
             data : {
                 kind: "subSection",
@@ -282,41 +281,8 @@ export class SiteGeneratorService {
         });
 
         // retrieve all data and return it :
-        let newData = await this.prisma.website.findUnique({
-            where: { id: props.websiteId },
-            include: {
-                websiteSection: {
-                    include: {
-                        websiteSectionOrder: true,
-                        buttons : true,
-                        typographies : true,
-                      //  configTemplate : true
-                    }
-                }
-            }
-        })
-
+        let newData = await this.websiteService.getWebsiteFull({websiteId : props.websiteId});
         return newData;
-        // get target template
-
-        // check data
-
-        // 
-
-        // reorder section
-        /*
-        await this.prisma.websiteSectionOrder.updateMany({
-            where: {
-                websiteId: props.websiteId,
-                order: { gte: currentOrder } // greater than or egual
-            },
-            data: {
-                order: {
-                    increment: 1
-                }
-            }
-        });
-        */
     }
 
     // probably should rework data model for reduce amount or data load perform
@@ -473,7 +439,7 @@ export class SiteGeneratorService {
           const existingSectionsCount = await prisma.section.count({ where: { websiteId } });
         */
         // generate subsection
-        let sectionGenerate = await this.openAi.createCompletion({
+        let sectionGenerate = await this.openAiService.createCompletion({
             title: props.title,
             subject: props.subject,
         });
@@ -531,15 +497,10 @@ export class SiteGeneratorService {
             where : { id : props.sectionId},
             include : {websiteSectionOrder : true}});
         
-        if (!websiteSection) {
-            throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
-        }
+        if (!websiteSection) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
 
-        
-        
         // check auth
         // ....
-
         // increment order
         await this.prisma.websiteSectionOrder.updateMany({
             where : {
@@ -608,18 +569,5 @@ export class SiteGeneratorService {
                 pageSize: props.pageSize
             }
         }
-    }
-
-    getWebsiteWtId = async (id: number) => {
-        return this.prisma.website.findUnique({
-            where: { id: id },
-            include: {
-                websiteSection: {
-                    include: {
-                        websiteSectionOrder: true
-                    }
-                }
-            }
-        })
     }
 }

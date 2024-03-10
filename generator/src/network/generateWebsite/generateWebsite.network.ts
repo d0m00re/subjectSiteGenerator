@@ -204,15 +204,3 @@ export const getMyWebsitePaginate = (props: IGenerateWebSiteInput) => {
     })
 }
 
-/**
- * get website with id
- * @param id number
- * @returns 
- */
-export const getWebsiteWtId = (id: number): Promise<I_Website> => {
-    return (fetch(`${BACKEND_URL}/site-generator/${id}`, {
-        method: "GET",
-        headers: BASE_HEADER
-    })
-        .then(resp => resp.json()))
-}

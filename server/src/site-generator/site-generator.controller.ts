@@ -7,7 +7,7 @@ import { SiteGeneratorService } from './site-generator.service';
 export class SiteGeneratorController {
 
   constructor(
-    private siteGenerator: SiteGeneratorService
+    private siteGeneratorService: SiteGeneratorService
   ) { }
 
   /**
@@ -19,7 +19,7 @@ export class SiteGeneratorController {
   @UseGuards(JwtGuard)
   @Post("search")
   async searchWebsite(@Request() req, @Body() dto: dto.GetUserWebsitesDto) {
-    let data = await this.siteGenerator.getUserWebsite({
+    let data = await this.siteGeneratorService.getUserWebsite({
       email: req.user.email,
       page: dto.page,
       pageSize : dto.pageSize,
@@ -33,7 +33,7 @@ export class SiteGeneratorController {
   async updateSection(@Request() req, @Body() dto: dto.UpdateSectionDto) {
     let email = req.user.username; // come from jwt guard
 
-    let result = await this.siteGenerator.updateSection({
+    let result = await this.siteGeneratorService.updateSection({
       title : dto.title,
       description : dto.description,
       sectionId : dto.sectionId,
@@ -48,7 +48,7 @@ export class SiteGeneratorController {
   @Post("section/add")
   async addSection(@Request() req, @Body() dto : dto.CreateSectionDto) {
     let email = req.user.email;
-    let result = await this.siteGenerator.createNewSection({
+    let result = await this.siteGeneratorService.createNewSection({
       websiteId : dto.websiteId,
       title : dto.title,
       description : dto.description,
@@ -64,7 +64,7 @@ export class SiteGeneratorController {
   async addSectionV2(@Request() req, @Body() dto : dto.CreateSectionDtoV2) {
     let email = req.user.email;
   
-    let result = await this.siteGenerator.createNewSectionV2({
+    let result = await this.siteGeneratorService.createNewSectionV2({
       email,
       data : dto.data,
       order : dto.order,
@@ -81,7 +81,7 @@ export class SiteGeneratorController {
   async generate(@Request() req, @Body() dto: dto.GenerateDto) {
     let email = req.user.username; // come from jwt guard
 
-    let result = await this.siteGenerator.createOneV2({
+    let result = await this.siteGeneratorService.createOneV2({
       title: dto.title,
       subject: dto.subject,
       email: email
@@ -95,7 +95,7 @@ export class SiteGeneratorController {
   async deleteSection(@Request() req, @Body() dto: dto.DeleteDto) {
     let email = req.user.username; // come from jwt guard
 
-    let result  =await this.siteGenerator.deleteSection({
+    let result  =await this.siteGeneratorService.deleteSection({
       email,
       sectionId : dto.sectionId
     })
@@ -108,7 +108,7 @@ export class SiteGeneratorController {
   async mooveSection(@Request() req, @Body() dto : dto.MooveDto) {
     let email = req.user.username;
 
-    let result = await this.siteGenerator.mooveSection({
+    let result = await this.siteGeneratorService.mooveSection({
       email,
       sectionId : dto.sectionId,
       dir : dto.dir
@@ -122,18 +122,11 @@ export class SiteGeneratorController {
   async duplicateSection(@Request() req, @Body() dto : dto.DuplicateDto) {
     let email = req.user.username;
 
-    let website = await this.siteGenerator.duplicateSection({
+    let website = await this.siteGeneratorService.duplicateSection({
       email,
       sectionId : dto.sectionId
     });
 
-    return website;
-  }
-  
-
-  @Get(':id')
-  async getOne(@Param('id') id: number) {
-    let website = await this.siteGenerator.getWebsiteWtId(id);
     return website;
   }
 }
