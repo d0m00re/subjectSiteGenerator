@@ -1,16 +1,6 @@
 import React, { useState } from 'react';
-import { z } from "zod";
-import { useForm, SubmitHandler } from "react-hook-form"
-import { zodResolver } from '@hookform/resolvers/zod';
-
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea"
-import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
-import useCurrentWebsite from "./../currentWebsite.zustand.store";
+//import useCurrentWebsite from "./../currentWebsite.zustand.store";
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
-
 import * as entity from "@/network/configTemplate/configTemplate.entity";
 
 import {
@@ -22,16 +12,9 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useSession } from 'next-auth/react';
+//import { useSession } from 'next-auth/react';
 //import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
 import { SelectTemplateAccordion, FormGeneratorTemplate } from './Components';
-
-const ValidateForm = z.object({
-    title: z.string(),
-    description: z.string()
-})
-
-type TValidateForm = z.infer<typeof ValidateForm>;
 
 interface IModalCreateSection {
     open: boolean;
@@ -41,42 +24,9 @@ interface IModalCreateSection {
 }
 
 const ModalCreateSection = (props: IModalCreateSection) => {
-    const { data: session } = useSession();
-    const [isLoading, setIsLoading] = useState(false);
-    const currentWebsite = useCurrentWebsite();
+    //const currentWebsite = useCurrentWebsite();
     const templateGroup = useTemplateGroup();
     const [selectedTemplate, setSelectedTemplate] = useState<entity.A_I_TemplateVariant | undefined>(undefined);
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-    } = useForm<TValidateForm>({
-        resolver: zodResolver(ValidateForm),
-    });
-
-    /*
-    const submitForm: SubmitHandler<TValidateForm> = (data) => {
-        setIsLoading(true);
-        generateWebsiteNetwork.createWebsiteSection({
-            title: data.title,
-            description: data.description,
-            order: props.order,
-            websiteId: props.websiteId,
-            accessToken: session?.backendTokens?.accessToken ?? ""
-        })
-            .then(resp => {
-                currentWebsite.resetWtData(resp); //.rese(resp);
-            })
-            .catch(err => {
-                console.log("err modal create section : ", err)
-            })
-            .finally(() => {
-                props.setOpen(false);
-                setIsLoading(false);
-            })
-    }
-    */
 
     return (
         <Dialog open={props.open} onOpenChange={props.setOpen}>
@@ -87,50 +37,20 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="flex flex-col gap-4 items-center">
-                
-                {selectedTemplate === undefined ?
-                <SelectTemplateAccordion
-                        groupTemplates={templateGroup.templateGroup}
-                        selectedTemplate={selectedTemplate}
-                        setSelectedTemplate={setSelectedTemplate}
-                    /> :
-                    <FormGeneratorTemplate
-                        selectedTemplate={selectedTemplate}
-                        setSelectedTemplate={setSelectedTemplate}
-                        order={props.order}
-                        websiteId={props.websiteId}
-                    />
-                }
-                    {/*
-                    {!props.open ? <IconLoaderSpin /> :
-                        <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-2 max-w-lg p-4">
-                            <Label className="text-2xl text-black">Title</Label>
-                            <Input className='text-black' {...register("title")}></Input>
 
-                            <Label className="text-2xl text-black">Description</Label>
-                            <Textarea className='text-black' {...register("description")} />
-
-                            {(isLoading === false) ?
-                                <div className='flex flex-row justify-between'>
-                                    <Button
-                                        onClick={() => props.setOpen(false)}
-                                        variant={"destructive"}
-                                        className="mt-4"
-                                    >
-                                        Undo
-                                    </Button>
-                                    <Button type="submit" className="mt-4">
-                                        Save
-                                    </Button>
-                                </div>
-                                :
-                                <div className='flex flex-row justify-center'>
-                                    <IconLoaderSpin />
-                                </div>
-                            }
-                        </form>
+                    {selectedTemplate === undefined ?
+                        <SelectTemplateAccordion
+                            groupTemplates={templateGroup.templateGroup}
+                            selectedTemplate={selectedTemplate}
+                            setSelectedTemplate={setSelectedTemplate}
+                        /> :
+                        <FormGeneratorTemplate
+                            selectedTemplate={selectedTemplate}
+                            setSelectedTemplate={setSelectedTemplate}
+                            order={props.order}
+                            websiteId={props.websiteId}
+                        />
                     }
-                    */}
                 </DialogDescription>
             </DialogContent>
         </Dialog >
