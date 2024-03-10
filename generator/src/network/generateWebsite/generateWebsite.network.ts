@@ -46,7 +46,7 @@ interface IDeleteOneWebsiteSection {
 }
 
 export const deleteWebsiteSection = (props : IDeleteOneWebsiteSection) : Promise<{sectionId : number}> => {
-    return fetch(`${BACKEND_URL}`, {
+    return fetch(`${BACKEND_URL}/site-generator`, {
         method : "DELETE",
         headers: {
             ...BASE_HEADER,

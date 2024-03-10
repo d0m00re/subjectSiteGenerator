@@ -144,6 +144,8 @@ function SectionWebsite(props: Props) {
 
         <h2 className='text-xl'>{props.section.title}</h2>
         <p>{props.section.description}</p>
+        <p>button : {props.section?.buttons?.length}</p>
+        <p>typography : {props.section?.typographies?.length}</p>
         {
           modalEdit ?
             <ModalEditSection
