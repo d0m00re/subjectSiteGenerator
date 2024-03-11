@@ -7,6 +7,8 @@ import * as networkGenerateWeb from "@/network/generateWebsite/generateWebsite.n
 import ContainerSectionActionBar from '@/components/WebsiteSection/SectionActionBar';
 import useCurrentWebsite from "./currentWebsite.zustand.store";
 import { useSession } from 'next-auth/react';
+import useTemplateGroup from '@/store/templateGroup.zustand.store';
+import parseTemplateConfigStringToJSON from './ModalCreateSection/Components/parser';
 
 type Props = { 
   section: I_WebsiteSection;
@@ -39,6 +41,53 @@ const ButtonAddSection = (props: IButtonAddSection) => {
       : <></>
   )
 }
+
+interface IRenderButton {
+  text : string;
+}
+
+function RenderButton(props : IRenderButton) {
+  return <Button>{props.text}</Button>
+}
+
+interface IRenderTypography {
+  text : string
+}
+
+function RenderTypography(props : IRenderTypography) {
+  return <p>{props.text}</p>
+}
+
+function RenderWithConfig(props : {section : I_WebsiteSection}) {
+  // get back config
+  const templateGroupStore = useTemplateGroup();
+
+  // find config
+  let config = templateGroupStore.templateVariant.find(e => e.id === props.section.configTemplateId);
+
+  if (config === undefined) return <p>error retrieve template variant id {props.section.id}</p>
+
+  let configParse = parseTemplateConfigStringToJSON(config.config); //JSON.parse(config.config.replaceAll("'", '"'));
+
+  return (<section className='flex flex-col gap-2'>
+    {
+      configParse.map(e => {
+        if (e.kind === "text") {
+          // find typo - order for the moment but later base on other things
+          let elemTypo = props.section.typographies.find(typo => typo.order === e.order);
+          return <RenderTypography text={elemTypo?.text ?? ""} />
+        } else if (e.kind === "button") {
+          let elemButton = props.section.buttons.find(but => but.order === e.order)
+          console.log("elem button")
+          console.log(elemButton)
+          return <RenderButton text={elemButton?.label ?? ""} />
+        }
+        return <p>unknown</p>
+      })
+    }
+  </section>)
+}
+
 
 function SectionWebsite(props: Props) {
   const [modalEdit, setModalEdit] = useState(false);
@@ -140,12 +189,18 @@ function SectionWebsite(props: Props) {
             onOpenDuplicate = {onDuplicate}
             onMooveTop = {onSwitchWebsitePositionTop}
             onMooveBottom = {onSwitchWebsitePositionBottom}
-        />
+        /> 
 
         <h2 className='text-xl'>{props.section.title}</h2>
         <p>{props.section.description}</p>
+        <p>{props.section.configTemplateId}</p>
         <p>button : {props.section?.buttons?.length}</p>
         <p>typography : {props.section?.typographies?.length}</p>
+
+        <RenderWithConfig
+          section={props.section}
+        />
+
         {
           modalEdit ?
             <ModalEditSection

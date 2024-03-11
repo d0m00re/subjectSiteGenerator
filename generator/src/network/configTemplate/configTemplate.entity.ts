@@ -32,6 +32,5 @@ interface A_I_TemplateElemButton {
     label : string;
     actionType : string;
     path : string;
-
     //websiteSectionId : number;
 }

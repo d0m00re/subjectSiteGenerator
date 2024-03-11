@@ -57,8 +57,11 @@ export interface A_I_WebsiteSection_E {
     title : string;
     description : string;
     backgroundImage : string;
+
     buttons : I_TemplateElemButton[];
     typographies : I_TemplateElemTypography[];
+
+    configTemplateId : number;
 }
 
 export interface A_I_WebsiteSection extends A_I_WebsiteSection_E {
