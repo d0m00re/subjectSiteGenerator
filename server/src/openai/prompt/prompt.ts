@@ -42,6 +42,14 @@ const promptV1 = {
     Output : json array object`
 }
 
+const promptV2 = {
+    role : "user",
+    content : `{
+
+    }`
+}
+
 export {
-    promptV1
+    promptV1,
+    promptV2
 }

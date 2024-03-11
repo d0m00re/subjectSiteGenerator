@@ -1,10 +1,6 @@
 import { BACKEND_URL } from "@/lib/constants";
-import { BASE_HEADER } from "./../contants.network";
+import { BASE_HEADER, generateBearerToken } from "./../contants.network";
 import { A_I_WebsiteSection, A_I_WebsiteSectionOrder, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
-
-const generateBearerToken = (accessToken: string) => `Bearer ${accessToken}`;
-const generateRefreshToken = (refreshToken: string) => `Refresh ${refreshToken}`;
-
 
 interface IGetOne {
     id: number
