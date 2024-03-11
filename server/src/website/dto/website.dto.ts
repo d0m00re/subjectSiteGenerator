@@ -1,4 +1,11 @@
-import { IsNumber } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
+
+export class CreateWebsiteDto {
+    @IsString()
+    title : string;
+    @IsString()
+    subject : string;
+}
 
 export class GetWebsitePaginateDto {
     @IsNumber()

@@ -13,6 +13,18 @@ export class WebsiteService {
         private prisma: PrismaService,
     ) { }
 
+    create = async (props : {userId : number, title : string; subject : string} ) => {
+        let newWebsite = await this.prisma.website.create({
+            data : {
+                userId : props.userId,
+                title : props.title,
+                subject : props.subject
+            }
+        })
+
+        return newWebsite;
+    }
+
     getWebsiteFull = async (props: { websiteId: number }) => {
         let website = await this.prisma.website.findUnique({
             where: { id: props.websiteId },

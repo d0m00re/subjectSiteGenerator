@@ -15,6 +15,24 @@ export class WebsiteController {
         return website;
     }
 
+    @UseGuards(JwtGuard)
+    @Post("")
+    async createWebsite(@Request() req, @Body() dto : dto.CreateWebsiteDto) {
+        console.log("create website")
+        console.log(req.user.userId)
+        console.log("----------------------------")
+        let userId = req.user.userId;
+
+        console.log(userId)        
+
+        let newWebsite = await this.websiteService.create({
+            ...dto,
+            userId
+        })
+
+        return newWebsite;
+    }
+
     /**
    * search website with pagination
    * @param req 
