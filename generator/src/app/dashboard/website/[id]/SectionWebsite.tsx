@@ -78,8 +78,6 @@ function RenderWithConfig(props : {section : I_WebsiteSection}) {
           return <RenderTypography text={elemTypo?.text ?? ""} />
         } else if (e.kind === "button") {
           let elemButton = props.section.buttons.find(but => but.order === e.order)
-          console.log("elem button")
-          console.log(elemButton)
           return <RenderButton text={elemButton?.label ?? ""} />
         }
         return <p>unknown</p>
@@ -118,37 +116,29 @@ function SectionWebsite(props: Props) {
   }
 
   const onSwitchWebsitePositionTop = () => {
-    console.log("switch top")
     networkGenerateWeb.switchPosWebsiteSection({
       dir : "top",
       sectionId : props.section.id,
       accessToken :  session?.backendTokens?.accessToken ?? ""
     })
     .then(resp => {
-      console.log("section switch");
-      console.log(resp);
       currentWebsite.sectionOrderSwitch(resp);
     })
     .catch((err : any) => {
-      console.log("error switching section")
       console.log(err)
     })
   }
 
   const onSwitchWebsitePositionBottom = () => {
-    console.log("switch bottom")
     networkGenerateWeb.switchPosWebsiteSection({
       dir : "bottom",
       sectionId : props.section.id,
       accessToken :  session?.backendTokens?.accessToken ?? ""
     })
     .then(resp => {
-      console.log("section switch");
-      console.log(resp);
       currentWebsite.sectionOrderSwitch(resp);
     })
     .catch((err : any) => {
-      console.log("error switching section")
       console.log(err)
     })
   }
@@ -160,17 +150,13 @@ function SectionWebsite(props: Props) {
         accessToken : session?.backendTokens?.accessToken ?? ""
       })
       .then(resp => {
-        console.log("success duplicate : ")
-        console.log(resp);
         currentWebsite.resetWtData(resp);
       })
       .catch(err => {
-        console.log("error duplicate section :", props.section.id);
         console.log(err);
       })
   }
-/*
-*/
+
   return (
     <>
       <ButtonAddSection
@@ -190,13 +176,7 @@ function SectionWebsite(props: Props) {
             onMooveTop = {onSwitchWebsitePositionTop}
             onMooveBottom = {onSwitchWebsitePositionBottom}
         /> 
-
-        <h2 className='text-xl'>{props.section.title}</h2>
-        <p>{props.section.description}</p>
-        <p>{props.section.configTemplateId}</p>
-        <p>button : {props.section?.buttons?.length}</p>
-        <p>typography : {props.section?.typographies?.length}</p>
-
+   
         <RenderWithConfig
           section={props.section}
         />

@@ -29,11 +29,10 @@ model Website {
 }
 
 model WebsiteSection {
-  id              Int    @id @default(autoincrement())
-  kind            String
-  title           String
-  description     String
+  id Int @id @default(autoincrement())
+
   backgroundImage String
+  backgroundColor String
 
   websiteId Int // Foreign key to reference User
   website   Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
@@ -42,8 +41,9 @@ model WebsiteSection {
 
   buttons          TemplateElemButton[]
   typographies     TemplateElemTypography[]
+  images           TemplateElemImage[]
   configTemplateId Int // foreign key
-  configTemplate   TemplateVariant @relation(fields: [configTemplateId], references: [id])
+  configTemplate   TemplateVariant          @relation(fields: [configTemplateId], references: [id])
 }
 
 model WebsiteSectionOrder {
@@ -58,29 +58,31 @@ model WebsiteSectionOrder {
 
 //---------------------------------------------
 model TemplateGroup {
-  id   Int    @id @default(autoincrement())
-  kind String
+  id              Int               @id @default(autoincrement())
+  kind            String
   templateVariant TemplateVariant[]
 }
 
 model TemplateVariant {
-  id     Int    @id @default(autoincrement())
-  name   String
-  kind   String
-  config String // maybe as a json later
+  id              Int              @id @default(autoincrement())
+  name            String
+  kind            String
+  config          String // maybe as a json later
   websiteSections WebsiteSection[]
 
   templateGroupId Int
   templateGroup   TemplateGroup @relation(fields: [templateGroupId], references: [id])
-
 }
 
 model TemplateElemTypography {
-  id      Int    @id @default(autoincrement())
-  order   Int
-  variant String
-  text    String
-  path    String
+  id        Int    @id @default(autoincrement())
+  order     Int // order of display
+  text      String // typography text
+  size      String // small / medium / big
+  variant   String // ???
+  path      String // useless for the moment
+  animation String // animation applied on text
+  decorator String // decorator applied on typography
 
   websiteSectionId Int
   websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
@@ -89,12 +91,31 @@ model TemplateElemTypography {
 model TemplateElemButton {
   id         Int    @id @default(autoincrement())
   order      Int
-  label      String
-  actionType String
-  path       String
+  text       String // text button
+  size       String // small / medium / big
+  variant    String // solid | outlined
+  shape      String // round | square
+  actionType String // external | internal
+  path       String // useless for the moment could be url
+  animation  String // animation applied on the button
 
   websiteSectionId Int
   websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
 }
 
-///
+// not use for the moment
+model TemplateElemImage {
+  id        Int    @id @default(autoincrement())
+  order     Int // order of display
+  url       String // target url
+  filter    String // filter applied on image
+  radius    Int // radius applied on this image
+  animation String // animation applied on image
+
+  websiteSectionId Int
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+}
+
+model WebsiteTheme {
+  id Int @id @default(autoincrement())
+}

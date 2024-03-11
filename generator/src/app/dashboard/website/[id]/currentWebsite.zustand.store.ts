@@ -5,7 +5,7 @@ import { deleteWebsiteSection } from '@/network/generateWebsite/generateWebsite.
 import { A_I_WebsiteSectionOrder, ISectionUpdate, I_Website, I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import cloneDeep from "lodash/cloneDeep";
 import { getWebsiteWtId } from '@/network/website/website.network';
-interface WebsiteZustand {
+interface WebsiteZustand { 
     websiteisLoading: "loading" | "done" | "error";
     website: I_Website | undefined;
     populate: (websiteId: number) => void;

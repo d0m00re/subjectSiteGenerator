@@ -3,6 +3,28 @@
 ## Goal
 generate a subWebsite with only one phrase
 
+## feature v0.5
+* stripe paiement
+
+## feature v0.4
+* form
+* animation
+
+## feature v0.3
+* add moore elements like image, link
+* add theme
+* api cleaning
+
+## feature v 0.2
+* add config file | configure default props and default render of elements
+* add typography, button
+    * add moore field on it
+* create some default config
+* 
+* add preview url
+* rework the design
+* default db config loading script
+
 ## feature v 0.1
 * register/login
 * profil

@@ -29,25 +29,32 @@ buttons : {
 */
 
 interface IButtonRow {
-    order : number;
-    label : string;
-    actionType : string;
-    path : string;
+    order: number;
+    size : string;
+    variant : string;
+    shape : string;
+    text: string;
+    actionType: string;
+    path: string;
+    animation : string;
 }
 
 interface ITypographyRow {
-    order : number;
-    text : string;
+    order: number;
+    size : string;
     variant : string;
-    path : string;
+    text: string;
+    path: string;
+    animation : string;
+    decorator : string;
 }
 
-const generateButtonRow = () => {
-
-}
-
-const generateTypographyRow = () => {
-
+interface IImageRow {
+    order : number;
+    url : string;
+    filter : string;
+    radius : number;
+    animation : string;
 }
 
 
@@ -60,26 +67,35 @@ const TypographyValidator = z.object({
     kind: z.literal("text"),
     label: z.string(),
     path: z.string()
-  });
-  
-  const ButtonValidator = z.object({
+});
+
+const ButtonValidator = z.object({
     order: z.number(),
     kind: z.literal("button"),
     label: z.string(),
     actionType: z.string(),
     path: z.string()
-  });
-  
-  const TemplateValidator = z.union([TypographyValidator, ButtonValidator]);
-  const TemplateValidatorArray = z.array(TemplateValidator);
-  //
-  
-  // parse json config
-  const parseTemplateConfigStringToJSON = (json: string) => {
+});
+
+const ImageValidator = z.object({
+    order : z.number(),
+    kind: z.literal("image"),
+    url : z.string(),
+    filter : z.string(),
+    radius : z.number(),
+    animation : z.string()
+})
+
+const TemplateValidator = z.union([TypographyValidator, ButtonValidator]);
+const TemplateValidatorArray = z.array(TemplateValidator);
+//
+
+// parse json config
+const parseTemplateConfigStringToJSON = (json: string) => {
     // todo : find a better way for that
     const parsedArray = JSON.parse(json.replaceAll("'", '"'));
     return TemplateValidatorArray.parse(parsedArray);
-  }
+}
 //
 
 interface ICreateOne {
@@ -90,9 +106,6 @@ interface ICreateOne {
 
 interface IUpdateSection {
     sectionId: number;
-    title: string;
-    description: string;
-
     email: string; // email user
 }
 
@@ -106,16 +119,16 @@ interface ICreateNewSection {
     email: string;
     order: number;
     websiteId: number;
-    title: string;
-    description: string;
+  //  title: string;
+  //  description: string;
 }
 
 interface ICreateNewSectionV2 {
-    email : string;
-    data : any; // json object
-    order : number;
-    websiteId : number;
-    templateId : number;
+    email: string;
+    data: any; // json object
+    order: number;
+    websiteId: number;
+    templateId: number;
 }
 
 interface IDeleteSection {
@@ -124,22 +137,22 @@ interface IDeleteSection {
 }
 
 interface IMooveSection {
-    email : string;
-    sectionId : number;
+    email: string;
+    sectionId: number;
     dir: "top" | "bottom",
 }
 
 interface IGenerateSectionWithVariantV1 {
-    websiteId : number;
-    templateGroup : string;
-    templateVariant : string;
+    websiteId: number;
+    templateGroup: string;
+    templateVariant: string;
 }
 
 @Injectable()
 export class SiteGeneratorService {
     constructor(
         private prisma: PrismaService,
-        private configTemplateService : ConfigTemplateService,
+        private configTemplateService: ConfigTemplateService,
         private openAiService: OpenAIService,
         private websiteService: WebsiteService
     ) { }
@@ -154,13 +167,6 @@ export class SiteGeneratorService {
         }
 
         return user;
-    }
-
-    generateSectionWithVariantV1 = async (props : IGenerateSectionWithVariantV1) => {
-        //get back templatez variant
-        let dataTemplateVariant =  await this.prisma.templateVariant.findFirst({ where: {name : props.templateVariant}})
-    
-        
     }
 
     // should control user
@@ -187,14 +193,13 @@ export class SiteGeneratorService {
         let res = await this.prisma.websiteSection.update({
             where: { id: websiteWtSection.id },
             data: {
-                title: props.title,
-                description: props.description
+                
             }
         });
         return res;
     }
 
-    createNewSectionV2 = async (props : ICreateNewSectionV2) => {
+    createNewSectionV2 = async (props: ICreateNewSectionV2) => {
         const user = await this.getUser(props.email);
 
         let currentOrder = props.order;
@@ -213,33 +218,41 @@ export class SiteGeneratorService {
         // basic validation for the moment rework with a better version later
         let validateDataInput = true;
         for (let i = 0; i < configJSON.length; i++) {
-            if (!props.data[configJSON[i].label])
+            if (!props.data[configJSON[i].kind])
                 validateDataInput = false;
         }
         if (!validateDataInput) throw new HttpException('Some data not found', HttpStatus.NOT_FOUND);
 
         // encode data
-        let button : IButtonRow[] = [];
-        let typography : ITypographyRow[] = [];
-        
+        let button: IButtonRow[] = [];
+        let typography: ITypographyRow[] = [];
+
+        // transform config to real elements
         for (let i = 0; i < configJSON.length; i++) {
             let configElem = configJSON[i];
             // get back property text
             let text = props.data[configElem.label];
             if (configElem.kind === "text") {
                 typography.push({
-                    order : configElem.order ?? -1,
-                    text  : text,
-                    variant : "none",
-                    path : "none"                    
+                    order: configElem.order ?? -1,
+                    text: text,
+                    size : "unimplemented",
+                    variant : "unimplemented",
+                    path: "unimplemented",
+                    animation : "unimplemented",
+                    decorator : "unimplemented"
                 })
             } else if (configElem.kind === "button") {
-                    button.push({
-                        order : configElem.order ?? -1,
-                        label : text,
-                        path : "",
-                        actionType : "external"
-                    })
+                button.push({
+                    order: configElem.order ?? -1,
+                    text: text,
+                    size : "unimplemented",
+                    variant : "unimplemented",
+                    shape : "unimplemented",
+                    actionType : "unimplemented",
+                    path: "unimplemented",
+                    animation: "external"
+                })
             }
         }
         //-----------------------------------------------
@@ -256,32 +269,30 @@ export class SiteGeneratorService {
                 }
             }
         });
-        
+
         let data = await this.prisma.websiteSection.create({
-            data : {
-                kind: "subSection",
-                title: "useless now",
-                description: "useless now",
+            data: {
                 websiteId: props.websiteId,
-                backgroundImage: "useless",
-                configTemplateId : props.templateId,
+                backgroundImage: "unimplemented",
+                backgroundColor : "unimplemented",
+                configTemplateId: props.templateId,
                 websiteSectionOrder: {
                     create: {
                         websiteId: props.websiteId,
                         order: props.order
                     }
                 },
-                buttons : {
-                    create : button
+                buttons: {
+                    create: button
                 },
-                typographies : {
-                    create : typography
+                typographies: {
+                    create: typography
                 }
             }
         });
 
         // retrieve all data and return it :
-        let newData = await this.websiteService.getWebsiteFull({websiteId : props.websiteId});
+        let newData = await this.websiteService.getWebsiteFull({ websiteId: props.websiteId });
         return newData;
     }
 
@@ -307,12 +318,10 @@ export class SiteGeneratorService {
         // create subsection
         await this.prisma.websiteSection.create({
             data: {
-                kind: "subSection",
-                title: props.title,
-                description: props.description,
                 websiteId: props.websiteId,
-                backgroundImage: "useless",
-                configTemplateId : 1,
+                backgroundImage: "unimplemented",
+                backgroundColor : "unimplemented",
+                configTemplateId: 1,
                 websiteSectionOrder: {
                     create: {
                         websiteId: props.websiteId,
@@ -328,9 +337,9 @@ export class SiteGeneratorService {
                 websiteSection: {
                     include: {
                         websiteSectionOrder: true,
-                        buttons : true,
-                        typographies : true,
-                        configTemplate : true
+                        buttons: true,
+                        typographies: true,
+                        configTemplate: true
                     }
                 }
             }
@@ -400,26 +409,26 @@ export class SiteGeneratorService {
         // 
         let currentOrder = currentSection.websiteSectionOrder.order;
         let targetOrder = currentSection.websiteSectionOrder.order + ((props.dir === "top") ? -1 : 1);
-    
+
         let targetSection = await this.prisma.websiteSection.findFirst({
-            where : {
-                websiteId : currentSection.websiteId,
-                websiteSectionOrder : {
-                    order : targetOrder
+            where: {
+                websiteId: currentSection.websiteId,
+                websiteSectionOrder: {
+                    order: targetOrder
                 }
             },
-            include : {websiteSectionOrder : true}
+            include: { websiteSectionOrder: true }
         });
 
         // change order
         let arrProm = [
             this.prisma.websiteSectionOrder.update({
-                where : {id : currentSection.websiteSectionOrder.id},
-                data : {order : targetOrder}
+                where: { id: currentSection.websiteSectionOrder.id },
+                data: { order: targetOrder }
             }),
             this.prisma.websiteSectionOrder.update({
-                where : { id : targetSection.websiteSectionOrder.id},
-                data : {order : currentOrder}
+                where: { id: targetSection.websiteSectionOrder.id },
+                data: { order: currentOrder }
             })
         ];
 
@@ -428,7 +437,7 @@ export class SiteGeneratorService {
         return result;
         // go switch order
 
-      //  if (currentOrder < 0 || targetOrder < 0) throw new HttpException('Section not found', HttpStatus.FORBIDDEN);
+        //  if (currentOrder < 0 || targetOrder < 0) throw new HttpException('Section not found', HttpStatus.FORBIDDEN);
     }
 
     createOneV2 = async (props: ICreateOne) => {
@@ -439,6 +448,7 @@ export class SiteGeneratorService {
           const existingSectionsCount = await prisma.section.count({ where: { websiteId } });
         */
         // generate subsection
+        /*
         let sectionGenerate = await this.openAiService.createCompletion({
             title: props.title,
             subject: props.subject,
@@ -461,15 +471,15 @@ export class SiteGeneratorService {
                 data: {
                     ...sectionElem,
                     websiteId: websiteCreate.id,
-                    configTemplateId : 1,
+                    configTemplateId: 1,
                     websiteSectionOrder: {
                         create: {
                             order: index,
                             websiteId: websiteCreate.id,
-                                  
+
                         }
                     },
-                    
+
                 }
             });
             promiseArr.push(sectionPromise);
@@ -487,29 +497,31 @@ export class SiteGeneratorService {
                 }
             }
         })
+        */
     }
 
-    duplicateSection = async (props: {sectionId : number, email : string}) => {
+    duplicateSection = async (props: { sectionId: number, email: string }) => {
         let user = await this.getUser(props.email);
 
         // get target section  with order
         let websiteSection = await this.prisma.websiteSection.findUnique({
-            where : { id : props.sectionId},
-            include : {websiteSectionOrder : true}});
-        
+            where: { id: props.sectionId },
+            include: { websiteSectionOrder: true }
+        });
+
         if (!websiteSection) throw new HttpException('Section not found', HttpStatus.NOT_FOUND);
 
         // check auth
         // ....
         // increment order
         await this.prisma.websiteSectionOrder.updateMany({
-            where : {
-                websiteId : websiteSection.websiteId,
-                order : {gt : websiteSection.websiteSectionOrder.order}
+            where: {
+                websiteId: websiteSection.websiteId,
+                order: { gt: websiteSection.websiteSectionOrder.order }
             },
-            data : {
-                order : {
-                    increment : 2
+            data: {
+                order: {
+                    increment: 2
                 }
             }
         })
@@ -517,19 +529,17 @@ export class SiteGeneratorService {
         // create section
         await this.prisma.websiteSection.create({
             data: {
-                kind: "subSection",
-                title: websiteSection.title,
-                description: websiteSection.description,
                 websiteId: websiteSection.websiteId,
-                backgroundImage: "useless",
-                configTemplateId : 1,
+                backgroundImage: "unimplemented",
+                backgroundColor : "unimplemented",
+                configTemplateId: 1,
                 websiteSectionOrder: {
                     create: {
                         websiteId: websiteSection.websiteId,
                         order: websiteSection.websiteSectionOrder.order + 1
                     }
                 }
-            }    
+            }
         })
         // return all website section
         return this.prisma.website.findUnique({

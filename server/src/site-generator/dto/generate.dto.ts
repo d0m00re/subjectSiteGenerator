@@ -34,17 +34,17 @@ export class GetUserWebsitesDto {
 export class UpdateSectionDto {
   @IsNumber()
   sectionId : number;
-  @IsString()
-  title : string;
-  @IsString()
-  description : string;
+ // @IsString()
+ // title : string;
+ // @IsString()
+ // description : string;
 }
 
 export class CreateSectionDto {
-  @IsString()
-  title : string;
-  @IsString()
-  description : string;
+ // @IsString()
+ // title : string;
+ // @IsString()
+ // description : string;
   @IsNumber()
   order : number;
   @IsNumber()

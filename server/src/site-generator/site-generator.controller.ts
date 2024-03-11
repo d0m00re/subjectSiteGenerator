@@ -34,8 +34,8 @@ export class SiteGeneratorController {
     let email = req.user.username; // come from jwt guard
 
     let result = await this.siteGeneratorService.updateSection({
-      title : dto.title,
-      description : dto.description,
+     // title : dto.title,
+     // description : dto.description,
       sectionId : dto.sectionId,
       email : email
     })
@@ -50,8 +50,8 @@ export class SiteGeneratorController {
     let email = req.user.email;
     let result = await this.siteGeneratorService.createNewSection({
       websiteId : dto.websiteId,
-      title : dto.title,
-      description : dto.description,
+    //  title : dto.title,
+    //  description : dto.description,
       order : dto.order,
       email : email
     });

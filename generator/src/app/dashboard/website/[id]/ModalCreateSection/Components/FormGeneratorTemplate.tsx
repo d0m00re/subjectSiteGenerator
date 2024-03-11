@@ -4,8 +4,8 @@ import { Button } from '@/components/Button';
 import z from "zod";
 import { Input } from '@/components/ui/input';
 import { useSession } from 'next-auth/react';
-import useCurrentWebsite from "./../../currentWebsite.zustand.store";
 import { ICreateWebsiteSectionV2, createWebsiteSectionV2 } from '@/network/generateWebsite/generateWebsite.network';
+import useCurrentWebsiteStore from './../../currentWebsite.zustand.store';
 
 // form parser
 const TypographyValidator = z.object({
@@ -41,6 +41,8 @@ interface IFormGeneratorTemplate {
 
   websiteId : number;
   order : number;
+  setOpen: (val: boolean) => void;
+
 }
 
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
@@ -48,15 +50,10 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   const config = parseTemplateConfigStringToJSON(props.selectedTemplate?.config ?? "{}");
   const [dataForm, setDataForm] = useState<any>({});
   const { data: session } = useSession();
-  const currentWebsite = useCurrentWebsite();
-
-  console.log("config")
-  console.log(config)
+  const websiteStore = useCurrentWebsiteStore();
 
   const submitForm = (e : any) => {
     e.preventDefault();
-    console.log("submit form")
-    console.log(dataForm);
 
     let dataSubmit : ICreateWebsiteSectionV2 = {
       data : dataForm,
@@ -66,13 +63,10 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       accessToken: session?.backendTokens?.accessToken ?? ""
     }
 
-    console.log("data submit : ");
-    console.log(dataSubmit);
-
     createWebsiteSectionV2(dataSubmit)
     .then((resp : any) => {
-      console.log("success create new section with template");
-      console.log(resp);
+      websiteStore.resetWtData(resp);
+      props.setOpen(false);
     })
     .catch(err => {
       console.log("error create new section with template");
@@ -82,8 +76,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
   const handleChange = (event: any) => {
     const { name, value } = event.target;
-    console.log("handle change data : ");
-    console.log(event);
     setDataForm((old : any) => ({...old, [name] : value}));
   }
 

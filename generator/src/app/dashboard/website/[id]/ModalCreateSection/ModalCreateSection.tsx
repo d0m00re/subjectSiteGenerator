@@ -49,6 +49,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                             setSelectedTemplate={setSelectedTemplate}
                             order={props.order}
                             websiteId={props.websiteId}
+                            setOpen={props.setOpen}
                         />
                     }
                 </DialogDescription>
