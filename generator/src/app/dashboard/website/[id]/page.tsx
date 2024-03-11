@@ -1,18 +1,35 @@
 "use client"
 
-//import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import SectionWebsite from './SectionWebsite';
 import useCurrentWebsite from "./currentWebsite.zustand.store";
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import TemplateSkeleton from '@/components/Templates/TemplateSkeleton';
+import ModalCreateSection from './ModalCreateSection/ModalCreateSection';
+import { Button } from '@/components/Button';
+
+//----- duplicate
+
+interface IModalCreateSection {
+  index: number;
+  open: boolean;
+}
+
+const resetModalCreateSection = (): IModalCreateSection => ({
+  index: -1,
+  open: false
+});
+
+//--------------------
 
 function page() {
   const { id } = useParams() // Assuming your file is named [id].js within the appropriate directory structure
-  const [dataIsLoad, setDataIsLoad] =useState<boolean>(false);
+  const [dataIsLoad, setDataIsLoad] = useState<boolean>(false);
   const currentWebsite = useCurrentWebsite();
   const templateGroup = useTemplateGroup();
+  const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
+
   if (typeof (id) !== "string") return <></>
 
   useEffect(() => {
@@ -23,16 +40,39 @@ function page() {
   }, []);
 
   return (
-    <section className='flex flex-col m-8'>
-      {(dataIsLoad) ?
-        currentWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
+    <>
+      <section className='flex flex-col m-8'>
+        {/* basic case */}
+        {(dataIsLoad) ?
+          currentWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
             key={`section-website-${section.id}`}
             section={section}
-            index={index}  
-          />): <TemplateSkeleton />
-      }
-    </section>
+            index={index}
+          />) : <TemplateSkeleton />
+        }
+        {/* cas with no section */}
+        {
+          currentWebsite?.website?.websiteSection.length === 0 ?
+            <Button onClick={() => setModalAddSection({open : true, index : 0})}>
+              create
+            </Button>
+            :
+            <></>
+        }
+      </section>
+      <ModalCreateSection
+        open={modalAddSection.open}
+        order={modalAddSection.index}
+        websiteId={currentWebsite.website?.id ?? -1}
+        setOpen={(val: boolean) => {
+          //alert("onclick modal add section")
+          //if (modalEdit === false || val === false)
+            setModalAddSection(old => ({ ...old, open: val }))
+        }
+        }
+      />
+    </>
   )
 }
 
-export default page
+export default page;

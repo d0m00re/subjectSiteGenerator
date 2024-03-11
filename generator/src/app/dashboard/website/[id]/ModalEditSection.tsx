@@ -1,3 +1,4 @@
+// todo : need rework because of new implementation
 import React, { useState, useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -77,8 +78,8 @@ const ModalEditSection = (props: IModalEdit) => {
     }
 
     useEffect(() => {
-        setValue('title', props.section.title);
-        setValue('description', props.section.description);
+       // setValue('title', props.section.title);
+       // setValue('description', props.section.description);
     }, [])
 
 
