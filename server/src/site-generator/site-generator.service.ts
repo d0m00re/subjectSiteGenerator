@@ -217,11 +217,14 @@ export class SiteGeneratorService {
         // cxheck if all key are present inside data
         // basic validation for the moment rework with a better version later
         let validateDataInput = true;
+        let msgErrorDetail : any = {}
         for (let i = 0; i < configJSON.length; i++) {
-            if (!props.data[configJSON[i].kind])
+            if (!props.data[configJSON[i].label]) {
+                msgErrorDetail[configJSON[i].label] = "key missing";
                 validateDataInput = false;
+            }
         }
-        if (!validateDataInput) throw new HttpException('Some data not found', HttpStatus.NOT_FOUND);
+        if (!validateDataInput) throw new HttpException(`Some data not found : ${JSON.stringify(msgErrorDetail)}`, HttpStatus.NOT_FOUND);
 
         // encode data
         let button: IButtonRow[] = [];

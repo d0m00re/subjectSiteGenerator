@@ -25,7 +25,7 @@ export class CreateTemplateVariant {
     @IsString()
     name : string;
     @IsString()
-    kind : string;
+    description : string;
     @IsString()
     config : string;
 }

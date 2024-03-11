@@ -1,6 +1,7 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER, generateBearerToken } from "./../contants.network";
-import { A_I_WebsiteSection, A_I_WebsiteSectionOrder, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
+import { A_I_WebsiteSection, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
+import { A_I_WebsiteSectionOrder } from "../website/websiteSection/websiteSectionOrder/websiteSectionOrder.entity";
 
 interface IGetOne {
     id: number

@@ -4,8 +4,9 @@ import { PrismaService } from 'src/prisma.service';
 interface ICreateTemplateVariant {
     idTemplateGroup : number;
     name : string;
-    kind : string;
+    description : string;
     config : string;
+    previewUrl : string;
 }
 
 interface ICreateTemplateGroup {
@@ -69,9 +70,10 @@ export class ConfigTemplateService {
 
         let data = await this.prisma.templateVariant.create({data : {
             name : props.name,
-            kind : props.kind,
+            description : props.description,
             config : props.config,
-            templateGroupId : templateGroup.id
+            templateGroupId : templateGroup.id,
+            previewUrl : props.previewUrl
         }})
 
         return data;
