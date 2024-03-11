@@ -7,21 +7,8 @@
 
 import { I_TemplateElemButton } from "../website/websiteSection/templateElemButton/templateElemButton.entity";
 import { I_TemplateElemTypography } from "../website/websiteSection/templateElemTypography/templateElemTypography.entity";
+import { I_WebsiteSectionOrder, I_WebsiteSectionOrder_E } from "../website/websiteSection/websiteSectionOrder/websiteSectionOrder.entity";
 
-// ----------------------
-// ------------- websiteSectionOrder
-export interface A_I_WebsiteSectionOrder_E {
-    order : number;
-}
-
-export interface A_I_WebsiteSectionOrder extends A_I_WebsiteSectionOrder_E {
-      id: number;
-      websiteSectionId: number;
-      websiteId: number;
-}
-
-export interface I_WebsiteSectionOrder_E extends A_I_WebsiteSectionOrder_E {};
-export interface I_WebsiteSectionOrder extends A_I_WebsiteSectionOrder {};
 
 // ----------------------
 // ------------- websiteSection

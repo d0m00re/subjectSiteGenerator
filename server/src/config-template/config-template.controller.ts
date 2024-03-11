@@ -4,12 +4,12 @@ import * as dto from "./dto/configTemplate.dto"
 @Controller('config-template')
 export class ConfigTemplateController {
     constructor(
-        private configTemplate: ConfigTemplateService
+        private configTemplateService: ConfigTemplateService
       ) { }
     
     @Post("templateGroup/create")
     async createTemplateGroup(@Request() req, @Body() dto: dto.CreateTemplateGroup) {
-        let data = await this.configTemplate.createTemplateGroup({
+        let data = await this.configTemplateService.createTemplateGroup({
             kind : dto.kind
         });
         return data;
@@ -17,10 +17,11 @@ export class ConfigTemplateController {
 
     @Post("templateVariant/create")
     async createTemplateVariant(@Request() req, @Body() dto: dto.CreateTemplateVariant) {
-        let data = await this.configTemplate.createTemplateVariant({
+        let data = await this.configTemplateService.createTemplateVariant({
             name : dto.name,
-            kind : dto.kind,
+            description : dto.description,
             config : dto.config,
+            previewUrl : "unimplemented",
             idTemplateGroup : dto.idTemplateGroup
         });
         return data;
@@ -28,13 +29,13 @@ export class ConfigTemplateController {
 
     @Get ("templateGroup")
     async getAllGroup(@Request() req, @Body() dto: any) {
-        let data = await this.configTemplate.getTemplateGroupAll();
+        let data = await this.configTemplateService.getTemplateGroupAll();
         return data;
     }
 
     @Get("templateVariant")
     async getAllVariant(@Request() req, @Body() dto: any) {
-        let data = await this.configTemplate.getTemplateVariantAll();
+        let data = await this.configTemplateService.getTemplateVariantAll();
     
         return data;
     }
