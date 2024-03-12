@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import ModalEditSection from './ModalEditSection';
-import ModalCreateSection from './ModalCreateSection/ModalCreateSection';
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
+
+import useTemplateGroup from '@/store/templateGroup.zustand.store';
+
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import * as networkGenerateWeb from "@/network/generateWebsite/generateWebsite.network";
+
 import ContainerSectionActionBar from '@/components/WebsiteSection/SectionActionBar';
-import useCurrentWebsite from "./currentWebsite.zustand.store";
-import { useSession } from 'next-auth/react';
-import useTemplateGroup from '@/store/templateGroup.zustand.store';
-import parseTemplateConfigStringToJSON from './ModalCreateSection/Components/parser';
+
+import useCurrentWebsite from "./store/currentWebsite.zustand.store";
+import parseTemplateConfigStringToJSON from './utils/parser';
+import ModalEditSection from './modal/ModalEditSection';
+import ModalCreateSection from './modal/ModalCreateSection';
 
 type Props = { 
   section: I_WebsiteSection;
@@ -78,7 +82,7 @@ function RenderWithConfig(props : {section : I_WebsiteSection}) {
           return <RenderTypography text={elemTypo?.text ?? ""} />
         } else if (e.kind === "button") {
           let elemButton = props.section.buttons.find(but => but.order === e.order)
-          return <RenderButton text={elemButton?.label ?? ""} />
+          return <RenderButton text={elemButton?.text ?? ""} />
         }
         return <p>unknown</p>
       })

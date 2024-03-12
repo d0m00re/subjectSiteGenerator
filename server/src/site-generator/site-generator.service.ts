@@ -211,9 +211,6 @@ export class SiteGeneratorService {
 
         const configJSON = parseTemplateConfigStringToJSON(template.config);
 
-        console.log("config json");
-        console.log(configJSON);
-
         // cxheck if all key are present inside data
         // basic validation for the moment rework with a better version later
         let validateDataInput = true;

@@ -1,48 +1,19 @@
 import React, { useState } from 'react'
+import { useSession } from 'next-auth/react';
+
 import * as entity from "@/network/configTemplate/configTemplate.entity";
 import { Button } from '@/components/Button';
-import z from "zod";
 import { Input } from '@/components/ui/input';
-import { useSession } from 'next-auth/react';
 import { ICreateWebsiteSectionV2, createWebsiteSectionV2 } from '@/network/generateWebsite/generateWebsite.network';
-import useCurrentWebsiteStore from './../../currentWebsite.zustand.store';
+import useCurrentWebsiteStore from './../store/currentWebsite.zustand.store';
+import parseTemplateConfigStringToJSON from '../utils/parser';
 
-// form parser
-const TypographyValidator = z.object({
-  order: z.number(),
-  kind: z.literal("text"),
-  label: z.string(),
-  path: z.string()
-});
-
-const ButtonValidator = z.object({
-  order: z.number(),
-  kind: z.literal("button"),
-  label: z.string(),
-  actionType: z.string(),
-  path: z.string()
-});
-
-const TemplateValidator = z.union([TypographyValidator, ButtonValidator]);
-const TemplateValidatorArray = z.array(TemplateValidator);
-//
-
-// parse json config
-const parseTemplateConfigStringToJSON = (json: string) => {
-  // todo : find a better way for that
-  const parsedArray = JSON.parse(json.replaceAll("'", '"'));
-  return TemplateValidatorArray.parse(parsedArray);
-}
-
-//<SquareChevronLeft />
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.A_I_TemplateVariant | undefined
   setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.A_I_TemplateVariant | undefined>>
-
   websiteId : number;
   order : number;
   setOpen: (val: boolean) => void;
-
 }
 
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
@@ -69,7 +40,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       props.setOpen(false);
     })
     .catch(err => {
-      console.log("error create new section with template");
       console.log(err);
     })
   }

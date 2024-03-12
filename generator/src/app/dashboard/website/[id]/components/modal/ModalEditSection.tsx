@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea"
 import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
-import useCurrentWebsite from "./currentWebsite.zustand.store";
+import useCurrentWebsite from "./../store/currentWebsite.zustand.store";
 
 import {
     Dialog,

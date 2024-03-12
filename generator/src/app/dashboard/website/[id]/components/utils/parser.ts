@@ -17,9 +17,12 @@ export const ButtonValidator = z.object({
 
 export const TemplateValidator = z.union([TypographyValidator, ButtonValidator]);
 export const TemplateValidatorArray = z.array(TemplateValidator);
-//
 
-// parse json config
+/**
+ * 
+ * @param json string with json array with ' separator
+ * @returns json
+ */
 const parseTemplateConfigStringToJSON = (json: string) => {
   // todo : find a better way for that
   const parsedArray = JSON.parse(json.replaceAll("'", '"'));
