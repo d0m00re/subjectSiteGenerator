@@ -63,3 +63,12 @@ probably moove the request to api because this is like that
     * hero section
     * basic description
 * global theme with different variable (token)
+
+
+
+# todo
+* mise a jours avec les nouveau field
+* reflechir pour gerer le layout
+* share l edition / creation modal
+* impr style
+* replace all email check with id

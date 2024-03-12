@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import SectionWebsite from './SectionWebsite';
-import useCurrentWebsite from "./currentWebsite.zustand.store";
+
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import TemplateSkeleton from '@/components/Templates/TemplateSkeleton';
-import ModalCreateSection from './ModalCreateSection/ModalCreateSection';
 import { Button } from '@/components/Button';
+
+import SectionWebsite from './components/SectionWebsite';
+import useCurrentWebsite from "./components/currentWebsite.zustand.store";
+
+import ModalCreateSection from './components/ModalCreateSection';
 
 //----- duplicate
 

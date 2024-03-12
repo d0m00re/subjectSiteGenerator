@@ -9,12 +9,11 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
 //import { useSession } from 'next-auth/react';
 //import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
-import { SelectTemplateAccordion, FormGeneratorTemplate } from './Components';
+import { SelectTemplateAccordion, FormGeneratorTemplate } from './../Components';
 
 interface IModalCreateSection {
     open: boolean;

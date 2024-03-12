@@ -1,10 +1,11 @@
 "use client"
 
 import { create } from 'zustand'
-import { deleteWebsiteSection } from '@/network/generateWebsite/generateWebsite.network'
-import { A_I_WebsiteSectionOrder, ISectionUpdate, I_Website, I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
+import { ISectionUpdate, I_Website, I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import cloneDeep from "lodash/cloneDeep";
 import { getWebsiteWtId } from '@/network/website/website.network';
+import { A_I_WebsiteSectionOrder } from '@/network/website/websiteSection/websiteSectionOrder/websiteSectionOrder.entity';
+
 interface WebsiteZustand { 
     websiteisLoading: "loading" | "done" | "error";
     website: I_Website | undefined;
@@ -35,7 +36,7 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
                     website: resp
                 }))
             })
-            .catch(err => {
+            .catch(() => {
                 console.error("error find website : ")
                 set((state) => ({
                     ...state,
