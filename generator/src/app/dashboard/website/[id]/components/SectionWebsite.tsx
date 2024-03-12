@@ -13,6 +13,7 @@ import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import parseTemplateConfigStringToJSON from './utils/parser';
 import ModalEditSection from './modal/ModalEditSection';
 import ModalCreateSection from './modal/ModalCreateSection';
+import ModalEditSectionV2 from './modal/ModalEditSectionV2';
 
 type Props = { 
   section: I_WebsiteSection;
@@ -187,7 +188,7 @@ function SectionWebsite(props: Props) {
 
         {
           modalEdit ?
-            <ModalEditSection
+            <ModalEditSectionV2
               open={modalEdit}
               setOpen={setModalEdit}
               section={props.section}

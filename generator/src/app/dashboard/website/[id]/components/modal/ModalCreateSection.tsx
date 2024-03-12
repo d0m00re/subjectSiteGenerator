@@ -44,6 +44,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                             setSelectedTemplate={setSelectedTemplate}
                         /> :
                         <FormGeneratorTemplate
+                            mode="create"
                             selectedTemplate={selectedTemplate}
                             setSelectedTemplate={setSelectedTemplate}
                             order={props.order}

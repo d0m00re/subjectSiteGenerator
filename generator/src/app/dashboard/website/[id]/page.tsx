@@ -8,9 +8,9 @@ import TemplateSkeleton from '@/components/Templates/TemplateSkeleton';
 import { Button } from '@/components/Button';
 
 import SectionWebsite from './components/SectionWebsite';
-import useCurrentWebsite from "./components/currentWebsite.zustand.store";
+import useCurrentWebsite from "./components/store/currentWebsite.zustand.store";
 
-import ModalCreateSection from './components/ModalCreateSection';
+import ModalCreateSection from './components/modal/ModalCreateSection';
 
 //----- duplicate
 

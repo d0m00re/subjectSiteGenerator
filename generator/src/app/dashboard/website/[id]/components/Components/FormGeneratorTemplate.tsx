@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+/*
+** components use for create or update a section (mode)
+*/
+
+import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react';
 
 import * as entity from "@/network/configTemplate/configTemplate.entity";
@@ -14,6 +18,10 @@ interface IFormGeneratorTemplate {
   websiteId : number;
   order : number;
   setOpen: (val: boolean) => void;
+
+  defaultData ?: any; // default json data
+
+  mode : "create" | "edit";
 }
 
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
@@ -22,6 +30,15 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   const [dataForm, setDataForm] = useState<any>({});
   const { data: session } = useSession();
   const websiteStore = useCurrentWebsiteStore();
+
+  useEffect(() => {
+
+    if (props.defaultData) {
+     // alert(`update data : ${JSON.stringify(props.defaultData)}`)
+      setDataForm(props.defaultData);
+    }
+  }, [])
+  
 
   const submitForm = (e : any) => {
     e.preventDefault();
@@ -49,6 +66,8 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     setDataForm((old : any) => ({...old, [name] : value}));
   }
 
+
+
   return (
     <section className='flex flex-col gap-2'>
       <Button onClick={() => props.setSelectedTemplate(undefined)}>
@@ -66,7 +85,9 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                 <Input
                   name={elem.label}
                   onChange={handleChange}
-                  type="text" />
+                  type="text"
+                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}  
+                />
               </section>
             } else if (elem.kind === "button") {
               return <section className='flex flex-col gap-1'>
@@ -74,7 +95,9 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                 <Input
                   name={elem.label}
                   onChange={handleChange}
-                  type="text" />
+                  type="text"
+                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}  
+                />
               </section>
             }
             return <></>
