@@ -43,6 +43,20 @@ export class WebsiteController {
     return data;
   }
 
+   @UseGuards(JwtGuard)
+   @Patch("v3/section")
+   async updateSectionV3(@Request() req, @Body() dto: dto.UpdateSectionV3) {
+    console.log("updateSection")
+    let userId = req.user.userId;
+
+    let data = await this.websiteService.sectionUpdateV3({
+      data : dto.data ?? [],
+      sectionId : dto.sectionId,
+      userId : userId
+    })
+    return data;
+   }
+
   /**
  * search website with pagination
  * @param req 
