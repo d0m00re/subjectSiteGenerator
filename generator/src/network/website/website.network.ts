@@ -1,7 +1,7 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER, generateBearerToken } from "./../contants.network";
 import { I_Website } from "../generateWebsite/generateWebsite.entity";
-import { ICreateWebsiteInput } from "./website.entity";
+import { ICreateWebsiteInput, IUpdateSectionV2 } from "./website.entity";
 
 const API_WEBSITE_URL = `${BACKEND_URL}/website`;
 
@@ -28,6 +28,21 @@ export const createWebsite = (props : ICreateWebsiteInput) => {  //Promise<I_Web
         body : JSON.stringify({
             title : props.title,
             subject : props.subject
+        })
+    })
+    .then(resp => resp.json()))
+}
+
+export const updateSectionV2 = (props : IUpdateSectionV2) => {
+    return (fetch(`${API_WEBSITE_URL}/section`, {
+        method : "PATCH",
+        headers : {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken)
+        },
+        body : JSON.stringify({
+            data : props.data,
+            sectionId : props.sectionId
         })
     })
     .then(resp => resp.json()))

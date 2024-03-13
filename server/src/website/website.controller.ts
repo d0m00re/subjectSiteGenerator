@@ -1,41 +1,54 @@
-import { Controller, Get, Param, Post, UseGuards, Request, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards, Request, Body, Patch } from '@nestjs/common';
 import { WebsiteService } from './website.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import * as dto from "./dto/website.dto";
 
 @Controller('website')
 export class WebsiteController {
-    constructor(
-        private websiteService: WebsiteService
-    ){}
+  constructor(
+    private websiteService: WebsiteService
+  ) { }
 
-    @Get(':id')
-    async getWtId(@Param('id') id: number) {
-        let website = await this.websiteService.getWebsiteFull({websiteId : id});
-        return website;
-    }
+  @Get(':id')
+  async getWtId(@Param('id') id: number) {
+    let website = await this.websiteService.getWebsiteFull({ websiteId: id });
+    return website;
+  }
 
-    @UseGuards(JwtGuard)
-    @Post("")
-    async createWebsite(@Request() req, @Body() dto : dto.CreateWebsiteDto) {
-        let userId = req.user.userId;
+  @UseGuards(JwtGuard)
+  @Post("")
+  async createWebsite(@Request() req, @Body() dto: dto.CreateWebsiteDto) {
+    let userId = req.user.userId;
 
-        console.log(userId)        
+    let newWebsite = await this.websiteService.create({
+      ...dto,
+      userId
+    })
 
-        let newWebsite = await this.websiteService.create({
-            ...dto,
-            userId
-        })
+    return newWebsite;
+  }
 
-        return newWebsite;
-    }
+  @UseGuards(JwtGuard)
+  @Patch("section")
+  async updateSection(@Request() req, @Body() dto: dto.UpdateSection) {
+    console.log("updateSection")
+    let userId = req.user.userId;
 
-    /**
-   * search website with pagination
-   * @param req 
-   * @param dto 
-   * @returns 
-   */
+    let data = await this.websiteService.updateSectionV2({
+      userId,
+      data : dto.data,
+      sectionId : dto.sectionId
+    });
+
+    return data;
+  }
+
+  /**
+ * search website with pagination
+ * @param req 
+ * @param dto 
+ * @returns 
+ */
   /*
   @UseGuards(JwtGuard)
   @Post("search")

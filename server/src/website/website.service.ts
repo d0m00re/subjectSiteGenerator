@@ -1,10 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { parseTemplateConfigStringToJSON } from './utils/parserConfig';
 
 interface IGetUserWebsite {
     //web: string;
     page: number;
     pageSize: number;
+}
+
+interface IUpdateSectionV2 {
+    userId: number;
+    data: any;
+    sectionId: number;
 }
 
 @Injectable()
@@ -13,12 +20,12 @@ export class WebsiteService {
         private prisma: PrismaService,
     ) { }
 
-    create = async (props : {userId : number, title : string; subject : string} ) => {
+    create = async (props: { userId: number, title: string; subject: string }) => {
         let newWebsite = await this.prisma.website.create({
-            data : {
-                userId : props.userId,
-                title : props.title,
-                subject : props.subject
+            data: {
+                userId: props.userId,
+                title: props.title,
+                subject: props.subject
             }
         })
 
@@ -43,32 +50,72 @@ export class WebsiteService {
         return website;
     }
 
-    /*
-    getWebsitePaginate = async (props: IGetUserWebsite) => {
-        // find user
-       // let user = await this.getUser(props.email);
+    updateSectionV2 = async (props: IUpdateSectionV2) => {
+        // get back section
+        let sectionWithSubElem = await this.prisma.websiteSection.findUnique({
+            where: { id: props.sectionId },
+            include: {
+                websiteSectionOrder: true,
+                configTemplate: true,
+                buttons: true,
+                typographies: true,
+                images: true
+            }
+        });
 
-        // get count elem
-        const websiteCount = await this.prisma.website.count({
-            where: { userId: user.id }
-        })
+        if (!sectionWithSubElem) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
 
-        let myWebsiteList = await this.prisma.website.findMany({
-            where: {
-                userId: user.id,
-            },
-            take: props.pageSize,
-            skip: props.page * props.pageSize
-        })
+        const configJSON = parseTemplateConfigStringToJSON(sectionWithSubElem.configTemplate.config);
 
-        return {
-            rows: myWebsiteList,
-            info: {
-                count: websiteCount,
-                page: props.page,
-                pageSize: props.pageSize
+        console.log("config parse : ")
+        console.log(configJSON);
+
+        let arrProm : any = []
+
+        for (let i = 0; i < configJSON.length; i++) {
+            // key tagret
+            let keyTarget = configJSON[i].kind;
+
+            if (keyTarget === "text") {
+                // get current text elements
+                let currentElem = sectionWithSubElem.typographies.find(e => e.order === configJSON[i].order);
+                if (currentElem) {
+                    // update text
+                    console.log(`${currentElem.text} ---> ${props.data[configJSON[i].label]}`)
+                    currentElem.text = props.data[configJSON[i].label];
+                    arrProm.push(this.prisma.templateElemTypography.update({
+                        where : { id : currentElem.id},
+                        data : {text : currentElem.text}
+                    }));
+                }
+            }
+            else if (keyTarget === "button") {
+                let currentElem = sectionWithSubElem.buttons.find(e => e.order === configJSON[i].order);
+                if (currentElem) {
+                    console.log(`${currentElem.text} ---> ${props.data[configJSON[i].label]}`)
+                    currentElem.text = props.data[configJSON[i].label];
+                    arrProm.push(this.prisma.templateElemButton.update({
+                        where : { id : currentElem.id},
+                        data : {text : currentElem.text}
+                    }));
+                }
             }
         }
+
+        console.log("promise update consume")
+        let dataUpdate = await Promise.all(arrProm);
+
+        let retData = await this.prisma.websiteSection.findUnique({
+            where: { id: props.sectionId },
+            include: {
+                websiteSectionOrder: true,
+                configTemplate: true,
+                buttons: true,
+                typographies: true,
+                images: true
+            }
+        });
+
+        return retData;
     }
-    */
 }

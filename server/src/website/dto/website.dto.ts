@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateWebsiteDto {
     @IsString()
@@ -12,4 +12,11 @@ export class GetWebsitePaginateDto {
     page : number;
     @IsNumber()
     pageSize : number;
+}
+
+export class UpdateSection {
+    @IsNotEmpty()
+    data : any;
+    @IsNumber()
+    sectionId : number;
 }
