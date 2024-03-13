@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/input';
 import { ICreateWebsiteSectionV2, createWebsiteSectionV2 } from '@/network/generateWebsite/generateWebsite.network';
 import useCurrentWebsiteStore from './../store/currentWebsite.zustand.store';
 import parseTemplateConfigStringToJSON from '../utils/parser';
+import * as entityWebsite from '@/network/website/website.entity';
+import { updateSectionV2 } from '@/network/website/website.network';
 
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.A_I_TemplateVariant | undefined
@@ -39,10 +41,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     }
   }, [])
   
-
-  const submitForm = (e : any) => {
-    e.preventDefault();
-
+  const submitFormCreate = () => {
     let dataSubmit : ICreateWebsiteSectionV2 = {
       data : dataForm,
       order : props.order,
@@ -61,12 +60,47 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     })
   }
 
+  const submitFormEdit = () => {
+    // find section with order
+    let currentSection = websiteStore.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
+
+    if (!currentSection) {
+      console.error("website section not found with order : ", props.order);
+      return ;
+    }
+
+    let dataSubmit : entityWebsite.IUpdateSectionV2 = {
+      data : dataForm,
+      sectionId : currentSection.id,
+      accessToken : session?.backendTokens?.accessToken ?? ""
+    }
+
+    updateSectionV2(dataSubmit)
+    .then((resp : any) => {
+     // websiteStore.resetWtData(resp);
+      props.setOpen(false);
+      websiteStore.updateSection(resp);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+
+  const submitForm = (e : any) => {
+    e.preventDefault();
+
+    if (props.mode === "create") {
+      submitFormCreate();
+    }
+    else if (props.mode === "edit") {
+      submitFormEdit();
+    }
+  }
+
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setDataForm((old : any) => ({...old, [name] : value}));
   }
-
-
 
   return (
     <section className='flex flex-col gap-2'>

@@ -3,3 +3,9 @@ export interface ICreateWebsiteInput {
     title : string;
     subject : string;
 }
+
+export interface IUpdateSectionV2 {
+    data : any;
+    sectionId : number;
+    accessToken : string;
+}
