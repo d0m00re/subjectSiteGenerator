@@ -14,6 +14,42 @@ interface IUpdateSectionV2 {
     sectionId: number;
 }
 
+/**
+ * prepare v3 update / create
+ */
+interface IUpdateTypography {
+    kind : "typography"
+    order : number;
+
+    text : string;
+    size : string;
+    variant : string;
+    path : string;
+    animation : string;
+    decorator : string;
+}
+
+interface IUpdateButton {
+    kind : "button",
+    order : number;
+
+    text : string;
+    size : string;
+    variant : string;
+    shape : string;
+    actionType : string;
+    path : string;
+    animation : string;
+}
+
+interface IUpdateV3 {
+    data : (IUpdateTypography | IUpdateButton)[],
+    sectionId : number;
+    userId : number;
+}
+
+//-----------------------------------
+
 @Injectable()
 export class WebsiteService {
     constructor(
@@ -67,9 +103,6 @@ export class WebsiteService {
 
         const configJSON = parseTemplateConfigStringToJSON(sectionWithSubElem.configTemplate.config);
 
-        console.log("config parse : ")
-        console.log(configJSON);
-
         let arrProm : any = []
 
         for (let i = 0; i < configJSON.length; i++) {
@@ -81,7 +114,6 @@ export class WebsiteService {
                 let currentElem = sectionWithSubElem.typographies.find(e => e.order === configJSON[i].order);
                 if (currentElem) {
                     // update text
-                    console.log(`${currentElem.text} ---> ${props.data[configJSON[i].label]}`)
                     currentElem.text = props.data[configJSON[i].label];
                     arrProm.push(this.prisma.templateElemTypography.update({
                         where : { id : currentElem.id},
@@ -92,7 +124,6 @@ export class WebsiteService {
             else if (keyTarget === "button") {
                 let currentElem = sectionWithSubElem.buttons.find(e => e.order === configJSON[i].order);
                 if (currentElem) {
-                    console.log(`${currentElem.text} ---> ${props.data[configJSON[i].label]}`)
                     currentElem.text = props.data[configJSON[i].label];
                     arrProm.push(this.prisma.templateElemButton.update({
                         where : { id : currentElem.id},
@@ -102,8 +133,7 @@ export class WebsiteService {
             }
         }
 
-        console.log("promise update consume")
-        let dataUpdate = await Promise.all(arrProm);
+        await Promise.all(arrProm);
 
         let retData = await this.prisma.websiteSection.findUnique({
             where: { id: props.sectionId },
@@ -118,4 +148,86 @@ export class WebsiteService {
 
         return retData;
     }
+
+    sectionUpdateV3 = async (props : IUpdateV3) => {
+        console.log("update v3 let s go man");
+        console.log(props);
+                // get back section
+                let sectionWithSubElem = await this.prisma.websiteSection.findUnique({
+                    where: { id: props.sectionId },
+                    include: {
+                        websiteSectionOrder: true,
+                        configTemplate: true,
+                        buttons: true,
+                        typographies: true,
+                        images: true
+                    }
+                });
+        
+                if (!sectionWithSubElem) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+        
+                const configJSON = parseTemplateConfigStringToJSON(sectionWithSubElem.configTemplate.config);
+        
+                let arrProm : any = []
+        
+                for (let i = 0; i < configJSON.length; i++) {
+                    // key tagret
+                    let keyTarget = configJSON[i].kind;
+        
+                    if (keyTarget === "text") {
+                        // get current text elements
+                        let currentElem = sectionWithSubElem.typographies.find(e => e.order === configJSON[i].order);
+                        if (currentElem) {
+                            // update text
+                            currentElem.text = props.data[configJSON[i].label];
+                            arrProm.push(this.prisma.templateElemTypography.update({
+                                where : { id : currentElem.id},
+                                data : {
+                                    text : currentElem.text,
+                                    size : currentElem.size,
+                                    variant : currentElem.variant,
+                                    path : currentElem.path,
+                                    animation : currentElem.animation,
+                                    decorator : currentElem.decorator
+                                }
+                            }));
+                        }
+                    }
+                    else if (keyTarget === "button") {
+                        let currentElem = sectionWithSubElem.buttons.find(e => e.order === configJSON[i].order);
+                        if (currentElem) {
+                            currentElem.text = props.data[configJSON[i].label];
+                            arrProm.push(this.prisma.templateElemButton.update({
+                                where : { id : currentElem.id},
+                                data : {
+                                    text : currentElem.text,
+                                    size : currentElem.size,
+                                    variant : currentElem.variant,
+                                    shape : currentElem.shape,
+                                    actionType : currentElem.actionType,
+                                    path : currentElem.path,
+                                    animation : currentElem.animation
+                                }
+                            }));
+                        }
+                    }
+                }
+        
+                await Promise.all(arrProm);
+        
+                let retData = await this.prisma.websiteSection.findUnique({
+                    where: { id: props.sectionId },
+                    include: {
+                        websiteSectionOrder: true,
+                        configTemplate: true,
+                        buttons: true,
+                        typographies: true,
+                        images: true
+                    }
+                });
+        
+                return retData;
+        return {unimplemented : true}
+    }
 }
+

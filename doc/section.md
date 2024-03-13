@@ -1,16 +1,15 @@
-export interface ICreateWebsiteInput {
-    accessToken : string;
-    title : string;
-    subject : string;
-}
+# section
+section system allow to create and edit section
+when we create one, we use the default style
+when we update one we could update default style of the local section
 
-export interface IUpdateSectionV2 {
-    data : any;
-    sectionId : number;
-    accessToken : string;
-}
+## create
 
-// update v3
+## update
+```
+/**
+ * prepare v3 update / create
+ */
 interface IUpdateTypography {
     kind : "typography"
     order : number;
@@ -36,8 +35,8 @@ interface IUpdateButton {
     animation : string;
 }
 
-export interface IUpdateSectionV3 {
+interface IUpdateV3 {
     data : (IUpdateTypography | IUpdateButton)[],
     sectionId : number;
-    accessToken : string;
 }
+```
