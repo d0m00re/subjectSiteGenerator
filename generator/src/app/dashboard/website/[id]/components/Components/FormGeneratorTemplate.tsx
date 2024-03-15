@@ -13,51 +13,90 @@ import useCurrentWebsiteStore from './../store/currentWebsite.zustand.store';
 import parseTemplateConfigStringToJSON from '../utils/parser';
 import * as entityWebsite from '@/network/website/website.entity';
 import { updateSectionV2 } from '@/network/website/website.network';
+import { UpdateDataV3Dico } from '@/network/website/website.entity';
 
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.A_I_TemplateVariant | undefined
   setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.A_I_TemplateVariant | undefined>>
-  websiteId : number;
-  order : number;
+  websiteId: number;
+  order: number;
   setOpen: (val: boolean) => void;
 
-  defaultData ?: any; // default json data
+  defaultData?: any; // default json data
 
-  mode : "create" | "edit";
+  mode: "create" | "edit";
 }
 
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   // config
   const config = parseTemplateConfigStringToJSON(props.selectedTemplate?.config ?? "{}");
   const [dataForm, setDataForm] = useState<any>({});
+  const [dataFormV2, setDataFormV2] = useState<UpdateDataV3Dico>({})
   const { data: session } = useSession();
   const websiteStore = useCurrentWebsiteStore();
 
   useEffect(() => {
 
     if (props.defaultData) {
-     // alert(`update data : ${JSON.stringify(props.defaultData)}`)
+      // alert(`update data : ${JSON.stringify(props.defaultData)}`)
       setDataForm(props.defaultData);
+    } else {
+      let defaultObjJSON: UpdateDataV3Dico = {};
+      // generate some default data
+      for (let i = 0; i < config.length; i++) {
+        let curr = config[i];
+        console.log("turn")
+        console.log(curr);
+        if (curr.kind === "text") {
+          let encodeeObjTypo: entityWebsite.IUpdateV3Typography = {
+            kind: "typography",
+            order: curr.order,
+            text: "",
+            size: curr.size,
+            variant: "normal",
+            animation: curr.animation ?? "",
+            decorator: curr.decorator ?? "",
+            path: curr.path ?? ""
+          }
+          defaultObjJSON[curr.label] = encodeeObjTypo;
+        } else if (curr.kind === "button") {
+          let encodeObjButton: entityWebsite.IUpdateV3Button = {
+            kind: "button",
+            order: curr.order,
+            text: "",
+            size: curr?.size ?? "",
+            variant: curr?.variant ?? "",
+            actionType: curr?.actionType ?? "",
+            shape: curr?.shape ?? "",
+            path: curr?.path ?? "",
+            animation: curr.animation ?? ""
+          }
+          defaultObjJSON[curr.label] = encodeObjButton;
+        }
+      }
+      setDataFormV2(defaultObjJSON);
+      console.log("default data form v2")
+      console.log(dataFormV2)
     }
   }, [])
-  
+
   const submitFormCreate = () => {
-    let dataSubmit : ICreateWebsiteSectionV2 = {
-      data : dataForm,
-      order : props.order,
-      websiteId : props.websiteId,
-      templateId : props.selectedTemplate?.id ?? -1,
+    let dataSubmit: ICreateWebsiteSectionV2 = {
+      data: dataForm,
+      order: props.order,
+      websiteId: props.websiteId,
+      templateId: props.selectedTemplate?.id ?? -1,
       accessToken: session?.backendTokens?.accessToken ?? ""
     }
 
     createWebsiteSectionV2(dataSubmit)
-    .then((resp : any) => {
-      websiteStore.resetWtData(resp);
-      props.setOpen(false);
-    })
-    .catch(err => {
-      console.log(err);
-    })
+      .then((resp: any) => {
+        websiteStore.resetWtData(resp);
+        props.setOpen(false);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   const submitFormEdit = () => {
@@ -66,27 +105,27 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
     if (!currentSection) {
       console.error("website section not found with order : ", props.order);
-      return ;
+      return;
     }
 
-    let dataSubmit : entityWebsite.IUpdateSectionV2 = {
-      data : dataForm,
-      sectionId : currentSection.id,
-      accessToken : session?.backendTokens?.accessToken ?? ""
+    let dataSubmit: entityWebsite.IUpdateSectionV2 = {
+      data: dataForm,
+      sectionId: currentSection.id,
+      accessToken: session?.backendTokens?.accessToken ?? ""
     }
 
     updateSectionV2(dataSubmit)
-    .then((resp : any) => {
-     // websiteStore.resetWtData(resp);
-      props.setOpen(false);
-      websiteStore.updateSection(resp);
-    })
-    .catch(err => {
-      console.log(err);
-    })
+      .then((resp: any) => {
+        // websiteStore.resetWtData(resp);
+        props.setOpen(false);
+        websiteStore.updateSection(resp);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
-  const submitForm = (e : any) => {
+  const submitForm = (e: any) => {
     e.preventDefault();
 
     if (props.mode === "create") {
@@ -99,7 +138,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
   const handleChange = (event: any) => {
     const { name, value } = event.target;
-    setDataForm((old : any) => ({...old, [name] : value}));
+    setDataForm((old: any) => ({ ...old, [name]: value }));
   }
 
   return (
@@ -120,7 +159,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                   name={elem.label}
                   onChange={handleChange}
                   type="text"
-                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}  
+                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}
                 />
               </section>
             } else if (elem.kind === "button") {
@@ -130,7 +169,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                   name={elem.label}
                   onChange={handleChange}
                   type="text"
-                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}  
+                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}
                 />
               </section>
             }

@@ -20,6 +20,13 @@ export class WebsiteController {
   async createWebsite(@Request() req, @Body() dto: dto.CreateWebsiteDto) {
     let userId = req.user.userId;
 
+    console.log("========= create website ")
+    console.log(req.user)
+    console.log('--------')
+    console.log(req.userId)
+    console.log('============================')
+    
+
     let newWebsite = await this.websiteService.create({
       ...dto,
       userId
