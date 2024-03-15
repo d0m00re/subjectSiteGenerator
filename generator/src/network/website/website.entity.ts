@@ -11,7 +11,7 @@ export interface IUpdateSectionV2 {
 }
 
 // update v3
-interface IUpdateTypography {
+export interface IUpdateV3Typography {
     kind : "typography"
     order : number;
 
@@ -23,7 +23,7 @@ interface IUpdateTypography {
     decorator : string;
 }
 
-interface IUpdateButton {
+export interface IUpdateV3Button {
     kind : "button",
     order : number;
 
@@ -36,8 +36,11 @@ interface IUpdateButton {
     animation : string;
 }
 
+export type TUpdateDataV3 = (IUpdateV3Typography | IUpdateV3Button); 
+export type UpdateDataV3Dico  = {[key: string]: TUpdateDataV3};
+
 export interface IUpdateSectionV3 {
-    data : (IUpdateTypography | IUpdateButton)[],
+    data : TUpdateDataV3[],
     sectionId : number;
     accessToken : string;
-}
+} 

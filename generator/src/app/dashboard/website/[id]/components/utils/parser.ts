@@ -4,7 +4,13 @@ export const TypographyValidator = z.object({
   order: z.number(),
   kind: z.literal("text"),
   label: z.string(),
-  path: z.string()
+  path: z.string(),
+
+  size : z.string(),
+
+  variant : z.string(),
+  animation : z.string(),
+  decorator : z.string()
 });
 
 export const ButtonValidator = z.object({
@@ -12,7 +18,13 @@ export const ButtonValidator = z.object({
   kind: z.literal("button"),
   label: z.string(),
   actionType: z.string(),
-  path: z.string()
+  path: z.string(),
+
+  size: z.string(),
+  
+  variant : z.string(),
+  shape : z.string(),
+  animation : z.string()
 });
 
 export const TemplateValidator = z.union([TypographyValidator, ButtonValidator]);

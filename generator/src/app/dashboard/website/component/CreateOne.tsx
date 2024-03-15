@@ -46,7 +46,6 @@ function CreateOne() {
     });
 
     const submitForm: SubmitHandler<TValidateForm> = (data, event) => {
-        alert("fuck you")
         setIsLoading(true);
         generateWebsiteNetwork.generateOne({
             title: data.title,
