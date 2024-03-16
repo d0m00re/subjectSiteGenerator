@@ -1,8 +1,38 @@
 # Website generator
+* cms for generate a website with ia or not and publish it
+
+## Current feature - v0.1
+* section v3 : allow styling
+* login / register
+* create website
+* create / update / delete / moove section
+* view website list with pagination
+
+## feature v0.2
+* website preview (public url)
+* edit element style (button variant, typography size)
+* better styling
+
+## short technical description
+* website : composition of section
+* template
+* templateConfig
+* section : 
+* sectionSubElem
+* sectionSubElemButton : button element
+* sectionSubElemTypography : typography element
+* sectionSubElemImage : image element
+* sectionSubElemConfig : config element
+
+##
 
 ## Goal
 generate a subWebsite with only one phrase
 
+
+
+
+##################################################
 ## feature v0.5
 * stripe paiement
 
@@ -26,10 +56,10 @@ generate a subWebsite with only one phrase
 * default db config loading script
 
 ## feature v 0.1
-* register/login
-* profil
-* generate website with gpt
-* view website
+* register/login : done
+* profil : nop
+* generate website with gpt : not anymore later
+* view website : nop
 
 ## page available
 * static page
