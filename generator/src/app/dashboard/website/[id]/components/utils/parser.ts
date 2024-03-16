@@ -13,6 +13,8 @@ export const TypographyValidator = z.object({
   decorator : z.string()
 });
 
+// 'variant' : '', 'animation' : '', 'decorator' : ''
+
 export const ButtonValidator = z.object({
   order: z.number(),
   kind: z.literal("button"),
@@ -21,11 +23,13 @@ export const ButtonValidator = z.object({
   path: z.string(),
 
   size: z.string(),
-  
+
   variant : z.string(),
   shape : z.string(),
   animation : z.string()
 });
+
+// 'variant' : '', 'shape':'', 'animation' : ''
 
 export const TemplateValidator = z.union([TypographyValidator, ButtonValidator]);
 export const TemplateValidatorArray = z.array(TemplateValidator);

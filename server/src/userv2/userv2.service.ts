@@ -1,10 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/userv2.dto';
 import { hash } from 'bcrypt';
 @Injectable()
 export class Userv2Service {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(dto: CreateUserDto) {
     //this.prisma.user.create();
@@ -28,11 +28,17 @@ export class Userv2Service {
   }
 
   async findByEmail(email: string) {
-    return await this.prisma.user.findUnique({
+    if (!email) throw new HttpException('No email', HttpStatus.NOT_FOUND)
+
+    let dataUser = await this.prisma.user.findUnique({
       where: {
         email,
       },
     });
+
+    if (!dataUser) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+  
+    return dataUser;
   }
 
   async findById(id: number) {

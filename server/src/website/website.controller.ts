@@ -20,13 +20,6 @@ export class WebsiteController {
   async createWebsite(@Request() req, @Body() dto: dto.CreateWebsiteDto) {
     let userId = req.user.userId;
 
-    console.log("========= create website ")
-    console.log(req.user)
-    console.log('--------')
-    console.log(req.userId)
-    console.log('============================')
-    
-
     let newWebsite = await this.websiteService.create({
       ...dto,
       userId
@@ -53,33 +46,27 @@ export class WebsiteController {
    @UseGuards(JwtGuard)
    @Patch("v3/section")
    async updateSectionV3(@Request() req, @Body() dto: dto.UpdateSectionV3) {
-    console.log("updateSection")
     let userId = req.user.userId;
 
     let data = await this.websiteService.sectionUpdateV3({
-      data : dto.data ?? [],
+      data : dto.data,//Object.fromEntries(dto.data),
       sectionId : dto.sectionId,
       userId : userId
     })
     return data;
    }
 
-  /**
- * search website with pagination
- * @param req 
- * @param dto 
- * @returns 
- */
-  /*
-  @UseGuards(JwtGuard)
-  @Post("search")
-  async searchWebsite(@Request() req, @Body() dto: dto.GetWebsitePaginateDto) {
-    let data = await this.siteGeneratorService.getUserWebsite({
-      email: req.user.email,
-      page: dto.page,
-      pageSize : dto.pageSize,
-    });
-    return data;
-  }
-  */
+   @UseGuards(JwtGuard)
+   @Post("v3/section")
+   async createSectionV3(@Request() req, @Body() dto: dto.CreateSectionV3) {
+    let userId = req.user.userId;
+
+    let data = await this.websiteService.createNewSectionV3({
+      userId : userId,
+      data : dto.data, //Object.fromEntries(dto.data),
+      order : dto.order,
+      websiteId : dto.websiteId,
+      templateId : dto.templateId
+    })
+   }
 }

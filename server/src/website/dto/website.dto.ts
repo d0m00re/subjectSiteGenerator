@@ -1,72 +1,108 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class CreateWebsiteDto {
     @IsString()
-    title : string;
+    title: string;
     @IsString()
-    subject : string;
+    subject: string;
 }
 
 export class GetWebsitePaginateDto {
     @IsNumber()
-    page : number;
+    page: number;
     @IsNumber()
-    pageSize : number;
+    pageSize: number;
 }
 
 export class UpdateSection {
     @IsNotEmpty()
-    data : any;
+    data: any;
     @IsNumber()
-    sectionId : number;
+    sectionId: number;
 }
 
 // update v3
-
+/*
+type JsonObjectWithUnknownKeys = {
+ [key: string]: AOrB;
+};
+*/
 export class UpdateTypography {
- @IsString()
- kind: "typography";
- @IsNumber()
- order: number;
- @IsString()
- text: string;
- @IsString()
- size: string;
- @IsString()
- variant: string;
- @IsString()
- path: string;
- @IsString()
- animation: string;
- @IsString()
- decorator: string;
+    @IsString()
+    kind: "typography";
+    @IsNumber()
+    order: number;
+    @IsString()
+    text: string;
+    @IsString()
+    size: string;
+    @IsString()
+    variant: string;
+    @IsString()
+    path: string;
+    @IsString()
+    animation: string;
+    @IsString()
+    decorator: string;
 }
 
 export class UpdateButton {
- @IsString()
- kind: "button";
- @IsNumber()
- order: number;
- @IsString()
- text: string;
- @IsString()
- size: string;
- @IsString()
- variant: string;
- @IsString()
- shape: string;
- @IsString()
- actionType: string;
- @IsString()
- path: string;
- @IsString()
- animation: string;
+    @IsString()
+    kind: "button";
+    @IsNumber()
+    order: number;
+    @IsString()
+    text: string;
+    @IsString()
+    size: string;
+    @IsString()
+    variant: string;
+    @IsString()
+    shape: string;
+    @IsString()
+    actionType: string;
+    @IsString()
+    path: string;
+    @IsString()
+    animation: string;
 }
 
+/*
 export class UpdateSectionV3 {
- @IsOptional()
- @IsString({ each: true })
- data: (UpdateTypography | UpdateButton)[];
- @IsNumber()
- sectionId: number;
+    @IsObject()
+    @ValidateNested()
+    data: Map<string, UpdateTypography | UpdateButton>;
+    @IsNumber()
+    sectionId: number;
+}
+
+export class CreateSectionV3 {
+    @IsObject()
+    @ValidateNested()
+    data: Map<string, UpdateTypography | UpdateButton>;
+    @IsNumber()
+    order : number;
+    @IsNumber()
+    websiteId : number;
+    @IsNumber()
+    templateId : number;
+}
+*/
+
+export class UpdateSectionV3 {
+    @IsObject()
+    data: any;
+    @IsNumber()
+    sectionId: number;
+}
+
+export class CreateSectionV3 {
+    @IsObject()
+    data: any;
+    @IsNumber()
+    order : number;
+    @IsNumber()
+    websiteId : number;
+    @IsNumber()
+    templateId : number;
 }

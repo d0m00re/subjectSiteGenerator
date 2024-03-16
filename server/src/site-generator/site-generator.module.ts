@@ -16,7 +16,8 @@ import { WebsiteService } from 'src/website/website.service';
     PrismaService,
     JwtService,
     ConfigTemplateService,
-    WebsiteService
+    WebsiteService,
+    Userv2Service
   ],
   controllers: [SiteGeneratorController],
 })

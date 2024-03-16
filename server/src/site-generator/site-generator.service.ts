@@ -4,6 +4,7 @@ import { OpenAIService } from 'src/openai/openai.service';
 import { ConfigTemplateService } from 'src/config-template/config-template.service';
 import { WebsiteService } from 'src/website/website.service';
 import { IButtonRow, ITypographyRow, parseTemplateConfigStringToJSON } from 'src/website/utils/parserConfig';
+import { Userv2Service } from 'src/userv2/userv2.service';
 
 interface ICreateOne {
     subject: string;
@@ -55,24 +56,13 @@ export class SiteGeneratorService {
         private prisma: PrismaService,
         private configTemplateService: ConfigTemplateService,
         private openAiService: OpenAIService,
-        private websiteService: WebsiteService
+        private websiteService: WebsiteService,
+        private userV2Service : Userv2Service
     ) { }
-
-    private getUser = async (email: string) => {
-        const user = await this.prisma.user.findFirst({
-            where: { email }
-        })
-
-        if (!user) {
-            throw new HttpException('No authroization', HttpStatus.UNAUTHORIZED);
-        }
-
-        return user;
-    }
 
     // should control user
     updateSection = async (props: IUpdateSection) => {
-        const user = await this.getUser(props.email);
+        //const user = await this.userV2Service.getUser(props.email);
 
         // retrieve website and associate section
 
@@ -101,8 +91,6 @@ export class SiteGeneratorService {
     }
 
     createNewSectionV2 = async (props: ICreateNewSectionV2) => {
-        const user = await this.getUser(props.email);
-
         let currentOrder = props.order;
 
         // get template target
@@ -197,10 +185,11 @@ export class SiteGeneratorService {
         return newData;
     }
 
+  
+
     // probably should rework data model for reduce amount or data load perform
     createNewSection = async (props: ICreateNewSection) => {
-        const user = await this.getUser(props.email);
-
+        //const user = await this.userV2Service.getUser(props.email);
         let currentOrder = props.order;
 
         // reorder section
@@ -253,7 +242,7 @@ export class SiteGeneratorService {
     deleteSection = async (props: IDeleteSection) => {
         console.log(`delete section id : ${props.sectionId}`);
         // delete section with order and decr all element up
-        const user = await this.getUser(props.email);
+        //const user = await this.userV2Service.getUser(props.email);
 
         // get current seciton info
         let sectionToDelete = await this.prisma.websiteSection.findUnique({
@@ -299,7 +288,7 @@ export class SiteGeneratorService {
 
         console.log(`section to moove id : ${props.sectionId}`);
         // delete section with order and decr all element up
-        const user = await this.getUser(props.email);
+        //const user = await this.userV2Service.getUser(props.email);
 
         // get current seciton info
         let currentSection = await this.prisma.websiteSection.findUnique({
@@ -342,7 +331,7 @@ export class SiteGeneratorService {
     }
 
     createOneV2 = async (props: ICreateOne) => {
-        let user = await this.getUser(props.email);
+       // let user = await this.userV2Service.findByEmail(props.email);
 
         /*
           // Fetch the existing sections count for the website
@@ -402,7 +391,7 @@ export class SiteGeneratorService {
     }
 
     duplicateSection = async (props: { sectionId: number, email: string }) => {
-        let user = await this.getUser(props.email);
+        let user = await this.userV2Service.findByEmail(props.email);
 
         // get target section  with order
         let websiteSection = await this.prisma.websiteSection.findUnique({
@@ -457,7 +446,7 @@ export class SiteGeneratorService {
 
     getUserWebsite = async (props: IGetUserWebsite) => {
         // find user
-        let user = await this.getUser(props.email);
+        let user = await this.userV2Service.findByEmail(props.email);
 
         // get count elem
         const websiteCount = await this.prisma.website.count({
