@@ -19,8 +19,10 @@ export class SiteGeneratorController {
   @UseGuards(JwtGuard)
   @Post("search")
   async searchWebsite(@Request() req, @Body() dto: dto.GetUserWebsitesDto) {
+    console.log("search")
+    console.log(req.user)
     let data = await this.siteGeneratorService.getUserWebsite({
-      email: req.user.email,
+      email: req.user.username,
       page: dto.page,
       pageSize : dto.pageSize,
     });
@@ -74,6 +76,24 @@ export class SiteGeneratorController {
 
     return result;
   }
+
+  /*
+  @UseGuards(JwtGuard)
+  @Post("section/add-v3")
+  async addSectionV3(@Request() req, @Body() dto : dto.CreateSectionDtoV2) {
+    let email = req.user.email;
+  
+    let result = await this.createNewSectionV3({
+      email,
+      data : dto.data,
+      order : dto.order,
+      websiteId : dto.websiteId,
+      templateId : dto.templateId
+    });
+
+    return result;
+  }
+  */
   
   // generate website
   @UseGuards(JwtGuard)

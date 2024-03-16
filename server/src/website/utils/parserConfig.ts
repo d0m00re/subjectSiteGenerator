@@ -1,28 +1,6 @@
 import z from "zod";
 
-/*
-buttons : {
-                    create : [
-                        {
-                            order : 0,
-                            label : "",
-                            actionType : "",
-                            path : ""
-                        }
-                    ]
-                },
-                typographies : {
-                    create : [
-                        {
-                            order : 0,
-                            text : "",
-                            variant : "",
-                            path : ""
-                        }
-                    ]
-                }
-*/
-
+// row
 export interface IButtonRow {
     order: number;
     size : string;
@@ -52,6 +30,18 @@ export interface IImageRow {
     animation : string;
 }
 
+export type IDataTemplateSubElem = IButtonRow | ITypographyRow;
+
+// update
+export interface IUpdateTypography extends ITypographyRow {
+    kind : "typography"
+}
+
+export interface IUpdateButton extends IButtonRow {
+    kind : "button",
+}
+
+export type IDataUpdateElem = IUpdateTypography | IUpdateButton;
 
 //----------------
 
@@ -91,4 +81,3 @@ export const parseTemplateConfigStringToJSON = (json: string) => {
     const parsedArray = JSON.parse(json.replaceAll("'", '"'));
     return TemplateValidatorArray.parse(parsedArray);
 }
-//

@@ -64,3 +64,28 @@ export const updateSectionV3 = (props : IUpdateSectionV3) => {
     })
     .then(resp => resp.json()))
 } 
+
+
+export interface ICreateWebsiteSectionV3 {
+    data : any,
+    order : number;
+    websiteId : number;
+    templateId : number;
+    accessToken : string;
+}
+
+export const createWebsiteSectionV3 = (props : ICreateWebsiteSectionV3) : Promise<any> => {
+    return fetch(`${API_WEBSITE_URL}/v3/section`, {
+        method : "POST",
+        headers : {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken)
+        },
+        body : JSON.stringify({
+            data : props.data,
+            order : props.order,
+            websiteId : props.websiteId,
+            templateId : props.templateId
+        })
+    })
+}

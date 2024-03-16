@@ -72,3 +72,5 @@ probably moove the request to api because this is like that
 * share l edition / creation modal
 * impr style
 * replace all email check with id
+
+//[{'order':0,'kind':'text','label':'title','text':'','size' : 'big','variant':'normal','path':'','animation' : '','decorator':''},{'order':1,'kind':'button','label':'cta','text' :'','size':'medium','variant':'solid','shape':'square','actionType':'external','path':'','animation':'unimplemented'}]

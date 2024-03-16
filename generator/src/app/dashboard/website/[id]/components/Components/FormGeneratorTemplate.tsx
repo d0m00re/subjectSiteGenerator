@@ -8,11 +8,11 @@ import { useSession } from 'next-auth/react';
 import * as entity from "@/network/configTemplate/configTemplate.entity";
 import { Button } from '@/components/Button';
 import { Input } from '@/components/ui/input';
-import { ICreateWebsiteSectionV2, createWebsiteSectionV2 } from '@/network/generateWebsite/generateWebsite.network';
+import { ICreateWebsiteSectionV2 } from '@/network/generateWebsite/generateWebsite.network';
 import useCurrentWebsiteStore from './../store/currentWebsite.zustand.store';
 import parseTemplateConfigStringToJSON from '../utils/parser';
 import * as entityWebsite from '@/network/website/website.entity';
-import { updateSectionV2 } from '@/network/website/website.network';
+import { ICreateWebsiteSectionV3, createWebsiteSectionV3, updateSectionV2 } from '@/network/website/website.network';
 import { UpdateDataV3Dico } from '@/network/website/website.entity';
 
 interface IFormGeneratorTemplate {
@@ -81,15 +81,15 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   }, [])
 
   const submitFormCreate = () => {
-    let dataSubmit: ICreateWebsiteSectionV2 = {
-      data: dataForm,
+    let dataSubmit: ICreateWebsiteSectionV3 = {
+      data: dataFormV2,
       order: props.order,
       websiteId: props.websiteId,
       templateId: props.selectedTemplate?.id ?? -1,
       accessToken: session?.backendTokens?.accessToken ?? ""
     }
-
-    createWebsiteSectionV2(dataSubmit)
+ 
+    createWebsiteSectionV3(dataSubmit)
       .then((resp: any) => {
         websiteStore.resetWtData(resp);
         props.setOpen(false);
@@ -126,6 +126,9 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   }
 
   const submitForm = (e: any) => {
+    console.log("final data : ")
+    console.log(dataFormV2);
+
     e.preventDefault();
 
     if (props.mode === "create") {
@@ -139,6 +142,13 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setDataForm((old: any) => ({ ...old, [name]: value }));
+    
+    let currElem = {...dataFormV2[name]};
+    if (!currElem) return ;
+    currElem.text = value; 
+    setDataFormV2((old : any) => ({
+      ...old, [name] : currElem
+    }))
   }
 
   return (
@@ -159,7 +169,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                   name={elem.label}
                   onChange={handleChange}
                   type="text"
-                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}
+                  value={(dataFormV2 && dataFormV2[elem.label]) ? dataFormV2[elem.label].text : ""}
                 />
               </section>
             } else if (elem.kind === "button") {
@@ -169,7 +179,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                   name={elem.label}
                   onChange={handleChange}
                   type="text"
-                  value={(dataForm && dataForm[elem.label]) ? dataForm[elem.label] : ""}
+                  value={(dataFormV2 && dataFormV2[elem.label]) ? dataFormV2[elem.label].text : ""}
                 />
               </section>
             }
