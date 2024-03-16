@@ -14,6 +14,7 @@ import parseTemplateConfigStringToJSON from './utils/parser';
 import ModalEditSection from './modal/ModalEditSection';
 import ModalCreateSection from './modal/ModalCreateSection';
 import ModalEditSectionV2 from './modal/ModalEditSectionV2';
+import ModalEditSectionStyle from './modal/ModalEditSectionStyle';
 
 type Props = { 
   section: I_WebsiteSection;
@@ -32,7 +33,17 @@ interface IModalCreateSection {
   open: boolean;
 }
 
+interface IModalEditSectionStyle {
+  index : number;
+  open : boolean;
+}
+
 const resetModalCreateSection = (): IModalCreateSection => ({
+  index: -1,
+  open: false
+});
+
+const resetModalSectionEditStyle = (): IModalEditSectionStyle => ({
   index: -1,
   open: false
 });
@@ -94,6 +105,7 @@ function RenderWithConfig(props : {section : I_WebsiteSection}) {
 
 function SectionWebsite(props: Props) {
   const [modalEdit, setModalEdit] = useState(false);
+  const [modalEditSectionStyle, setModalEditSectionStyle] = useState<IModalEditSectionStyle>(resetModalSectionEditStyle());
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
   const [isHovered, setIsHovered] = useState(false);
   const currentWebsite = useCurrentWebsite();
@@ -176,6 +188,7 @@ function SectionWebsite(props: Props) {
 
         <ContainerSectionActionBar
             onOpenEdit = {() => {setModalEdit(true)}}
+            onOpenStyleEdit={() => {setModalEditSectionStyle(() => ({index : props.index, open : true}))}}
             onOpenDelete = {onDeleteSection}
             onOpenDuplicate = {onDuplicate}
             onMooveTop = {onSwitchWebsitePositionTop}
@@ -208,6 +221,14 @@ function SectionWebsite(props: Props) {
               }
             /> :
             <></>
+        }
+        {
+          modalEditSectionStyle.open ?
+          <ModalEditSectionStyle
+            open={modalEditSectionStyle.open}
+            setOpen={(open : boolean) => setModalEditSectionStyle(old => ({...old, open : open}))}
+            sectionIndex={props.index}
+          /> : <></>
         }
       </section>
       <ButtonAddSection show onOpenModalAddSection={onOpenModalAddSection} index={props.index + 1} />
