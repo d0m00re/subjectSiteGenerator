@@ -75,8 +75,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
         }
       }
       setDataFormV2(defaultObjJSON);
-      console.log("default data form v2")
-      console.log(dataFormV2)
     }
   }, [])
 

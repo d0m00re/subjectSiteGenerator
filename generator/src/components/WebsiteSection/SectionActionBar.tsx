@@ -1,8 +1,9 @@
-import { ChevronDown, ChevronUp, Copy, Pencil, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, Copy, FilePenLine, Pencil, Trash2 } from 'lucide-react'
 import React from 'react'
 
 type Props = {
     onOpenEdit: () => void;
+    onOpenStyleEdit: () => void;
     onOpenDelete: () => void;
     onOpenDuplicate: () => void;
     onMooveTop: () => void;
@@ -27,6 +28,7 @@ function SectionActionBar(props: Props) {
                     <Pencil />
                     Edit
                 </div>
+                <FilePenLine onClick={props.onOpenStyleEdit} />
                 <VerticalSeparator />
                 <Trash2 onClick={props.onOpenDelete} />
                 <Copy onClick={props.onOpenDuplicate}/>
