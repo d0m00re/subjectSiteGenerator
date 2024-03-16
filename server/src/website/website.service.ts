@@ -201,7 +201,7 @@ export class WebsiteService {
             }
         });
 
-        let data = await this.prisma.websiteSection.create({
+        await this.prisma.websiteSection.create({
             data: {
                 websiteId: props.websiteId,
                 backgroundImage: "unimplemented",
@@ -228,8 +228,6 @@ export class WebsiteService {
     }
 
     sectionUpdateV3 = async (props : IUpdateV3) => {
-        console.log("update v3 let s go man");
-        console.log(props);
                 // get back section
                 let sectionWithSubElem = await this.prisma.websiteSection.findUnique({
                     where: { id: props.sectionId },
