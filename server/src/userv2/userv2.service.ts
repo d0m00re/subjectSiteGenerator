@@ -2,6 +2,7 @@ import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestj
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/userv2.dto';
 import { hash } from 'bcrypt';
+
 @Injectable()
 export class Userv2Service {
   constructor(private prisma: PrismaService) { }

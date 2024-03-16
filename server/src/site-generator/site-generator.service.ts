@@ -1,9 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { OpenAIService } from 'src/openai/openai.service';
-import { ConfigTemplateService } from 'src/config-template/config-template.service';
-import { WebsiteService } from 'src/website/website.service';
-import { IButtonRow, ITypographyRow, parseTemplateConfigStringToJSON } from 'src/website/utils/parserConfig';
 import { Userv2Service } from 'src/userv2/userv2.service';
 
 interface ICreateOne {
@@ -12,31 +8,10 @@ interface ICreateOne {
     email: string;
 }
 
-interface IUpdateSection {
-    sectionId: number;
-    email: string; // email user
-}
-
 interface IGetUserWebsite {
     email: string;
     page: number;
     pageSize: number;
-}
-
-interface ICreateNewSection {
-    email: string;
-    order: number;
-    websiteId: number;
-  //  title: string;
-  //  description: string;
-}
-
-interface ICreateNewSectionV2 {
-    email: string;
-    data: any; // json object
-    order: number;
-    websiteId: number;
-    templateId: number;
 }
 
 interface IDeleteSection {
@@ -54,190 +29,8 @@ interface IMooveSection {
 export class SiteGeneratorService {
     constructor(
         private prisma: PrismaService,
-        private configTemplateService: ConfigTemplateService,
-        private openAiService: OpenAIService,
-        private websiteService: WebsiteService,
         private userV2Service : Userv2Service
     ) { }
-
-    // should control user
-    updateSection = async (props: IUpdateSection) => {
-        //const user = await this.userV2Service.getUser(props.email);
-
-        // retrieve website and associate section
-
-        let websiteWtSection = await this.prisma.websiteSection.findFirst({
-            where: { id: props.sectionId },
-        });
-
-        if (!websiteWtSection)
-            throw new HttpException('No section found', HttpStatus.NOT_FOUND);
-
-        let website = await this.prisma.website.findFirst({
-            where: { id: websiteWtSection.websiteId }
-        });
-
-        if (!website)
-            throw new HttpException('No website found', HttpStatus.NOT_FOUND);
-
-        //---------------- update
-        let res = await this.prisma.websiteSection.update({
-            where: { id: websiteWtSection.id },
-            data: {
-                
-            }
-        });
-        return res;
-    }
-
-    createNewSectionV2 = async (props: ICreateNewSectionV2) => {
-        let currentOrder = props.order;
-
-        // get template target
-        const template = await this.configTemplateService.getTemplateVariantWtId(props.templateId); //this.prisma.templateVariant.findUnique({where : {id : props.templateId}});
-
-        if (!template) throw new HttpException('No template variant found', HttpStatus.NOT_FOUND);
-
-        const configJSON = parseTemplateConfigStringToJSON(template.config);
-
-        // cxheck if all key are present inside data
-        // basic validation for the moment rework with a better version later
-        let validateDataInput = true;
-        let msgErrorDetail : any = {}
-        for (let i = 0; i < configJSON.length; i++) {
-            if (!props.data[configJSON[i].label]) {
-                msgErrorDetail[configJSON[i].label] = "key missing";
-                validateDataInput = false;
-            }
-        }
-        if (!validateDataInput) throw new HttpException(`Some data not found : ${JSON.stringify(msgErrorDetail)}`, HttpStatus.NOT_FOUND);
-
-        // encode data
-        let button: IButtonRow[] = [];
-        let typography: ITypographyRow[] = [];
-
-        // transform config to real elements
-        for (let i = 0; i < configJSON.length; i++) {
-            let configElem = configJSON[i];
-            // get back property text
-            let text = props.data[configElem.label];
-            if (configElem.kind === "text") {
-                typography.push({
-                    order: configElem.order ?? -1,
-                    text: text,
-                    size : "unimplemented",
-                    variant : "unimplemented",
-                    path: "unimplemented",
-                    animation : "unimplemented",
-                    decorator : "unimplemented"
-                })
-            } else if (configElem.kind === "button") {
-                button.push({
-                    order: configElem.order ?? -1,
-                    text: text,
-                    size : "unimplemented",
-                    variant : "unimplemented",
-                    shape : "unimplemented",
-                    actionType : "unimplemented",
-                    path: "unimplemented",
-                    animation: "external"
-                })
-            }
-        }
-        //-----------------------------------------------
-
-        // moove all section order for our new section order
-        await this.prisma.websiteSectionOrder.updateMany({
-            where: {
-                websiteId: props.websiteId,
-                order: { gte: currentOrder } // greater than or egual
-            },
-            data: {
-                order: {
-                    increment: 1
-                }
-            }
-        });
-
-        let data = await this.prisma.websiteSection.create({
-            data: {
-                websiteId: props.websiteId,
-                backgroundImage: "unimplemented",
-                backgroundColor : "unimplemented",
-                configTemplateId: props.templateId,
-                websiteSectionOrder: {
-                    create: {
-                        websiteId: props.websiteId,
-                        order: props.order
-                    }
-                },
-                buttons: {
-                    create: button
-                },
-                typographies: {
-                    create: typography
-                }
-            }
-        });
-
-        // retrieve all data and return it :
-        let newData = await this.websiteService.getWebsiteFull({ websiteId: props.websiteId });
-        return newData;
-    }
-
-  
-
-    // probably should rework data model for reduce amount or data load perform
-    createNewSection = async (props: ICreateNewSection) => {
-        //const user = await this.userV2Service.getUser(props.email);
-        let currentOrder = props.order;
-
-        // reorder section
-        await this.prisma.websiteSectionOrder.updateMany({
-            where: {
-                websiteId: props.websiteId,
-                order: { gte: currentOrder } // greater than or egual
-            },
-            data: {
-                order: {
-                    increment: 1
-                }
-            }
-        });
-
-        // create subsection
-        await this.prisma.websiteSection.create({
-            data: {
-                websiteId: props.websiteId,
-                backgroundImage: "unimplemented",
-                backgroundColor : "unimplemented",
-                configTemplateId: 1,
-                websiteSectionOrder: {
-                    create: {
-                        websiteId: props.websiteId,
-                        order: props.order
-                    }
-                }
-            }
-        });
-
-        let newData = await this.prisma.website.findUnique({
-            where: { id: props.websiteId },
-            include: {
-                websiteSection: {
-                    include: {
-                        websiteSectionOrder: true,
-                        buttons: true,
-                        typographies: true,
-                        configTemplate: true
-                    }
-                }
-            }
-        })
-
-        return newData;
-        // reorder and update
-    }
 
     deleteSection = async (props: IDeleteSection) => {
         console.log(`delete section id : ${props.sectionId}`);
@@ -330,6 +123,7 @@ export class SiteGeneratorService {
         //  if (currentOrder < 0 || targetOrder < 0) throw new HttpException('Section not found', HttpStatus.FORBIDDEN);
     }
 
+    // old ia generation
     createOneV2 = async (props: ICreateOne) => {
        // let user = await this.userV2Service.findByEmail(props.email);
 
