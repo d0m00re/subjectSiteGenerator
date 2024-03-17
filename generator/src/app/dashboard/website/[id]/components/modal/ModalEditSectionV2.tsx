@@ -11,8 +11,7 @@ import {
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import FormGeneratorTemplate from './../Components/FormGeneratorTemplate';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
-import parseTemplateConfigStringToJSON from '../utils/parser';
-import { A_I_TemplateVariant } from '@/network/configTemplate/configTemplate.entity';
+import { A_I_TemplateVariant, I_TemplateVariant_parse, parseTemplateConfigStringToJSON } from '@/network/configTemplate/configTemplate.entity';
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
 
 interface IModalEdit {
@@ -23,7 +22,7 @@ interface IModalEdit {
 
 const ModalEditSection = (props: IModalEdit) => {
     const [jsonData, setJsonData] = useState<any>({});
-    const [template, setTemplate] = useState<A_I_TemplateVariant | undefined>(undefined);
+    const [template, setTemplate] = useState<I_TemplateVariant_parse | undefined>(undefined);
     const templateGroup = useTemplateGroup();
 
     // rework later with json object property
@@ -36,12 +35,12 @@ const ModalEditSection = (props: IModalEdit) => {
             return ;
         }
 
-        let templateGParse = parseTemplateConfigStringToJSON(templateG.config);
+        let templateConfig = templateG.config;
 
         // populate json
         let elementJSON : any = {};
-        for (let x = 0; x < templateGParse.length; x++) {
-            let curr = templateGParse[x];
+        for (let x = 0; x < templateConfig.length; x++) {
+            let curr = templateConfig[x];
             if (curr.kind === "text") {
                 let currElement = props.section.typographies.find(e => e.order === curr.order);
                 if (currElement) {
@@ -65,7 +64,7 @@ const ModalEditSection = (props: IModalEdit) => {
             <DialogContent>
                 <DialogHeader >
                     <DialogTitle>
-                        Edit your section
+                        Edit your section 
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="flex flex-col gap-4 items-center">

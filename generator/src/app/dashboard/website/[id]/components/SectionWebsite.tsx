@@ -10,8 +10,6 @@ import * as networkGenerateWeb from "@/network/generateWebsite/generateWebsite.n
 import ContainerSectionActionBar from '@/components/WebsiteSection/SectionActionBar';
 
 import useCurrentWebsite from "./store/currentWebsite.zustand.store";
-import parseTemplateConfigStringToJSON from './utils/parser';
-import ModalEditSection from './modal/ModalEditSection';
 import ModalCreateSection from './modal/ModalCreateSection';
 import ModalEditSectionV2 from './modal/ModalEditSectionV2';
 import ModalEditSectionStyle from './modal/ModalEditSectionStyle';
@@ -79,15 +77,15 @@ function RenderWithConfig(props : {section : I_WebsiteSection}) {
   const templateGroupStore = useTemplateGroup();
 
   // find config
-  let config = templateGroupStore.templateVariant.find(e => e.id === props.section.configTemplateId);
+  let templateV = templateGroupStore.templateVariant.find(e => e.id === props.section.configTemplateId);
 
-  if (config === undefined) return <p>error retrieve template variant id {props.section.id}</p>
+  if (templateV === undefined) return <p>error retrieve template variant id {props.section.id}</p>
 
-  let configParse = parseTemplateConfigStringToJSON(config.config); //JSON.parse(config.config.replaceAll("'", '"'));
+  let config = templateV.config; //JSON.parse(config.config.replaceAll("'", '"'));
 
   return (<section className='flex flex-col gap-2'>
     {
-      configParse.map(e => {
+      config?.map(e => {
         if (e.kind === "text") {
           // find typo - order for the moment but later base on other things
           let elemTypo = props.section.typographies.find(typo => typo.order === e.order);

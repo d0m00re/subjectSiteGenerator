@@ -1,14 +1,18 @@
 "use client"
 
+// todo : fix type problem
 import { create } from 'zustand'
 
 import * as network from "../network/configTemplate/configTemplate.network";
 import * as entity from "../network/configTemplate/configTemplate.entity";
 
+/**
+ * templateVariant : array of parsed config templateGroup sub elem
+ */
 interface ITemplateZustand {
-    templateGroup : entity.I_TemplateGroup[];
+    templateGroup : entity.FinalParsedTemplateGroup[]; //I_TemplateGroup[];
     // easy access all templazte variant in same array
-    templateVariant : entity.A_I_TemplateVariant[];
+    templateVariant : entity.I_TemplateVariant_parse[];
     populate: () => void;
 }
 
@@ -19,22 +23,45 @@ const useTemplateGroup = create<ITemplateZustand>()((set) => ({
         network
         .getAllGroup()
         .then(arrGroup => {
-            console.log("resp")
+            console.log("base Data :")
             console.log(arrGroup)
 
-            let arrVariant : entity.A_I_TemplateVariant[] = [];
+           // let fakeParse : entity.FinalParsedTemplateGroup[] = arrGroup.map(e => {
+                let shouldBeCorrectlyType : any = arrGroup.map(e => {
 
+                let res = e.templateVariant.map(varElem => {
+                    // parse cosnfig
+                    let parsedConfig = entity.parseTemplateConfigStringToJSON(varElem.config);
+                    return {
+                        ...varElem,
+                        config : parsedConfig
+                    };
+                })
+                return {
+                    id : e.id,
+                    kind : e.kind,
+                    templateVariant : res
+                }
+            })
+
+            let arrVariant : entity.I_TemplateVariant_parse[] = [];
+
+
+            // parse template variant group, easy way for accessing data
+            // parse is useless now
             for (let i = 0; i < arrGroup.length; i++) {
+                let currElem = shouldBeCorrectlyType[i];
+
                 arrVariant = [
                     ...arrVariant,
-                    ...arrGroup[i].templateVariant
-                ]
+                    ...currElem.templateVariant
+                ];
             }
 
             set((state) => {
                 return {
                     ...state,
-                    templateGroup : arrGroup,
+                    templateGroup : shouldBeCorrectlyType,//arrGroup,
                     templateVariant :  arrVariant
                 }
             })
