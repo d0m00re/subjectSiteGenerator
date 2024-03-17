@@ -8,10 +8,12 @@
 * create / update / delete / moove section
 * view website list with pagination
 
-## feature v0.2
+## feature v0.2 - next version
 * website preview (public url)
 * edit element style (button variant, typography size)
+* section style (backgroundColor / backgroundRadiant)
 * better styling
+* better api
 
 ## short technical description
 * website : composition of section

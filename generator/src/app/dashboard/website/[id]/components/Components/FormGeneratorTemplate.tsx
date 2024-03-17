@@ -8,17 +8,15 @@ import { useSession } from 'next-auth/react';
 import * as entity from "@/network/configTemplate/configTemplate.entity";
 import { Button } from '@/components/Button';
 import { Input } from '@/components/ui/input';
-import { ICreateWebsiteSectionV2 } from '@/network/generateWebsite/generateWebsite.network';
 import useCurrentWebsiteStore from './../store/currentWebsite.zustand.store';
-import parseTemplateConfigStringToJSON from '../utils/parser';
 import * as entityWebsite from '@/network/website/website.entity';
 import { ICreateWebsiteSectionV3, createWebsiteSectionV3, updateSectionV2 } from '@/network/website/website.network';
 import { UpdateDataV3Dico } from '@/network/website/website.entity';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 
 interface IFormGeneratorTemplate {
-  selectedTemplate: entity.A_I_TemplateVariant | undefined
-  setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.A_I_TemplateVariant | undefined>>
+  selectedTemplate: entity.I_TemplateVariant_parse | undefined
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.I_TemplateVariant_parse | undefined>>
   websiteId: number;
   order: number;
   setOpen: (val: boolean) => void;
@@ -30,13 +28,12 @@ interface IFormGeneratorTemplate {
 
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   // config
-  const config = parseTemplateConfigStringToJSON(props.selectedTemplate?.config ?? "{}");
+  const templateConfig = props.selectedTemplate?.config;
   const [dataForm, setDataForm] = useState<any>({});
   const [dataFormV2, setDataFormV2] = useState<UpdateDataV3Dico>({})
   const { data: session } = useSession();
   const websiteStore = useCurrentWebsiteStore();
   const templateGroup = useTemplateGroup();
-
 
   useEffect(() => {
 
@@ -58,16 +55,12 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
         return ;
       }
 
-      let templateGParse = parseTemplateConfigStringToJSON(currTemplate.config);
-
-      console.log("section : ")
-      console.log(currSection);
-      console.log(templateGParse);
+      let templateConfig = currTemplate.config; //entity.parseTemplateConfigStringToJSON(currTemplate.config);
 
       const dataJsonEdit : UpdateDataV3Dico = {};
 
-      for (let i = 0; i < templateGParse.length; i++) {
-        let currTemplate = templateGParse[i];
+      for (let i = 0; i < templateConfig.length; i++) {
+        let currTemplate = templateConfig[i];
 
         if (currTemplate.kind === "text") {
           //
@@ -97,8 +90,8 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     } else {
       let defaultObjJSON: UpdateDataV3Dico = {};
       // generate some default data
-      for (let i = 0; i < config.length; i++) {
-        let curr = config[i];
+      for (let i = 0; templateConfig && i < templateConfig.length; i++) {
+        let curr = templateConfig[i];
         if (curr.kind === "text") {
           let encodeeObjTypo: entityWebsite.IUpdateV3Typography = {
             kind: "typography",
@@ -201,6 +194,14 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     }))
   }
 
+  if (!templateConfig)
+    return <></>
+
+  console.log("config")
+  console.log(templateConfig)
+
+  console.log(typeof(templateConfig))
+
   return (
     <section className='flex flex-col gap-2'>
       <Button onClick={() => props.setSelectedTemplate(undefined)}>
@@ -211,7 +212,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
         onSubmit={submitForm}
         className='flex flex-col gap-2'>
         {
-          config.map(elem => {
+          templateConfig?.map(elem => {
             if (elem.kind === "text") {
               return <section className='flex flex-col gap-1'>
                 <p>{elem.label}</p>
