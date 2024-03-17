@@ -14,6 +14,7 @@ import parseTemplateConfigStringToJSON from '../utils/parser';
 import * as entityWebsite from '@/network/website/website.entity';
 import { ICreateWebsiteSectionV3, createWebsiteSectionV3, updateSectionV2 } from '@/network/website/website.network';
 import { UpdateDataV3Dico } from '@/network/website/website.entity';
+import useTemplateGroup from '@/store/templateGroup.zustand.store';
 
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.A_I_TemplateVariant | undefined
@@ -34,19 +35,70 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   const [dataFormV2, setDataFormV2] = useState<UpdateDataV3Dico>({})
   const { data: session } = useSession();
   const websiteStore = useCurrentWebsiteStore();
+  const templateGroup = useTemplateGroup();
+
 
   useEffect(() => {
 
-    if (props.defaultData) {
+    if (props.mode === "edit") {
       // alert(`update data : ${JSON.stringify(props.defaultData)}`)
-      setDataForm(props.defaultData);
+      console.log("default data : ")
+      let currSection = websiteStore.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
+
+      if (!currSection) {
+        console.log("section not found")
+        return ;
+      }
+
+      // get back template
+      let currTemplate = templateGroup.templateVariant.find(e => e.id === currSection?.configTemplateId);
+
+      if (!currTemplate) {
+        console.log("template not found")
+        return ;
+      }
+
+      let templateGParse = parseTemplateConfigStringToJSON(currTemplate.config);
+
+      console.log("section : ")
+      console.log(currSection);
+      console.log(templateGParse);
+
+      const dataJsonEdit : UpdateDataV3Dico = {};
+
+      for (let i = 0; i < templateGParse.length; i++) {
+        let currTemplate = templateGParse[i];
+
+        if (currTemplate.kind === "text") {
+          //
+          let elemTypo = currSection.typographies.find(e => e.order === currTemplate.order);
+          if (elemTypo) {
+            dataJsonEdit[currTemplate.label] = {
+              kind : "typography",
+              ...elemTypo
+            }
+          }
+        
+        } else if (currTemplate.kind === "button") {
+          let elemButton = currSection.buttons.find(e => e.order === currTemplate.order);
+          if (elemButton) {
+            dataJsonEdit[currTemplate.label] = {
+              kind : "button",
+              ...elemButton
+            }
+          }
+        }
+      }
+      console.log("data json edit")
+      console.log(dataJsonEdit);
+      setDataFormV2(dataJsonEdit);
+  //    setDataForm(props.defaultData);
+      // fix edit here
     } else {
       let defaultObjJSON: UpdateDataV3Dico = {};
       // generate some default data
       for (let i = 0; i < config.length; i++) {
         let curr = config[i];
-        console.log("turn")
-        console.log(curr);
         if (curr.kind === "text") {
           let encodeeObjTypo: entityWebsite.IUpdateV3Typography = {
             kind: "typography",
