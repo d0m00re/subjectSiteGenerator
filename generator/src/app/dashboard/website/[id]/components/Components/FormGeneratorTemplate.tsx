@@ -10,8 +10,7 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/ui/input';
 import useCurrentWebsiteStore from './../store/currentWebsite.zustand.store';
 import * as entityWebsite from '@/network/website/website.entity';
-import { ICreateWebsiteSectionV3, createWebsiteSectionV3, updateSectionV2, updateSectionV4 } from '@/network/website/website.network';
-import { UpdateDataV3Dico } from '@/network/website/website.entity';
+import { ICreateWebsiteSectionV4, createWebsiteSectionV4, updateSectionV4 } from '@/network/website/website.network';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { cloneDeep } from 'lodash';
 
@@ -30,7 +29,7 @@ interface IFormGeneratorTemplate {
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   // config
   const templateConfig = props.selectedTemplate?.config;
-  const [dataFormV4, setDataFormV4] = useState<entityWebsite.TUpdateDataV3[]>([]);
+  const [dataFormV4, setDataFormV4] = useState<entityWebsite.TUpdateDataV4[]>([]);
   const { data: session } = useSession();
   const storeWebsite = useCurrentWebsiteStore();
   const storeTemplate = useTemplateGroup();
@@ -57,7 +56,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
       let templateConfig = currTemplate.config; //entity.parseTemplateConfigStringToJSON(currTemplate.config);
 
-      const dataUpdateSection : entityWebsite.TUpdateDataV3[] = [];
+      const dataUpdateSection : entityWebsite.TUpdateDataV4[] = [];
 
       for (let i = 0; i < templateConfig.length; i++) {
         let currTemplate = templateConfig[i];
@@ -86,13 +85,13 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       // fix edit here
     } else {
       // dataUpdateSection
-      let dataUpdateSection: entityWebsite.TUpdateDataV3[] = [];
+      let dataUpdateSection: entityWebsite.TUpdateDataV4[] = [];
 
       // generate some default data
       for (let i = 0; templateConfig && i < templateConfig.length; i++) {
         let curr = templateConfig[i];
         if (curr.kind === "text") {
-          let encodeeObjTypo: entityWebsite.IUpdateV3Typography = {
+          let encodeeObjTypo: entityWebsite.IUpdateTypography = {
             kind: "typography",
             order: curr.order,
             text: "",
@@ -104,7 +103,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
           }
           dataUpdateSection.push(encodeeObjTypo);
         } else if (curr.kind === "button") {
-          let encodeObjButton: entityWebsite.IUpdateV3Button = {
+          let encodeObjButton: entityWebsite.IUpdateButton = {
             kind: "button",
             order: curr.order,
             text: "",
@@ -124,16 +123,16 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   }, [])
 
   const submitFormCreate = () => {
-    /*
-    let dataSubmit: ICreateWebsiteSectionV3 = {
+    
+    let dataSubmit: ICreateWebsiteSectionV4 = {
       data: dataFormV4,
       order: props.order,
-      websiteId: props.websiteId,x
+      websiteId: props.websiteId,
       templateId: props.selectedTemplate?.id ?? -1,
       accessToken: session?.backendTokens?.accessToken ?? ""
     }
  
-    createWebsiteSectionV3(dataSubmit)
+    createWebsiteSectionV4(dataSubmit)
       .then((resp: any) => {
         storeWebsite.resetWtData(resp);
         props.setOpen(false);
@@ -141,8 +140,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       .catch(err => {
         console.log(err);
       })
-
-    */
   }
 
   const submitFormEdit = () => {

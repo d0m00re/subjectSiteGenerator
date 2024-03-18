@@ -28,51 +28,25 @@ export class WebsiteController {
     return newWebsite;
   }
 
-  @UseGuards(JwtGuard)
-  @Patch("section")
-  async updateSection(@Request() req, @Body() dto: dto.UpdateSection) {
-    console.log("updateSection")
+  @UseGuards(JwtGuard) 
+  @Post("v4/section")
+  async createSectionV4(@Request() req, @Body() dto: dto.CreateSectionV4) {
     let userId = req.user.userId;
 
-    let data = await this.websiteService.updateSectionV2({
-      userId,
-      data: dto.data,
-      sectionId: dto.sectionId
-    });
-
-    return data;
-  }
-
-  @UseGuards(JwtGuard)
-  @Patch("v3/section")
-  async updateSectionV3(@Request() req, @Body() dto: dto.UpdateSectionV3) {
-    let userId = req.user.userId;
-
-    let data = await this.websiteService.sectionUpdateV3({
-      data: dto.data,//Object.fromEntries(dto.data),
-      sectionId: dto.sectionId,
-      userId: userId
-    })
-    return data;
-  }
-
-  @UseGuards(JwtGuard)
-  @Post("v3/section")
-  async createSectionV3(@Request() req, @Body() dto: dto.CreateSectionV3) {
-    let userId = req.user.userId;
-
-    let data = await this.websiteService.createNewSectionV3({
+    let data = await this.websiteService.createNewSectionV4({
       userId: userId,
       data: dto.data, //Object.fromEntries(dto.data),
       order: dto.order,
       websiteId: dto.websiteId,
       templateId: dto.templateId
     })
+
+    return data;
   }
 
   @UseGuards(JwtGuard)
   @Patch("v4/section")
-  async createSectionV4(@Request() req, @Body() dto: dto.UpdateSectionV4) {
+  async updateSectionV4(@Request() req, @Body() dto: dto.UpdateSectionV4) {
     let userId = req.user.userId;
 
     let data = await this.websiteService.sectionUpdateV4({
