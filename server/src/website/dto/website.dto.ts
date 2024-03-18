@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class CreateWebsiteDto {
     @IsString()
@@ -67,6 +67,8 @@ export class UpdateButton {
     animation: string;
 }
 
+// UpdateTypography | UpdateButton
+
 /*
 export class UpdateSectionV3 {
     @IsObject()
@@ -94,6 +96,15 @@ export class UpdateSectionV3 {
     data: any;
     @IsNumber()
     sectionId: number;
+}
+
+export class UpdateSectionV4 {
+    @IsArray()
+    data : any[];
+    @IsObject()
+    layout : any;
+    @IsNumber()
+    sectionId : number;
 }
 
 export class CreateSectionV3 {

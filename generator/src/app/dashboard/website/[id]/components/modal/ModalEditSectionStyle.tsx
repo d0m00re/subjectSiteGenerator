@@ -29,6 +29,7 @@ function ModalEditSectionStyle(props: IModalEditSectionStyle) {
                 <DialogDescription className="flex flex-col gap-4 items-center">
                     {(props.open) ? <StyleEditing
                         sectionIndex={props.sectionIndex}
+                        onClose={() => props.setOpen(false)}
                     /> : <IconLoaderSpin />
                     }
                 </DialogDescription>

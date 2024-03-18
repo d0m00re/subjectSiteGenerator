@@ -1,7 +1,7 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER, generateBearerToken } from "./../contants.network";
 import { I_Website } from "../generateWebsite/generateWebsite.entity";
-import { ICreateWebsiteInput, IUpdateSectionV2, IUpdateSectionV3 } from "./website.entity";
+import { ICreateWebsiteInput } from "./website.entity";
 
 const API_WEBSITE_URL = `${BACKEND_URL}/website`;
 
@@ -33,38 +33,6 @@ export const createWebsite = (props : ICreateWebsiteInput) => {  //Promise<I_Web
     .then(resp => resp.json()))
 }
 
-export const updateSectionV2 = (props : IUpdateSectionV2) => {
-    return (fetch(`${API_WEBSITE_URL}/section`, {
-        method : "PATCH",
-        headers : {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
-        },
-        body : JSON.stringify({
-            data : props.data,
-            sectionId : props.sectionId
-        })
-    })
-    .then(resp => resp.json()))
-}
-
-//v3/section
-
-export const updateSectionV3 = (props : IUpdateSectionV3) => {
-    return (fetch(`${API_WEBSITE_URL}/v3/section`, {
-        method : "PATCH",
-        headers : {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
-        },
-        body : JSON.stringify({
-            data : props.data,
-            sectionId : props.sectionId
-        })
-    })
-    .then(resp => resp.json()))
-} 
-
 
 export interface ICreateWebsiteSectionV3 {
     data : any,
@@ -88,4 +56,27 @@ export const createWebsiteSectionV3 = (props : ICreateWebsiteSectionV3) : Promis
             templateId : props.templateId
         })
     })
+}
+
+interface IUpdateSessionV4 {
+    accessToken : string;
+    data : any[];
+    layout : any;
+    sectionId : number;
+}
+
+export const updateSectionV4 = (props : IUpdateSessionV4) : Promise<any> => {
+    return fetch(`${API_WEBSITE_URL}/v4/section`, {
+        method : "PATCH",
+        headers : {
+            ...BASE_HEADER,
+            authorization: generateBearerToken(props.accessToken)
+        },
+        body : JSON.stringify({
+            data : props.data,
+            layout : props.layout,
+            sectionId : props.sectionId
+        })
+    })
+    .then(resp => resp.json())
 }
