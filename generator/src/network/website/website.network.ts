@@ -1,7 +1,7 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER, generateBearerToken } from "./../contants.network";
 import { I_Website } from "../generateWebsite/generateWebsite.entity";
-import { ICreateWebsiteInput } from "./website.entity";
+import { ICreateWebsiteInput, TUpdateDataV4 } from "./website.entity";
 
 const API_WEBSITE_URL = `${BACKEND_URL}/website`;
 
@@ -34,16 +34,16 @@ export const createWebsite = (props : ICreateWebsiteInput) => {  //Promise<I_Web
 }
 
 
-export interface ICreateWebsiteSectionV3 {
-    data : any,
+export interface ICreateWebsiteSectionV4 {
+    data : TUpdateDataV4[],
     order : number;
     websiteId : number;
     templateId : number;
     accessToken : string;
 }
 
-export const createWebsiteSectionV3 = (props : ICreateWebsiteSectionV3) : Promise<any> => {
-    return fetch(`${API_WEBSITE_URL}/v3/section`, {
+export const createWebsiteSectionV4 = (props : ICreateWebsiteSectionV4) : Promise<any> => {
+    return fetch(`${API_WEBSITE_URL}/v4/section`, {
         method : "POST",
         headers : {
             ...BASE_HEADER,
@@ -60,7 +60,7 @@ export const createWebsiteSectionV3 = (props : ICreateWebsiteSectionV3) : Promis
 
 interface IUpdateSessionV4 {
     accessToken : string;
-    data : any[];
+    data : TUpdateDataV4[];
     layout : any;
     sectionId : number;
 }

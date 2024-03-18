@@ -1,4 +1,5 @@
 import { IsArray, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IDataUpdateElem } from "../utils/parserConfig";
 
 export class CreateWebsiteDto {
     @IsString()
@@ -107,9 +108,9 @@ export class UpdateSectionV4 {
     sectionId : number;
 }
 
-export class CreateSectionV3 {
-    @IsObject()
-    data: any;
+export class CreateSectionV4 {
+    @IsArray()
+    data: IDataUpdateElem[];
     @IsNumber()
     order : number;
     @IsNumber()

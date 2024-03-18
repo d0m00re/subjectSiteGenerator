@@ -12,7 +12,7 @@ interface IUpdateSectionV2 {
 
 interface ICreateNewSectionV3 {
     userId: number;
-    data: { [key: string]: IDataUpdateElem }; // json object
+    data: IDataUpdateElem[];//{ [key: string]: IDataUpdateElem }; // json object
     order: number;
     websiteId: number;
     templateId: number;
@@ -136,10 +136,10 @@ export class WebsiteService {
 
         return retData;
     }
-
-    createNewSectionV3 = async (props: ICreateNewSectionV3) => {
+ 
+    createNewSectionV4 = async (props: ICreateNewSectionV3) => {
         //const user = await this.userv2Service.findById(props.userId);
-
+        console.log("create new section v3")
         let currentOrder = props.order;
 
         // get template target
@@ -151,49 +151,35 @@ export class WebsiteService {
 
         // cxheck if all key are present inside data
         // basic validation for the moment rework with a better version later
-        let validateDataInput = true;
-        let msgErrorDetail: any = {}
-        for (let i = 0; i < configJSON.length; i++) {
-            if (!props.data[configJSON[i].label]) {
-                msgErrorDetail[configJSON[i].label] = "key missing";
-                validateDataInput = false;
-            }
-        }
-        if (!validateDataInput) throw new HttpException(`Some data not found : ${JSON.stringify(msgErrorDetail)}`, HttpStatus.NOT_FOUND);
-
-        // encode data
         let button: IButtonRow[] = [];
         let typography: ITypographyRow[] = [];
-
-        // transform config to real elements
-        for (let i = 0; i < configJSON.length; i++) {
-            let configElem = configJSON[i];
-            // get back property text
-            let elem = props.data[configElem.label];
-            if (configElem.kind === "text" && elem.kind === "typography") {
+        for (let i = 0; i < props.data.length; i++) {
+            let currentElem = props.data[i];
+            let templateElem = configJSON.find(e => e.order === currentElem.order);
+            if (currentElem.kind === "typography" && templateElem.kind === "text" && currentElem.order === templateElem.order) {
+                // get templat elem
                 typography.push({
-                    order: configElem.order ?? -1,
-                    text: elem.text,
-                    size: elem.size,
-                    variant: elem.variant,
-                    path: elem.path,
-                    animation: elem.animation,
-                    decorator: elem.decorator
-                })
-            } else if (configElem.kind === "button" && elem.kind === "button") {
+                    order: templateElem.order ?? -1,
+                    text: currentElem.text,
+                    size: currentElem.size,
+                    variant: currentElem.variant,
+                    path: currentElem.path,
+                    animation: currentElem.animation,
+                    decorator: currentElem.decorator
+                })              
+            } else if (currentElem.kind === "button" && templateElem.kind === "button" && currentElem.order === templateElem.order) {
                 button.push({
-                    order: configElem.order ?? -1,
-                    text: elem.text,
-                    size: elem.size,
-                    variant: elem.variant,
-                    shape: elem.shape,
-                    actionType: elem.actionType,
-                    path: elem.path,
-                    animation: elem.animation
+                    order: templateElem.order ?? -1,
+                    text: currentElem.text,
+                    size: currentElem.size,
+                    variant: currentElem.variant,
+                    shape: currentElem.shape,
+                    actionType: currentElem.actionType,
+                    path: currentElem.path,
+                    animation: currentElem.animation
                 })
             }
         }
-        //-----------------------------------------------
 
         // moove all section order for our new section order
         await this.prisma.websiteSectionOrder.updateMany({
@@ -229,95 +215,12 @@ export class WebsiteService {
             }
         });
 
-        // retrieve all data and return it :
         let newData = await this.getWebsiteFull({ websiteId: props.websiteId });
         return newData;
     }
 
-    sectionUpdateV3 = async (props: IUpdateV3) => {
-        // get back section
-        let sectionWithSubElem = await this.prisma.websiteSection.findUnique({
-            where: { id: props.sectionId },
-            include: {
-                websiteSectionOrder: true,
-                configTemplate: true,
-                buttons: true,
-                typographies: true,
-                images: true
-            }
-        });
-
-        if (!sectionWithSubElem) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-
-        const configJSON = parseTemplateConfigStringToJSON(sectionWithSubElem.configTemplate.config);
-
-        let arrProm: any = []
-
-        for (let i = 0; i < configJSON.length; i++) {
-            // key tagret
-            let keyTarget = configJSON[i].kind;
-
-            if (keyTarget === "text") {
-                // get current text elements
-                let currentElem = sectionWithSubElem.typographies.find(e => e.order === configJSON[i].order);
-                if (currentElem) {
-                    // update text
-                    //currentElem.text = props.data[configJSON[i].label];
-                    arrProm.push(this.prisma.templateElemTypography.update({
-                        where: { id: currentElem.id },
-                        data: {
-                            text: currentElem.text,
-                            size: currentElem.size,
-                            variant: currentElem.variant,
-                            path: currentElem.path,
-                            animation: currentElem.animation,
-                            decorator: currentElem.decorator
-                        }
-                    }));
-                }
-            }
-            else if (keyTarget === "button") {
-                let currentElem = sectionWithSubElem.buttons.find(e => e.order === configJSON[i].order);
-                if (currentElem) {
-                    // currentElem.text = props.data[configJSON[i].label];
-                    arrProm.push(this.prisma.templateElemButton.update({
-                        where: { id: currentElem.id },
-                        data: {
-                            text: currentElem.text,
-                            size: currentElem.size,
-                            variant: currentElem.variant,
-                            shape: currentElem.shape,
-                            actionType: currentElem.actionType,
-                            path: currentElem.path,
-                            animation: currentElem.animation
-                        }
-                    }));
-                }
-            }
-        }
-
-        await Promise.all(arrProm);
-
-        let retData = await this.prisma.websiteSection.findUnique({
-            where: { id: props.sectionId },
-            include: {
-                websiteSectionOrder: true,
-                configTemplate: true,
-                buttons: true,
-                typographies: true,
-                images: true
-            }
-        });
-
-        return retData;
-        return { unimplemented: true }
-    }
-
     sectionUpdateV4 = async (props: IUpdateV4) => {
         // check user identity
-
-        //
-        let arrProm: Promise<any>[] = []
 
         let section = await this.prisma.websiteSection.findUnique({
             where: {

@@ -30,11 +30,11 @@ export interface IUpdateButton {
     animation : string;
 }
 
-export type TUpdateDataV3 = (IUpdateTypography | IUpdateButton); 
+export type TUpdateDataV4 = (IUpdateTypography | IUpdateButton); 
 
 export interface IUpdateSectionV4 {
     layout : any[];
-    data : TUpdateDataV3[];
+    data : TUpdateDataV4[];
     sectionId : number;
     accessToken : string;
 }
