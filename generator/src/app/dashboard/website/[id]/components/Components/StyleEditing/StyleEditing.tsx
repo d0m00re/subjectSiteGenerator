@@ -1,44 +1,162 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import useCurrentWebsiteStore from '../../store/currentWebsite.zustand.store'
 import { I_TemplateElemTypography } from '@/network/website/websiteSection/templateElemTypography/templateElemTypography.entity';
 import { I_TemplateElemButton } from '@/network/website/websiteSection/templateElemButton/templateElemButton.entity';
+import useTemplateGroup from '@/store/templateGroup.zustand.store';
+import { Button } from '@/components/Button';
+import cloneDeep from 'lodash/cloneDeep';
+import { useSession } from 'next-auth/react';
 
-type Props = {
-    sectionIndex : number;
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { updateSectionV4 } from '@/network/website/website.network';
+
+interface ISelectSizeElem {
+    key: string;
+    value: string;
+    name: string;
+}
+
+type TSizeEnum = "small" | "medium" | "big"
+
+const selectSizeArray: ISelectSizeElem[] = [
+    { value: "small", name: "small", key: "size-small" },
+    { value: "medium", name: "medium", key: "size-medium" },
+    { value: "big", name: "big", key: "size-big" }
+];
+
+interface ISelectSize {
+    value : string;
+    onChange : (size : string) => void;
+}
+
+const SelectSize = (props : ISelectSize) => {
+    return <Select defaultValue={props.value} onValueChange={props.onChange}>
+        <SelectTrigger>
+            <SelectValue placeholder="select a size" />
+        </SelectTrigger>
+        <SelectContent
+            className='flex flex-col gap-2'>
+            <SelectGroup>
+            <SelectLabel>size</SelectLabel>
+            {
+                selectSizeArray.map(elem => <SelectItem
+                    key={elem.key}
+                    value={elem.value}>
+                    {elem.name}
+                </SelectItem>)
+            }
+            </SelectGroup>
+        </SelectContent>
+    </Select>
+}
+
+type IStyleEditing = {
+    sectionIndex: number;
+    onClose : () => void;
 }
 
 // aya maybe make a better type later
 // we don t use config here maybe for that maybe later we will ...
-interface I_TemplateElemTypography_kind extends I_TemplateElemTypography {kind : "typography"}
-interface I_TemplateElemButton_kind extends I_TemplateElemButton {kind : "button"}
+interface I_TemplateElemTypography_kind extends I_TemplateElemTypography { kind: "typography" }
+interface I_TemplateElemButton_kind extends I_TemplateElemButton { kind: "button" }
 type I_TemplateGen = (I_TemplateElemTypography_kind | I_TemplateElemButton_kind)[];
 
-function StyleEditing(props: Props) {
-    const currentWebsite = useCurrentWebsiteStore();
-    const currentSection = currentWebsite.website?.websiteSection[props.sectionIndex];
+function StyleEditing(props: IStyleEditing) {
+    const storeWebsite = useCurrentWebsiteStore();
+    const storeTemplate = useTemplateGroup();
+    const currentSection = storeWebsite.website?.websiteSection[props.sectionIndex];
+    const currentTemplate = storeTemplate.templateVariant.find(e => e.id === currentSection?.configTemplateId);
+    const [dupSection, setDupSection] = useState<I_TemplateGen>([]);
+    const { data: session } = useSession();
 
-    if (!currentSection)
+
+    if (!currentSection || !currentTemplate)
         return <></>
 
-    const allElemSection : I_TemplateGen = [
-        ...currentSection.typographies.map(e => ({...e, kind : "typography" as const})),
-        ...currentSection.buttons.map(e => ({...e, kind : "button" as const}))]
-        .sort((a, b) => a.order - b.order);
+    
+    useEffect(() => {
+        const allElemSection: I_TemplateGen = [
+            ...currentSection.typographies.map(e => ({ ...e, kind: "typography" as const })),
+            ...currentSection.buttons.map(e => ({ ...e, kind: "button" as const }))]
+            .sort((a, b) => a.order - b.order);
+
+        setDupSection(allElemSection);
+        // 
+    }, []);
+
+    const handleSubmit = () => {
+        updateSectionV4({
+            data : dupSection,
+            layout : {},
+            sectionId : currentSection.id,
+            accessToken : session?.backendTokens?.accessToken ?? ""
+        }).then(resp => {
+            storeWebsite.updateSection(resp);
+            props.onClose();
+        }).catch((err : any) => {
+            props.onClose();
+        })
+    }
+    
 
     return (
-        <section>
+        <section className='flelx flex-col gap-2'>
             <h1>{currentSection?.kind} | {currentSection?.configTemplateId}</h1>
+
+            <p>section style</p>
             {
-                allElemSection.map(elem => {
-                    if (elem.kind === "typography")
-                        return <p>typography : {elem.text}</p>
-                    else if (elem.kind === "button") 
-                        return <p>button : {elem.text}</p>
+                currentTemplate.config.map((templateElem, index) => {
+                    let findElem = dupSection.find(e => e.order === templateElem.order);
+                    if (templateElem.kind === "text" && findElem?.kind === "typography") {
+                        return <section className='flex flex-col gap-2'>
+                            <p>typography : {templateElem.label}</p>
+                            <p>size : {findElem.size}</p>
+                            <SelectSize
+                                value={findElem.size}
+                                onChange={(size : string) => {
+                                    let tmp = cloneDeep(dupSection);
+                                    tmp[index].size = size as TSizeEnum;
+                                    setDupSection(tmp);
+                                }}
+                            />
+                        </section>
+                    }
+                    else if (templateElem.kind === "button" && findElem?.kind === "button") {
+                        return <section className='flex flex-col gap-2'>
+                            <p>button : {templateElem.label}</p>
+                            <p>size : {findElem.size}</p>
+                            <SelectSize
+                                value={findElem.size}
+                                onChange={(size : string) => {
+                                    let tmp = cloneDeep(dupSection);
+                                    tmp[index].size = size as TSizeEnum;
+                                    setDupSection(tmp);
+                                }}
+                            />
+                        </section>
+                    }
                     return <></>
                 })
             }
+            <div>
+                <Button onClick={props.onClose}>Discard</Button>
+                <Button onClick={() => {
+                        console.log("send new data");
+                        console.log(dupSection);
+                        handleSubmit();
+                    }
+                }>Save</Button>
+            </div>
         </section>
-  )
+    )
 }
 
-export default StyleEditing
+export default StyleEditing;

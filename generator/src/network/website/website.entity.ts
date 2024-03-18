@@ -4,14 +4,8 @@ export interface ICreateWebsiteInput {
     subject : string;
 }
 
-export interface IUpdateSectionV2 {
-    data : any;
-    sectionId : number;
-    accessToken : string;
-}
-
 // update v3
-export interface IUpdateV3Typography {
+export interface IUpdateTypography {
     kind : "typography"
     order : number;
 
@@ -23,7 +17,7 @@ export interface IUpdateV3Typography {
     decorator : string;
 }
 
-export interface IUpdateV3Button {
+export interface IUpdateButton {
     kind : "button",
     order : number;
 
@@ -36,11 +30,11 @@ export interface IUpdateV3Button {
     animation : string;
 }
 
-export type TUpdateDataV3 = (IUpdateV3Typography | IUpdateV3Button); 
-export type UpdateDataV3Dico  = {[key: string]: TUpdateDataV3};
+export type TUpdateDataV3 = (IUpdateTypography | IUpdateButton); 
 
-export interface IUpdateSectionV3 {
-    data : TUpdateDataV3[],
+export interface IUpdateSectionV4 {
+    layout : any[];
+    data : TUpdateDataV3[];
     sectionId : number;
     accessToken : string;
-} 
+}
