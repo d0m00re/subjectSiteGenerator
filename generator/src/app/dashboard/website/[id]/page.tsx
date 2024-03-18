@@ -29,16 +29,16 @@ const resetModalCreateSection = (): IModalCreateSection => ({
 function page() {
   const { id } = useParams() // Assuming your file is named [id].js within the appropriate directory structure
   const [dataIsLoad, setDataIsLoad] = useState<boolean>(false);
-  const currentWebsite = useCurrentWebsite();
-  const templateGroup = useTemplateGroup();
+  const storeWebsite = useCurrentWebsite();
+  const storeTemplate = useTemplateGroup();
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
 
   if (typeof (id) !== "string") return <></>
 
   useEffect(() => {
     setDataIsLoad(false);
-    currentWebsite.populate(parseInt(id));
-    templateGroup.populate();
+    storeWebsite.populate(parseInt(id));
+    storeTemplate.populate();
     setDataIsLoad(true);
   }, []);
 
@@ -47,7 +47,7 @@ function page() {
       <section className='flex flex-col m-8'>
         {/* basic case */}
         {(dataIsLoad) ?
-          currentWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
+          storeWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
             key={`section-website-${section.id}`}
             section={section}
             index={index}
@@ -55,7 +55,7 @@ function page() {
         }
         {/* cas with no section */}
         {
-          currentWebsite?.website?.websiteSection.length === 0 ?
+          storeWebsite?.website?.websiteSection.length === 0 ?
             <Button onClick={() => setModalAddSection({open : true, index : 0})}>
               create
             </Button>
@@ -66,7 +66,7 @@ function page() {
       <ModalCreateSection
         open={modalAddSection.open}
         order={modalAddSection.index}
-        websiteId={currentWebsite.website?.id ?? -1}
+        websiteId={storeWebsite.website?.id ?? -1}
         setOpen={(val: boolean) => {
           //alert("onclick modal add section")
           //if (modalEdit === false || val === false)
