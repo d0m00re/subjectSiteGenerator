@@ -32,8 +32,13 @@ export interface IUpdateButton {
 
 export type TUpdateDataV4 = (IUpdateTypography | IUpdateButton); 
 
+export interface ISectionLayout {
+    backgroundImage : string;
+    backgroundColor : string;
+}
+
 export interface IUpdateSectionV4 {
-    layout : any[];
+    layout : ISectionLayout;
     data : TUpdateDataV4[];
     sectionId : number;
     accessToken : string;

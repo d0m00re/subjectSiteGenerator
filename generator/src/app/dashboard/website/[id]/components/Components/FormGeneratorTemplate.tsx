@@ -153,7 +153,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
     updateSectionV4({
       data: dataFormV4,//dataFormV2,
-      layout : {},
+      layout : {backgroundColor : currentSection.backgroundColor, backgroundImage : currentSection.backgroundImage},
       sectionId: currentSection.id,
       accessToken: session?.backendTokens?.accessToken ?? ""
     })
@@ -168,9 +168,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   }
 
   const submitForm = (e: any) => {
-    console.log("final data : ")
-    console.log(dataFormV4);
-
     e.preventDefault();
 
     if (props.mode === "create") {

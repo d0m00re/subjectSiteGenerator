@@ -17,6 +17,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { updateSectionV4 } from '@/network/website/website.network';
+import ChangeBackground from '@/components/WebsiteSection/Render/Layout/ChangeBackground/ChangeBackground';
+import { ISectionLayout } from '@/network/generateWebsite/generateWebsite.entity';
 
 interface ISelectSizeElem {
     key: string;
@@ -74,7 +76,10 @@ function StyleEditing(props: IStyleEditing) {
     const storeTemplate = useTemplateGroup();
     const currentSection = storeWebsite.website?.websiteSection[props.sectionIndex];
     const currentTemplate = storeTemplate.templateVariant.find(e => e.id === currentSection?.configTemplateId);
+    // use for storing a list of typography section and button section
     const [dupSection, setDupSection] = useState<I_TemplateGen>([]);
+    // use for global layout of section
+    const [layout, setLayout] = useState<ISectionLayout>({backgroundColor : "", backgroundImage : ""});
     const { data: session } = useSession();
 
 
@@ -89,13 +94,17 @@ function StyleEditing(props: IStyleEditing) {
             .sort((a, b) => a.order - b.order);
 
         setDupSection(allElemSection);
+        setLayout({
+            backgroundColor : currentSection.backgroundColor,
+            backgroundImage : currentSection.backgroundImage
+        });
         // 
     }, []);
 
     const handleSubmit = () => {
         updateSectionV4({
             data : dupSection,
-            layout : {},
+            layout : layout,
             sectionId : currentSection.id,
             accessToken : session?.backendTokens?.accessToken ?? ""
         }).then(resp => {
@@ -105,12 +114,19 @@ function StyleEditing(props: IStyleEditing) {
             props.onClose();
         })
     }
-    
+
+    const setBackgroundColor = (bgColor : string) => {
+        setLayout(old => ({...old, backgroundColor : bgColor}));
+    }
 
     return (
-        <section className='flelx flex-col gap-2'>
+        <section className='flex flex-col gap-2 w-full'>
             <h1>{currentSection?.kind} | {currentSection?.configTemplateId}</h1>
-
+            <p>layout style</p>
+            <ChangeBackground
+                backgroundColor={layout.backgroundColor}
+                setBackgroundColor={setBackgroundColor}
+            />
             <p>section style</p>
             {
                 currentTemplate.config.map((templateElem, index) => {
@@ -118,7 +134,6 @@ function StyleEditing(props: IStyleEditing) {
                     if (templateElem.kind === "text" && findElem?.kind === "typography") {
                         return <section className='flex flex-col gap-2'>
                             <p>typography : {templateElem.label}</p>
-                            <p>size : {findElem.size}</p>
                             <SelectSize
                                 value={findElem.size}
                                 onChange={(size : string) => {
@@ -132,7 +147,6 @@ function StyleEditing(props: IStyleEditing) {
                     else if (templateElem.kind === "button" && findElem?.kind === "button") {
                         return <section className='flex flex-col gap-2'>
                             <p>button : {templateElem.label}</p>
-                            <p>size : {findElem.size}</p>
                             <SelectSize
                                 value={findElem.size}
                                 onChange={(size : string) => {

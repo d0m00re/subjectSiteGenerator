@@ -1,6 +1,6 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER, generateBearerToken } from "./../contants.network";
-import { I_Website } from "../generateWebsite/generateWebsite.entity";
+import { ISectionLayout, I_Website } from "../generateWebsite/generateWebsite.entity";
 import { ICreateWebsiteInput, TUpdateDataV4 } from "./website.entity";
 
 const API_WEBSITE_URL = `${BACKEND_URL}/website`;
@@ -61,7 +61,7 @@ export const createWebsiteSectionV4 = (props : ICreateWebsiteSectionV4) : Promis
 interface IUpdateSessionV4 {
     accessToken : string;
     data : TUpdateDataV4[];
-    layout : any;
+    layout : ISectionLayout;
     sectionId : number;
 }
 

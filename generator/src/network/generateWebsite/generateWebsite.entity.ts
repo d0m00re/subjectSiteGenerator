@@ -14,9 +14,16 @@ import { I_WebsiteSectionOrder, I_WebsiteSectionOrder_E } from "../website/websi
 // ------------- websiteSection
 export type TWebsiteSectionKind = "mainSection" | "subSection";
 
-export interface A_I_WebsiteSection_E {
+// global section layout
+export interface ISectionLayout {
+    backgroundImage : string;
+    backgroundColor : string;
+}
+
+export interface A_I_WebsiteSection_E extends ISectionLayout {
     kind : TWebsiteSectionKind;
     backgroundImage : string;
+    backgroundColor : string;
 
     buttons : I_TemplateElemButton[];
     typographies : I_TemplateElemTypography[];

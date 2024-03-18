@@ -3,38 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { IButtonRow, IDataUpdateElem, ITypographyRow, parseTemplateConfigStringToJSON } from './utils/parserConfig';
 import { ConfigTemplateService } from 'src/config-template/config-template.service';
 import { Userv2Service } from 'src/userv2/userv2.service';
-
-interface IUpdateSectionV2 {
-    userId: number;
-    data: any;
-    sectionId: number;
-}
-
-interface ICreateNewSectionV3 {
-    userId: number;
-    data: IDataUpdateElem[];//{ [key: string]: IDataUpdateElem }; // json object
-    order: number;
-    websiteId: number;
-    templateId: number;
-}
-
-/**
- * prepare v3 update / create
- */
-export interface IUpdateV3 {
-    data: { [key: string]: IDataUpdateElem }; // json object
-    sectionId: number;
-    userId: number;
-}
-
-export interface IUpdateV4 {
-    data: IDataUpdateElem[];
-    layout: any;
-    sectionId: number;
-    userId: number;
-}
-
-//-----------------------------------
+import { ICreateNewSectionV3, IUpdateV4 } from './website.entity';
 
 @Injectable()
 export class WebsiteService {
@@ -74,72 +43,8 @@ export class WebsiteService {
         return website;
     }
 
-    updateSectionV2 = async (props: IUpdateSectionV2) => {
-        // get back section
-        let sectionWithSubElem = await this.prisma.websiteSection.findUnique({
-            where: { id: props.sectionId },
-            include: {
-                websiteSectionOrder: true,
-                configTemplate: true,
-                buttons: true,
-                typographies: true,
-                images: true
-            }
-        });
-
-        if (!sectionWithSubElem) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-
-        const configJSON = parseTemplateConfigStringToJSON(sectionWithSubElem.configTemplate.config);
-
-        let arrProm: any = []
-
-        for (let i = 0; i < configJSON.length; i++) {
-            // key tagret
-            let keyTarget = configJSON[i].kind;
-
-            if (keyTarget === "text") {
-                // get current text elements
-                let currentElem = sectionWithSubElem.typographies.find(e => e.order === configJSON[i].order);
-                if (currentElem) {
-                    // update text
-                    currentElem.text = props.data[configJSON[i].label];
-                    arrProm.push(this.prisma.templateElemTypography.update({
-                        where: { id: currentElem.id },
-                        data: { text: currentElem.text }
-                    }));
-                }
-            }
-            else if (keyTarget === "button") {
-                let currentElem = sectionWithSubElem.buttons.find(e => e.order === configJSON[i].order);
-                if (currentElem) {
-                    currentElem.text = props.data[configJSON[i].label];
-                    arrProm.push(this.prisma.templateElemButton.update({
-                        where: { id: currentElem.id },
-                        data: { text: currentElem.text }
-                    }));
-                }
-            }
-        }
-
-        await Promise.all(arrProm);
-
-        let retData = await this.prisma.websiteSection.findUnique({
-            where: { id: props.sectionId },
-            include: {
-                websiteSectionOrder: true,
-                configTemplate: true,
-                buttons: true,
-                typographies: true,
-                images: true
-            }
-        });
-
-        return retData;
-    }
- 
     createNewSectionV4 = async (props: ICreateNewSectionV3) => {
         //const user = await this.userv2Service.findById(props.userId);
-        console.log("create new section v3")
         let currentOrder = props.order;
 
         // get template target
@@ -269,6 +174,8 @@ export class WebsiteService {
                 websiteSectionOrder : true
             },
             data: {
+                backgroundColor : props.layout.backgroundColor ?? "",
+                backgroundImage : props.layout.backgroundImage ?? "",
                 buttons: {
                     updateMany: [
                         ...buttons.map(b => ({

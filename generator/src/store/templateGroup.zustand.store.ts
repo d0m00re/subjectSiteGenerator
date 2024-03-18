@@ -23,8 +23,6 @@ const useTemplateGroup = create<ITemplateZustand>()((set) => ({
         network
         .getAllGroup()
         .then(arrGroup => {
-            console.log("base Data :")
-            console.log(arrGroup)
 
            // let fakeParse : entity.FinalParsedTemplateGroup[] = arrGroup.map(e => {
                 let shouldBeCorrectlyType : any = arrGroup.map(e => {
