@@ -13,6 +13,10 @@ import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import ModalCreateSection from './modal/ModalCreateSection';
 import ModalEditSectionV2 from './modal/ModalEditSectionV2';
 import ModalEditSectionStyle from './modal/ModalEditSectionStyle';
+import { TSizeButton } from '@/network/website/websiteSection/templateElemButton/templateElemButton.entity';
+import { TSizeTypography } from '@/network/website/websiteSection/templateElemTypography/templateElemTypography.entity';
+import RenderTypography from '@/components/WebsiteSection/Render/RenderTypography/RenderTypography';
+import RenderButton from '@/components/WebsiteSection/Render/RenderButton/RenderButton';
 
 type Props = { 
   section: I_WebsiteSection;
@@ -56,22 +60,6 @@ const ButtonAddSection = (props: IButtonAddSection) => {
   )
 }
 
-interface IRenderButton {
-  text : string;
-}
-
-function RenderButton(props : IRenderButton) {
-  return <Button>{props.text}</Button>
-}
-
-interface IRenderTypography {
-  text : string
-}
-
-function RenderTypography(props : IRenderTypography) {
-  return <p>{props.text}</p>
-}
-
 function RenderWithConfig(props : {section : I_WebsiteSection}) {
   // get back config
   const templateGroupStore = useTemplateGroup();
@@ -89,10 +77,10 @@ function RenderWithConfig(props : {section : I_WebsiteSection}) {
         if (e.kind === "text") {
           // find typo - order for the moment but later base on other things
           let elemTypo = props.section.typographies.find(typo => typo.order === e.order);
-          return <RenderTypography text={elemTypo?.text ?? ""} />
+          return <RenderTypography text={elemTypo?.text ?? ""} size={elemTypo?.size ?? "medium"}/>
         } else if (e.kind === "button") {
           let elemButton = props.section.buttons.find(but => but.order === e.order)
-          return <RenderButton text={elemButton?.text ?? ""} />
+          return <RenderButton text={elemButton?.text ?? ""} size={elemButton?.size ?? "medium"} />
         }
         return <p>unknown</p>
       })
