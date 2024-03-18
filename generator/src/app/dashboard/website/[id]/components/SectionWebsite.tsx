@@ -13,10 +13,9 @@ import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import ModalCreateSection from './modal/ModalCreateSection';
 import ModalEditSectionV2 from './modal/ModalEditSectionV2';
 import ModalEditSectionStyle from './modal/ModalEditSectionStyle';
-import { TSizeButton } from '@/network/website/websiteSection/templateElemButton/templateElemButton.entity';
-import { TSizeTypography } from '@/network/website/websiteSection/templateElemTypography/templateElemTypography.entity';
 import RenderTypography from '@/components/WebsiteSection/Render/RenderTypography/RenderTypography';
 import RenderButton from '@/components/WebsiteSection/Render/RenderButton/RenderButton';
+import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
 
 type Props = { 
   section: I_WebsiteSection;
@@ -59,35 +58,6 @@ const ButtonAddSection = (props: IButtonAddSection) => {
       : <></>
   )
 }
-
-function RenderWithConfig(props : {section : I_WebsiteSection}) {
-  // get back config
-  const templateGroupStore = useTemplateGroup();
-
-  // find config
-  let templateV = templateGroupStore.templateVariant.find(e => e.id === props.section.configTemplateId);
-
-  if (templateV === undefined) return <p>error retrieve template variant id {props.section.id}</p>
-
-  let config = templateV.config; //JSON.parse(config.config.replaceAll("'", '"'));
-
-  return (<section className='flex flex-col gap-2'>
-    {
-      config?.map(e => {
-        if (e.kind === "text") {
-          // find typo - order for the moment but later base on other things
-          let elemTypo = props.section.typographies.find(typo => typo.order === e.order);
-          return <RenderTypography text={elemTypo?.text ?? ""} size={elemTypo?.size ?? "medium"}/>
-        } else if (e.kind === "button") {
-          let elemButton = props.section.buttons.find(but => but.order === e.order)
-          return <RenderButton text={elemButton?.text ?? ""} size={elemButton?.size ?? "medium"} />
-        }
-        return <p>unknown</p>
-      })
-    }
-  </section>)
-}
-
 
 function SectionWebsite(props: Props) {
   const [modalEdit, setModalEdit] = useState(false);
@@ -147,7 +117,6 @@ function SectionWebsite(props: Props) {
   }
 
   const onDuplicate = () => {
-      console.log("onDuplicate");
       networkGenerateWeb.duplicateWebsiteSection({
         sectionId : props.section.id,
         accessToken : session?.backendTokens?.accessToken ?? ""
@@ -170,7 +139,7 @@ function SectionWebsite(props: Props) {
       <section
         onPointerEnter={handleHover}
         onPointerLeave={handleHover}
-        className='flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer'>
+        className={`flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer ${props.section.backgroundColor}`}>
 
         <ContainerSectionActionBar
             onOpenEdit = {() => {setModalEdit(true)}}
@@ -181,7 +150,7 @@ function SectionWebsite(props: Props) {
             onMooveBottom = {onSwitchWebsitePositionBottom}
         /> 
    
-        <RenderWithConfig
+        <RenderSectionWtConfig
           section={props.section}
         />
 

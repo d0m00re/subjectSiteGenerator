@@ -79,10 +79,7 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
     },
 
     sectionDuplicate: (section) => {
-        console.log("section duplicate")
-
         set((state) => {
-            console.log("section duplicate")
             return state;
         })
     },

@@ -1,5 +1,6 @@
 import { IsArray, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 import { IDataUpdateElem } from "../utils/parserConfig";
+import { ISectionLayout } from "../website.entity";
 
 export class CreateWebsiteDto {
     @IsString()
@@ -22,12 +23,6 @@ export class UpdateSection {
     sectionId: number;
 }
 
-// update v3
-/*
-type JsonObjectWithUnknownKeys = {
- [key: string]: AOrB;
-};
-*/
 export class UpdateTypography {
     @IsString()
     kind: "typography";
@@ -68,30 +63,6 @@ export class UpdateButton {
     animation: string;
 }
 
-// UpdateTypography | UpdateButton
-
-/*
-export class UpdateSectionV3 {
-    @IsObject()
-    @ValidateNested()
-    data: Map<string, UpdateTypography | UpdateButton>;
-    @IsNumber()
-    sectionId: number;
-}
-
-export class CreateSectionV3 {
-    @IsObject()
-    @ValidateNested()
-    data: Map<string, UpdateTypography | UpdateButton>;
-    @IsNumber()
-    order : number;
-    @IsNumber()
-    websiteId : number;
-    @IsNumber()
-    templateId : number;
-}
-*/
-
 export class UpdateSectionV3 {
     @IsObject()
     data: any;
@@ -103,7 +74,7 @@ export class UpdateSectionV4 {
     @IsArray()
     data : any[];
     @IsObject()
-    layout : any;
+    layout ?: Partial<ISectionLayout>
     @IsNumber()
     sectionId : number;
 }
