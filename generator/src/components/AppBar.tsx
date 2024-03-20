@@ -10,8 +10,6 @@ export const Header = () => {
         <ActivitySquare />
         <h2 className=" text-2xl font-extrabold">Generator</h2>
       </div>
-
-
       <section className="flex flex-row gap-2">
         
         <SignInButton />
@@ -27,21 +25,16 @@ interface ILinkInfoElem {
   href: string
 }
 
-const LinkInfoList = [
+const LinkInfoList : ILinkInfoElem[] = [
   {
     id: "home",
     icon: Home,
     name: "Home",
     href: "/"
   }, {
-    id: "dashboard",
-    icon: LayoutDashboard,
-    name: "Dashboard",
-    href: "/dashboard"
-  }, {
     id: "create-website",
     icon: BadgePlus,
-    name: "Create a website",
+    name: "Website",
     href: "/dashboard/website"
   }
 ];
