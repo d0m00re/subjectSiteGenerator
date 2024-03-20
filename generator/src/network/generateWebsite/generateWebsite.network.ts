@@ -1,6 +1,6 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER, generateBearerToken } from "./../contants.network";
-import { A_I_WebsiteSection, I_Website, TWebsiteSectionKind } from "./generateWebsite.entity";
+import { I_Website } from "./generateWebsite.entity";
 import { A_I_WebsiteSectionOrder } from "../website/websiteSection/websiteSectionOrder/websiteSectionOrder.entity";
 
 interface IGetOne {
@@ -143,26 +143,6 @@ export const createWebsiteSection = (props : ICreateWebsiteSection) : Promise<I_
     })
     .then(resp =>resp.json());
 };
-
-export const createWebsiteSectionV2 = (props : ICreateWebsiteSectionV2) : Promise<I_Website> => {
-    return fetch(`${BACKEND_URL}/site-generator/section/add-v2`, {
-        method : "POST",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
-        },
-        body : JSON.stringify({
-            data : props.data,
-            order : props.order,
-            websiteId : props.websiteId,
-            templateId : props.templateId
-        })
-    })
-    .then(resp => resp.json());
-}
-
-
-//--------
 
 interface IGenerateWebSiteInput {
     page: number;
