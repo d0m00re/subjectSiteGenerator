@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
@@ -65,7 +64,7 @@ function SectionWebsite(props: Props) {
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
   const [isHovered, setIsHovered] = useState(false);
   const currentWebsite = useCurrentWebsite();
-  const { data: session } = useSession();
+ // const { data: session } = useSession();
 
   const handleHover = () => {
     setIsHovered(!isHovered);
@@ -79,7 +78,10 @@ function SectionWebsite(props: Props) {
   }
   
   const onDeleteSection = () => {
-    networkGenerateWeb.deleteWebsiteSection({sectionId : props.section.id, accessToken : session?.backendTokens?.accessToken ?? ""})
+    networkGenerateWeb.deleteWebsiteSection({
+      sectionId : props.section.id,
+      accessToken : ""//session?.backendTokens?.accessToken ?? ""
+    })
     .then(res => {
       currentWebsite.deleteWebsiteSection(props.section.id);
     })
@@ -92,7 +94,7 @@ function SectionWebsite(props: Props) {
     networkGenerateWeb.switchPosWebsiteSection({
       dir : "top",
       sectionId : props.section.id,
-      accessToken :  session?.backendTokens?.accessToken ?? ""
+      accessToken : "", //session?.backendTokens?.accessToken ?? ""
     })
     .then(resp => {
       currentWebsite.sectionOrderSwitch(resp);
@@ -106,7 +108,7 @@ function SectionWebsite(props: Props) {
     networkGenerateWeb.switchPosWebsiteSection({
       dir : "bottom",
       sectionId : props.section.id,
-      accessToken :  session?.backendTokens?.accessToken ?? ""
+      accessToken :  ""//session?.backendTokens?.accessToken ?? ""
     })
     .then(resp => {
       currentWebsite.sectionOrderSwitch(resp);
@@ -119,7 +121,7 @@ function SectionWebsite(props: Props) {
   const onDuplicate = () => {
       networkGenerateWeb.duplicateWebsiteSection({
         sectionId : props.section.id,
-        accessToken : session?.backendTokens?.accessToken ?? ""
+        accessToken : ""//session?.backendTokens?.accessToken ?? ""
       })
       .then(resp => {
         currentWebsite.resetWtData(resp);

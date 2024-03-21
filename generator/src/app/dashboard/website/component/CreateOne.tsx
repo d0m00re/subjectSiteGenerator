@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from "@/components/ui/label";
 import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
 import * as websiteNetwork from "@/network/website/website.network";
-import { useSession } from 'next-auth/react'
 import navigate from "@/components/navigate";
 import toast from 'react-hot-toast';
 
@@ -31,7 +30,7 @@ const ValidateForm = z.object({
 type TValidateForm = z.infer<typeof ValidateForm>;
 
 function CreateOne() {
-    const { data: session } = useSession();
+   // const { data: session } = useSession();
     const [open, setOpen] = useState(false);
     const onOpen = () => setOpen(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +49,7 @@ function CreateOne() {
         generateWebsiteNetwork.generateOne({
             title: data.title,
             subject: data.subject,
-            accessToken: session?.backendTokens?.accessToken ?? ""
+            accessToken: ""// session?.backendTokens?.accessToken ?? ""
         })
             .then(resp => {
                 navigate(`/dashboard/website/${resp.id}`);
@@ -67,7 +66,7 @@ function CreateOne() {
         let values = getValues();
         console.log("submit create website : " + JSON.stringify(values));
         websiteNetwork.createWebsite({
-            accessToken : session?.backendTokens?.accessToken ?? "",
+            accessToken : "",//session?.backendTokens?.accessToken ?? "",
             title : values.title,
             subject : values.subject
         })
