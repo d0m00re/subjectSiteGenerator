@@ -10,6 +10,8 @@ import { JwtService } from '@nestjs/jwt';
 import { OpenaiModule } from './openai/openai.module';
 import { ConfigTemplateModule } from './config-template/config-template.module';
 import { WebsiteModule } from './website/website.module';
+import { FilesModule } from './files/files.module';
+import { Authv2Module } from './authv2/authv2.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { WebsiteModule } from './website/website.module';
     OpenaiModule,
     ConfigTemplateModule,
     WebsiteModule,
+    FilesModule,
+    Authv2Module,
   ],
   controllers: [],
   providers: [PrismaService, JwtService, OpenaiModule],

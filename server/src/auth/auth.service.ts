@@ -14,6 +14,7 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginDto) {
+    console.log("AUTH LOGIN")
     const user = await this.validateUser(dto);
     const payload = {
       username: user.email,
@@ -34,7 +35,7 @@ export class AuthService {
         }
         */
     return {
-      user,
+      user : payload,
       backendTokens: {
         accessToken: await this.jwtService.signAsync(payload, {
           expiresIn: '10h',
@@ -51,11 +52,14 @@ export class AuthService {
 
   // user exist inside our database
   async validateUser(dto: LoginDto) {
+    console.log("VALIDATE USER")
     // wtf dude ....
     const user = await this.userService.findByEmail(dto.username);
 
     if (user && (await compare(dto.password, user.password))) {
       const { password, ...result } = user;
+      console.log("result ::::: ")
+      console.log(result)
       return result;
     }
     throw new UnauthorizedException();
@@ -63,6 +67,7 @@ export class AuthService {
 
   // payload extract form refresh jwt
   async refreshToken(user: any) {
+    console.log("AUTH REFRESH TOKEN")
     const payload = {
       username: user.username,
       userId : user.id,

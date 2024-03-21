@@ -48,6 +48,7 @@ export const authOptions: NextAuthOptions = {
       if (user)
         return { ...token, ...user};
 
+        
       if (new Date().getTime() < token.backendTokens.expiresIn)
         return token;
       return await refreshToken(token);
@@ -56,6 +57,7 @@ export const authOptions: NextAuthOptions = {
     async session({token, session}) {
       console.log("session")
       session.user = token.user;
+      console.log(token)
       session.backendTokens = token.backendTokens;
       return session;
     }

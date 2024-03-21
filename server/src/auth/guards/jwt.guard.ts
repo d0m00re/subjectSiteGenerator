@@ -12,9 +12,11 @@ export class JwtGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext) {
+    console.log("can activate : ")
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
- 
+    console.log("token decode : ")
+    console.log(token)
     if (!token) throw new UnauthorizedException();
 
     try {
@@ -31,7 +33,8 @@ export class JwtGuard implements CanActivate {
                 exp: 1707428850
             }
             */
-
+      console.log("request[user]")
+      console.log(payload)
       request['user'] = payload;
     } catch (err) {
       throw new UnauthorizedException();
