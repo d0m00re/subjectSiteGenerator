@@ -35,7 +35,8 @@ export const login = (props: ILogin) => {
 export const me = () => {
     return fetch(API_AUTH_V2_URL + "/me", {
         method : "GET",
-        headers : BASE_HEADER
+        headers : BASE_HEADER,
+        credentials : "include"
     });
 }
 

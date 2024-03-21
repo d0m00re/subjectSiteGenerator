@@ -5,9 +5,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-//import Providers from '@/components/Providers'
-
-import ProviderNextAuth from "@/components/ProviderNextAuth";
 import AppBar, { Header } from "@/components/AppBar";
 
 import toast, { Toaster } from 'react-hot-toast';
@@ -52,14 +49,12 @@ function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col">
-        <ProviderNextAuth>
-          {(pathname.startsWith("/view/")) ?
+        {(pathname.startsWith("/view/")) ?
+          <div className={`${inter.className} grow`}>{children}</div>
+          :
+          <RenderWithNav>
             <div className={`${inter.className} grow`}>{children}</div>
-            :
-            <RenderWithNav>
-              <div className={`${inter.className} grow`}>{children}</div>
-            </RenderWithNav>}
-        </ProviderNextAuth>
+          </RenderWithNav>}
       </body>
     </html>
   );

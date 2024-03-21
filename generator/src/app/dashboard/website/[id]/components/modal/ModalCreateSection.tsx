@@ -1,3 +1,5 @@
+// todo : repass on it later
+
 import React, { useState } from 'react';
 //import useCurrentWebsite from "./../currentWebsite.zustand.store";
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
@@ -36,7 +38,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                 </DialogHeader>
                 <DialogDescription className="flex flex-col gap-4 items-center">
 
-                    {selectedTemplate === undefined ?
+                    {/*selectedTemplate === undefined ?
                         <SelectTemplateAccordion
                             groupTemplates={templateGroup.templateGroup}
                             selectedTemplate={selectedTemplate}
@@ -50,7 +52,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                             websiteId={props.websiteId}
                             setOpen={props.setOpen}
                         />
-                    }
+                    */}
                 </DialogDescription>
             </DialogContent>
         </Dialog >
