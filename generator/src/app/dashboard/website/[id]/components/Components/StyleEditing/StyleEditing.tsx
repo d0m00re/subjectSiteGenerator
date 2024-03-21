@@ -5,7 +5,6 @@ import { I_TemplateElemButton } from '@/network/website/websiteSection/templateE
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { Button } from '@/components/Button';
 import cloneDeep from 'lodash/cloneDeep';
-import { useSession } from 'next-auth/react';
 
 import {
     Select,
@@ -80,7 +79,7 @@ function StyleEditing(props: IStyleEditing) {
     const [dupSection, setDupSection] = useState<I_TemplateGen>([]);
     // use for global layout of section
     const [layout, setLayout] = useState<ISectionLayout>({backgroundColor : "", backgroundImage : ""});
-    const { data: session } = useSession();
+ //   const { data: session } = useSession();
 
 
     if (!currentSection || !currentTemplate)
@@ -106,7 +105,7 @@ function StyleEditing(props: IStyleEditing) {
             data : dupSection,
             layout : layout,
             sectionId : currentSection.id,
-            accessToken : session?.backendTokens?.accessToken ?? ""
+            accessToken : ""//session?.backendTokens?.accessToken ?? ""
         }).then(resp => {
             storeWebsite.updateSection(resp);
             props.onClose();

@@ -1,6 +1,5 @@
 "use client"
 
-import { useSession } from 'next-auth/react'
 import Link from 'next/link';
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,12 +16,12 @@ import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 type Props = {}
 type Checked = DropdownMenuCheckboxItemProps["checked"]
 const SignInButton = ({ }: Props) => {
-    const { data: session } = useSession();
+  //  const { data: session } = useSession();
     const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
     const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false)
     const [showPanel, setShowPanel] = React.useState<Checked>(false)
 
-    if (session && session.user)
+    if(true)//if (session && session.user)
         return (
             <div className="flex items-center gap-4 ml-auto">
                 <Badge># Free tier</Badge>

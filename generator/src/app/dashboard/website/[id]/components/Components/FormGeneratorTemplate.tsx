@@ -3,8 +3,6 @@
 */
 
 import React, { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react';
-
 import * as entity from "@/network/configTemplate/configTemplate.entity";
 import { Button } from '@/components/Button';
 import { Input } from '@/components/ui/input';
@@ -30,7 +28,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   // config
   const templateConfig = props.selectedTemplate?.config;
   const [dataFormV4, setDataFormV4] = useState<entityWebsite.TUpdateDataV4[]>([]);
-  const { data: session } = useSession();
+  //const { data: session } = useSession();
   const storeWebsite = useCurrentWebsiteStore();
   const storeTemplate = useTemplateGroup();
   const currentSection = storeWebsite.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
@@ -129,7 +127,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       order: props.order,
       websiteId: props.websiteId,
       templateId: props.selectedTemplate?.id ?? -1,
-      accessToken: session?.backendTokens?.accessToken ?? ""
+      accessToken: ""// session?.backendTokens?.accessToken ?? ""
     }
  
     createWebsiteSectionV4(dataSubmit)
@@ -155,7 +153,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       data: dataFormV4,//dataFormV2,
       layout : {backgroundColor : currentSection.backgroundColor, backgroundImage : currentSection.backgroundImage},
       sectionId: currentSection.id,
-      accessToken: session?.backendTokens?.accessToken ?? ""
+      accessToken: ""//session?.backendTokens?.accessToken ?? ""
     })
       .then((resp: any) => {
         // websiteStore.resetWtData(resp);

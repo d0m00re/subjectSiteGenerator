@@ -1,7 +1,6 @@
 "use client"
 
 import * as network from "@/network/generateWebsite/generateWebsite.network";
-import { useSession } from 'next-auth/react'
 import { useEffect, useState } from "react";
 import { IGenerateWebSiteOutput } from "@/network/generateWebsite/generateWebsite.network";
 import Pagination from "@/components/Pagination";
@@ -16,13 +15,13 @@ interface IFetchAndLoad {
 }
 
 const ListWebsite = () => {
-  const { data: session } = useSession();
+ // const { data: session } = useSession();
   const [listWebsite, setListWebsite] = useState<IGenerateWebSiteOutput | undefined>(undefined);
   const fetchAndLoad = (props: IFetchAndLoad) => {
     network.getMyWebsitePaginate({
       page: props.page,
       pageSize: props.pageSize,
-      accessToken: session?.backendTokens?.accessToken ?? ""
+      accessToken: ""//session?.backendTokens?.accessToken ?? ""
     })
       .then(resp => resp.json())
       .then(resp => {
@@ -35,7 +34,7 @@ const ListWebsite = () => {
 
   useEffect(() => {
     fetchAndLoad({ page: 0, pageSize: 5 });
-  }, [session]);
+  }, []); //[session]);
 
   // retrieve current website
 
