@@ -16,7 +16,7 @@ export class Authv2Controller {
     ){};
 
     // ok
-    @Post("signUp")
+    @Post("signUp") 
     async register(@Body() dto : dto.SignUpDto) {
         let data = await this.authV2Service.signUp({
             email : dto.email,

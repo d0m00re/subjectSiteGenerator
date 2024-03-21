@@ -6,9 +6,9 @@ import Link from "next/link";
 import React, { useRef } from "react";
 import * as networkAuth from "@/network/auth.network";
 
-const SignupPage = () => {
-  const register = async () => {
-    const res = await networkAuth.register({
+const LoginPage = () => {
+  const login = async () => {
+    const res = await networkAuth.login({
       email: data.current.email,
       password: data.current.password,
     });
@@ -19,7 +19,7 @@ const SignupPage = () => {
     }
     await res.json();
   };
-  const data = useRef<networkAuth.IRegister>({
+  const data = useRef<networkAuth.ILogin>({
     email: "",
     password: "",
   });
@@ -27,7 +27,7 @@ const SignupPage = () => {
   return (
     <div className="m-2 border rounded overflow-hidden shadow">
       <div className="p-2 bg-gradient-to-b from-white to-slate-200 text-slate-600">
-        Sign up
+        Log in
       </div>
       <div className="p-2 flex flex-col gap-6">
         <InputBox
@@ -44,7 +44,7 @@ const SignupPage = () => {
           onChange={(e) => (data.current.password = e.target.value)}
         />
         <div className="flex justify-center items-center gap-2">
-          <Button onClick={register}>Submit</Button>
+          <Button onClick={login}>Submit</Button>
           <Link className="" href={"/"}>
             Cancel
           </Link>
@@ -54,4 +54,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default LoginPage;
