@@ -26,13 +26,8 @@
 * sectionSubElemImage : image element
 * sectionSubElemConfig : config element
 
-##
-
 ## Goal
 generate a subWebsite with only one phrase
-
-
-
 
 ##################################################
 ## feature v0.5
@@ -106,3 +101,6 @@ probably moove the request to api because this is like that
 * replace all email check with id
 
 //[{'order':0,'kind':'text','label':'title','text':'','size' : 'big','variant':'normal','path':'','animation' : '','decorator':''},{'order':1,'kind':'button','label':'cta','text' :'','size':'medium','variant':'solid','shape':'square','actionType':'external','path':'','animation':'unimplemented'}]
+
+## other toto
+* hash password directly on the front end
