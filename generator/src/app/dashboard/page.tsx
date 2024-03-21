@@ -1,19 +1,31 @@
 "use client"
 
 import FileUpload from "@/components/File/FileUpload";
-import React from "react";
-import { useSession } from 'next-auth/react';
+import React, {useEffect} from "react";
+import { me } from "@/network/auth.network";
 
 const DashboardPage = () => {
-  const { data: session } = useSession();
 
-  console.log("dashboard page :")
-  console.log(session)
+//  console.log("dashboard page :")
+//  console.log(session)
+
+  useEffect(() => {
+    me()
+    .then(resp => {
+      console.log("resp ====>")
+      console.log(resp)
+    })
+    .catch(err => {
+      console.log("err : ")
+      console.log(err)
+    })
+  }, [])
+  
 
   return <div>
     <h1>Home</h1>
     <FileUpload
-      accessToken={session?.backendTokens?.accessToken ?? ""}
+      accessToken="" //{session?.backendTokens?.accessToken ?? ""}
     />
   </div>;
 };

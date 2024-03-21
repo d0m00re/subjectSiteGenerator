@@ -15,8 +15,7 @@ export class JwtCookieParserGuard implements CanActivate {
         if (accessToken) {
             try {
                 const decodedToken = this.jwtService.decode(accessToken);
-                console.log("decoded token");
-                console.log(decodedToken)
+                // store token
                 request['user'] = decodedToken;
             }
             catch(err) {

@@ -1,14 +1,17 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER } from "./contants.network";
 
+const API_AUTH_V2_URL = `${BACKEND_URL}/authv2`;
+
 export interface IRegister {
-    name: string;
     email: string;
     password: string;
 }
 
+
+
 export const register = (props: IRegister) => {
-    return fetch(BACKEND_URL + "/auth/register", {
+    return fetch(API_AUTH_V2_URL + "/signUp", {
         method: "POST",
         body: JSON.stringify(props),
         headers: BASE_HEADER
@@ -16,17 +19,27 @@ export const register = (props: IRegister) => {
 }
 
 export interface ILogin {
-    username: string;
+    email: string;
     password: string;
 }
 
 export const login = (props: ILogin) => {
-    return fetch(BACKEND_URL + "/auth/login", {
+    return fetch(API_AUTH_V2_URL + "/login", {
         method: "POST",
         body: JSON.stringify(props),
-        headers: BASE_HEADER
+        headers: BASE_HEADER,
+        credentials : "include"
     });
 }
+
+export const me = () => {
+    return fetch(API_AUTH_V2_URL + "/me", {
+        method : "GET",
+        headers : BASE_HEADER
+    });
+}
+
+// OLD API -----==========================================
 
 export interface IRefreshToken {
     refreshToken: string;
