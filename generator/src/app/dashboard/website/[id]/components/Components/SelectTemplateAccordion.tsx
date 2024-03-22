@@ -9,17 +9,17 @@ import {
 } from "@/components/ui/accordion"
 
 interface IGroupRender {
-    group: entity.I_TemplateGroup,
+    group: entity.FinalParsedTemplateGroup,
     onClick: () => void;
 
-    selectedTemplate : entity.A_I_TemplateVariant | undefined
-    setSelectedTemplate : React.Dispatch<React.SetStateAction<entity.A_I_TemplateVariant | undefined>>
+    selectedTemplate : entity.ParsedTemplateVariant | undefined
+    setSelectedTemplate : React.Dispatch<React.SetStateAction<entity.ParsedTemplateVariant | undefined>>
 }
 
 interface ITemplateRenderCard {
-    template : entity.A_I_TemplateVariant;
-    selectedTemplate : entity.A_I_TemplateVariant | undefined;
-    setSelectedTemplate : React.Dispatch<React.SetStateAction<entity.A_I_TemplateVariant | undefined>>;
+    template : entity.ParsedTemplateVariant;
+    selectedTemplate : entity.ParsedTemplateVariant | undefined;
+    setSelectedTemplate : React.Dispatch<React.SetStateAction<entity.ParsedTemplateVariant | undefined>>;
 }
 
 const TemplateRenderCard = (props : ITemplateRenderCard) => {
@@ -53,9 +53,9 @@ const GroupRender = (props: IGroupRender) => {
 }
 
 interface IContainerAccordion {
-    groupTemplates: entity.I_TemplateGroup[];
-    selectedTemplate : entity.A_I_TemplateVariant | undefined
-    setSelectedTemplate : React.Dispatch<React.SetStateAction<entity.A_I_TemplateVariant | undefined>>
+    groupTemplates: entity.FinalParsedTemplateGroup[];
+    selectedTemplate : entity.ParsedTemplateVariant | undefined
+    setSelectedTemplate : React.Dispatch<React.SetStateAction<entity.ParsedTemplateVariant | undefined>>
 }
 
 const SelectTemplateAccordion = (props: IContainerAccordion) => {

@@ -11,10 +11,10 @@ import * as entityWebsite from '@/network/website/website.entity';
 import { ICreateWebsiteSectionV4, createWebsiteSectionV4, updateSectionV4 } from '@/network/website/website.network';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { cloneDeep } from 'lodash';
-
+ 
 interface IFormGeneratorTemplate {
-  selectedTemplate: entity.I_TemplateVariant_parse | undefined
-  setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.I_TemplateVariant_parse | undefined>>
+  selectedTemplate: entity.ParsedTemplateVariant | undefined
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.ParsedTemplateVariant | undefined>>
   websiteId: number;
   order: number;
   setOpen: (val: boolean) => void;
@@ -52,12 +52,12 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
         return ;
       }
 
-      let templateConfig = currTemplate.config; //entity.parseTemplateConfigStringToJSON(currTemplate.config);
+      let config = currTemplate.config; //entity.parseTemplateConfigStringToJSON(currTemplate.config);
 
       const dataUpdateSection : entityWebsite.TUpdateDataV4[] = [];
 
-      for (let i = 0; i < templateConfig.length; i++) {
-        let currTemplate = templateConfig[i];
+      for (let i = 0; i < config.length; i++) {
+        let currTemplate = config[i];
 
         if (currTemplate.kind === "text") {
           //
