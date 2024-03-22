@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ConfigTemplateService } from './config-template.service';
 import * as dto from "./dto/configTemplate.dto"
+import { Request } from 'express';
 @Controller('config-template')
 export class ConfigTemplateController {
     constructor(
@@ -8,7 +9,7 @@ export class ConfigTemplateController {
       ) { }
     
     @Post("templateGroup/create")
-    async createTemplateGroup(@Request() req, @Body() dto: dto.CreateTemplateGroup) {
+    async createTemplateGroup(@Req() req : Request, @Body() dto: dto.CreateTemplateGroup) {
         let data = await this.configTemplateService.createTemplateGroup({
             kind : dto.kind
         });
@@ -16,7 +17,7 @@ export class ConfigTemplateController {
     }
 
     @Post("templateVariant/create")
-    async createTemplateVariant(@Request() req, @Body() dto: dto.CreateTemplateVariant) {
+    async createTemplateVariant(@Req() req : Request, @Body() dto: dto.CreateTemplateVariant) {
         let data = await this.configTemplateService.createTemplateVariant({
             name : dto.name,
             description : dto.description,
@@ -28,13 +29,13 @@ export class ConfigTemplateController {
     }
 
     @Get ("templateGroup")
-    async getAllGroup(@Request() req, @Body() dto: any) {
+    async getAllGroup(@Req() req : Request, @Body() dto: any) {
         let data = await this.configTemplateService.getTemplateGroupAll();
         return data;
     }
 
     @Get("templateVariant")
-    async getAllVariant(@Request() req, @Body() dto: any) {
+    async getAllVariant(@Req() req : Request, @Body() dto: any) {
         let data = await this.configTemplateService.getTemplateVariantAll();
     
         return data;

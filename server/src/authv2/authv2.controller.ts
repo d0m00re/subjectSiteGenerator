@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Authv2Service } from './authv2.service';
 
 import { Response, Request } from "express";
-import { JwtCookieParserGuard } from './jwt-cookie-parser.guard';
+import { JwtCookieParserGuard } from './guard/jwt-cookie-parser.guard';
 
 @Controller('authv2')
 export class Authv2Controller {
@@ -53,11 +53,7 @@ export class Authv2Controller {
     @Get("me")
     @UseGuards(JwtCookieParserGuard)
     async me(@Req() request: Request,  @Body() dto : dto.MeDto) {
-        // request :
-        console.log("me : ")
-        // @ts-ignore
         let user = request?.user;
-        //let data = await this.authV2Service.me({accessToken : request.cookies.accessToken});
         return user; 
     }
 }

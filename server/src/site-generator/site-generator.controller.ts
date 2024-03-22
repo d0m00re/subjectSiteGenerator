@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Patch, Post, UseGuards, Req } from '@nestjs/common';
 import * as dto from './dto/generate.dto';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { SiteGeneratorService } from './site-generator.service';
+import { JwtCookieParserGuard } from 'src/authv2/guard/jwt-cookie-parser.guard';
+import { Request } from 'express';
 
 @Controller('site-generator')
 export class SiteGeneratorController {
@@ -16,24 +17,24 @@ export class SiteGeneratorController {
    * @param dto 
    * @returns 
    */
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtCookieParserGuard)
   @Post("search")
-  async searchWebsite(@Request() req, @Body() dto: dto.GetUserWebsitesDto) {
+  async searchWebsite(@Req() req : Request, @Body() dto: dto.GetUserWebsitesDto) {
     console.log("search")
-    console.log(req.user)
+    console.log(req?.user)
     let data = await this.siteGeneratorService.getUserWebsite({
-      email: req.user.username,
+      email: req.user.email,
       page: dto.page,
       pageSize : dto.pageSize,
-    });
+    }); 
     return data;
   }
 
   // generate website
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtCookieParserGuard)
   @Post()
-  async generate(@Request() req, @Body() dto: dto.GenerateDto) {
-    let email = req.user.username; // come from jwt guard
+  async generate(@Req() req : Request, @Body() dto: dto.GenerateDto) {
+    let email = req.user.email; // come from jwt guard
 
     let result = await this.siteGeneratorService.createOneV2({
       title: dto.title,
@@ -44,10 +45,10 @@ export class SiteGeneratorController {
     return result;
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtCookieParserGuard)
   @Delete()
-  async deleteSection(@Request() req, @Body() dto: dto.DeleteDto) {
-    let email = req.user.username; // come from jwt guard
+  async deleteSection(@Req() req : Request, @Body() dto: dto.DeleteDto) {
+    let email = req.user.email; // come from jwt guard
 
     let result  =await this.siteGeneratorService.deleteSection({
       email,
@@ -57,10 +58,10 @@ export class SiteGeneratorController {
     return result;
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtCookieParserGuard)
   @Patch("section/moove")
-  async mooveSection(@Request() req, @Body() dto : dto.MooveDto) {
-    let email = req.user.username;
+  async mooveSection(@Req() req : Request, @Body() dto : dto.MooveDto) {
+    let email = req.user.email;
 
     let result = await this.siteGeneratorService.mooveSection({
       email,
@@ -71,10 +72,10 @@ export class SiteGeneratorController {
     return result;
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtCookieParserGuard)
   @Post("section/duplicate")
-  async duplicateSection(@Request() req, @Body() dto : dto.DuplicateDto) {
-    let email = req.user.username;
+  async duplicateSection(@Req() req : Request, @Body() dto : dto.DuplicateDto) {
+    let email = req.user.email;
 
     let website = await this.siteGeneratorService.duplicateSection({
       email,
