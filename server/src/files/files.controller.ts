@@ -1,7 +1,7 @@
 import { Controller, Post, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import * as multer from 'multer';
+import { JwtCookieParserGuard } from 'src/authv2/guard/jwt-cookie-parser.guard';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
     */
 @Controller('files')
 export class FilesController {
-    @UseGuards(JwtGuard)
+    @UseGuards(JwtCookieParserGuard)
     @Post()
     @UseInterceptors(FileInterceptor('file', {storage}))
     uploadFile(@UploadedFile() file) {

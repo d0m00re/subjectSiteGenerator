@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Post, UseGuards, Request, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards, Req, Body, Patch } from '@nestjs/common';
 import { WebsiteService } from './website.service';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import * as dto from "./dto/website.dto";
+import { JwtCookieParserGuard } from 'src/authv2/guard/jwt-cookie-parser.guard';
+import { Request } from 'express';
 
 @Controller('website')
 export class WebsiteController {
@@ -15,10 +16,10 @@ export class WebsiteController {
     return website;
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtCookieParserGuard)
   @Post("")
-  async createWebsite(@Request() req, @Body() dto: dto.CreateWebsiteDto) {
-    let userId = req.user.userId;
+  async createWebsite(@Req() req : Request, @Body() dto: dto.CreateWebsiteDto) {
+    let userId = req.user.id;
 
     let newWebsite = await this.websiteService.create({
       ...dto,
@@ -28,10 +29,10 @@ export class WebsiteController {
     return newWebsite;
   }
 
-  @UseGuards(JwtGuard) 
+  @UseGuards(JwtCookieParserGuard) 
   @Post("v4/section")
-  async createSectionV4(@Request() req, @Body() dto: dto.CreateSectionV4) {
-    let userId = req.user.userId;
+  async createSectionV4(@Req() req : Request, @Body() dto: dto.CreateSectionV4) {
+    let userId = req.user.id;
 
     let data = await this.websiteService.createNewSectionV4({
       userId: userId,
@@ -44,10 +45,10 @@ export class WebsiteController {
     return data;
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtCookieParserGuard)
   @Patch("v4/section")
-  async updateSectionV4(@Request() req, @Body() dto: dto.UpdateSectionV4) {
-    let userId = req.user.userId;
+  async updateSectionV4(@Req() req : Request, @Body() dto: dto.UpdateSectionV4) {
+    let userId = req.user.id;
 
     let data = await this.websiteService.sectionUpdateV4({
       userId : userId,
