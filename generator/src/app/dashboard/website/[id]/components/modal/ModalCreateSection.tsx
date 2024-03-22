@@ -26,7 +26,7 @@ interface IModalCreateSection {
 const ModalCreateSection = (props: IModalCreateSection) => {
     //const currentWebsite = useCurrentWebsite();
     const templateGroup = useTemplateGroup();
-    const [selectedTemplate, setSelectedTemplate] = useState<entity.A_I_TemplateVariant | undefined>(undefined);
+    const [selectedTemplate, setSelectedTemplate] = useState<entity.ParsedTemplateVariant | undefined>(undefined);
 
     return (
         <Dialog open={props.open} onOpenChange={props.setOpen}>
@@ -38,10 +38,10 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                 </DialogHeader>
                 <DialogDescription className="flex flex-col gap-4 items-center">
 
-                    {/*selectedTemplate === undefined ?
+                    {selectedTemplate === undefined ?
                         <SelectTemplateAccordion
                             groupTemplates={templateGroup.templateGroup}
-                            selectedTemplate={selectedTemplate}
+                            selectedTemplate={selectedTemplate} 
                             setSelectedTemplate={setSelectedTemplate}
                         /> :
                         <FormGeneratorTemplate
@@ -52,7 +52,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                             websiteId={props.websiteId}
                             setOpen={props.setOpen}
                         />
-                    */}
+                    }
                 </DialogDescription>
             </DialogContent>
         </Dialog >

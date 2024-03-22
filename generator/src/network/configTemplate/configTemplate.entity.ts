@@ -15,9 +15,6 @@ export interface A_I_TemplateVariant {
     templateGroupId : number;
 }
 
-export interface I_TemplateGroup extends A_I_TemplateGroup{
-    templateVariant : A_I_TemplateVariant[];
-}
 
 export interface A_I_TemplateElemTypography {
     id : number;
@@ -109,11 +106,17 @@ export interface ParsedTemplateVariant {
     id : number;
     name:string;
     kind: string;
-    config : I_TemplateVariantElem_parse;
+    config : I_TemplateVariantElem_parse[];
     // websiteSections : []
     templateGroupId : number;
 }
 
+// with parsing config
 export interface FinalParsedTemplateGroup extends ParsedTemplateGroup { 
     templateVariant : ParsedTemplateVariant[];
+}
+
+// without parsing config
+export interface I_TemplateGroup extends A_I_TemplateGroup{
+    templateVariant : A_I_TemplateVariant[];
 }
