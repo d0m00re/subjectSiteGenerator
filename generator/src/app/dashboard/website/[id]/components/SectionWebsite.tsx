@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-import useTemplateGroup from '@/store/templateGroup.zustand.store';
-
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import * as networkGenerateWeb from "@/network/generateWebsite/generateWebsite.network";
 
@@ -12,8 +10,6 @@ import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import ModalCreateSection from './modal/ModalCreateSection';
 import ModalEditSectionV2 from './modal/ModalEditSectionV2';
 import ModalEditSectionStyle from './modal/ModalEditSectionStyle';
-import RenderTypography from '@/components/WebsiteSection/Render/RenderTypography/RenderTypography';
-import RenderButton from '@/components/WebsiteSection/Render/RenderButton/RenderButton';
 import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
 
 type Props = { 
@@ -79,8 +75,7 @@ function SectionWebsite(props: Props) {
   
   const onDeleteSection = () => {
     networkGenerateWeb.deleteWebsiteSection({
-      sectionId : props.section.id,
-      accessToken : ""//session?.backendTokens?.accessToken ?? ""
+      sectionId : props.section.id
     })
     .then(res => {
       currentWebsite.deleteWebsiteSection(props.section.id);
@@ -93,8 +88,7 @@ function SectionWebsite(props: Props) {
   const onSwitchWebsitePositionTop = () => {
     networkGenerateWeb.switchPosWebsiteSection({
       dir : "top",
-      sectionId : props.section.id,
-      accessToken : "", //session?.backendTokens?.accessToken ?? ""
+      sectionId : props.section.id
     })
     .then(resp => {
       currentWebsite.sectionOrderSwitch(resp);
@@ -107,8 +101,7 @@ function SectionWebsite(props: Props) {
   const onSwitchWebsitePositionBottom = () => {
     networkGenerateWeb.switchPosWebsiteSection({
       dir : "bottom",
-      sectionId : props.section.id,
-      accessToken :  ""//session?.backendTokens?.accessToken ?? ""
+      sectionId : props.section.id
     })
     .then(resp => {
       currentWebsite.sectionOrderSwitch(resp);
@@ -120,8 +113,7 @@ function SectionWebsite(props: Props) {
 
   const onDuplicate = () => {
       networkGenerateWeb.duplicateWebsiteSection({
-        sectionId : props.section.id,
-        accessToken : ""//session?.backendTokens?.accessToken ?? ""
+        sectionId : props.section.id
       })
       .then(resp => {
         currentWebsite.resetWtData(resp);

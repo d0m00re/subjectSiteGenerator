@@ -25,7 +25,6 @@ const DashboardPage = () => {
   return <div>
     <h1>Home</h1>
     <FileUpload
-      accessToken="" //{session?.backendTokens?.accessToken ?? ""}
     />
   </div>;
 };

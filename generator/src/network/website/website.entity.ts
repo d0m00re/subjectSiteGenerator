@@ -1,5 +1,4 @@
 export interface ICreateWebsiteInput {
-    accessToken : string;
     title : string;
     subject : string;
 }
@@ -41,5 +40,4 @@ export interface IUpdateSectionV4 {
     layout : ISectionLayout;
     data : TUpdateDataV4[];
     sectionId : number;
-    accessToken : string;
 }

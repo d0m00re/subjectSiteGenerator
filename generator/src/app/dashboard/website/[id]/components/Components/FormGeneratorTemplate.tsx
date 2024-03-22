@@ -127,7 +127,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       order: props.order,
       websiteId: props.websiteId,
       templateId: props.selectedTemplate?.id ?? -1,
-      accessToken: ""// session?.backendTokens?.accessToken ?? ""
     }
  
     createWebsiteSectionV4(dataSubmit)
@@ -153,7 +152,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       data: dataFormV4,//dataFormV2,
       layout : {backgroundColor : currentSection.backgroundColor, backgroundImage : currentSection.backgroundImage},
       sectionId: currentSection.id,
-      accessToken: ""//session?.backendTokens?.accessToken ?? ""
     })
       .then((resp: any) => {
         // websiteStore.resetWtData(resp);

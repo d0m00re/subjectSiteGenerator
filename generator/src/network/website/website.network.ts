@@ -21,14 +21,12 @@ export const getWebsiteWtId = (id: number): Promise<I_Website> => {
 export const createWebsite = (props : ICreateWebsiteInput) => {  //Promise<I_Website> => {
     return (fetch(`${API_WEBSITE_URL}`, {
         method : "POST",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
-        },
+        headers: BASE_HEADER,
         body : JSON.stringify({
             title : props.title,
             subject : props.subject
-        })
+        }),
+        credentials : "include"
     })
     .then(resp => resp.json()))
 }
@@ -39,27 +37,23 @@ export interface ICreateWebsiteSectionV4 {
     order : number;
     websiteId : number;
     templateId : number;
-    accessToken : string;
 }
 
 export const createWebsiteSectionV4 = (props : ICreateWebsiteSectionV4) : Promise<any> => {
     return fetch(`${API_WEBSITE_URL}/v4/section`, {
         method : "POST",
-        headers : {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
-        },
+        headers : BASE_HEADER,
         body : JSON.stringify({
             data : props.data,
             order : props.order,
             websiteId : props.websiteId,
             templateId : props.templateId
-        })
+        }),
+        credentials : "include"
     })
 }
 
 interface IUpdateSessionV4 {
-    accessToken : string;
     data : TUpdateDataV4[];
     layout : ISectionLayout;
     sectionId : number;
@@ -68,15 +62,13 @@ interface IUpdateSessionV4 {
 export const updateSectionV4 = (props : IUpdateSessionV4) : Promise<any> => {
     return fetch(`${API_WEBSITE_URL}/v4/section`, {
         method : "PATCH",
-        headers : {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
-        },
+        headers : BASE_HEADER,
         body : JSON.stringify({
             data : props.data,
             layout : props.layout,
             sectionId : props.sectionId
-        })
+        }),
+        credentials : "include"
     })
     .then(resp => resp.json())
 }

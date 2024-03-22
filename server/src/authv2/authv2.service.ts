@@ -93,7 +93,6 @@ export class Authv2Service {
             refreshToken : data.refreshToken
         })
 
-        //return {accessToken : accessToken};
         return ret;
     }
 

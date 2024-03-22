@@ -6,21 +6,21 @@ type Props = {
   };
 };
 const ProfilePage = async (props: Props) => {
-    const response = await me({id : props.params.id, accessToken : props.params.id})
-    const user = await response.json();
+    //const user = await me({id : props.params.id})
 
     return (
       <div className="m-2 border rounded shadow overflow-hidden">
         <div className="p-2 bg-gradient-to-b from-white to-slate-200 text-slate-600 text-center">
           User Profile
         </div>
-  
+  {/*
         <div className="grid grid-cols-2  p-2 gap-2">
           <p className="p-2 text-slate-400">Name:</p>
           <p className="p-2 text-slate-950">{user.name}</p>
           <p className="p-2 text-slate-400">Email:</p>
           <p className="p-2 text-slate-950">{user.email}</p>
         </div>
+    */}
       </div>
     );
   };

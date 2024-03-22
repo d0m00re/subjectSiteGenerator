@@ -105,7 +105,6 @@ function StyleEditing(props: IStyleEditing) {
             data : dupSection,
             layout : layout,
             sectionId : currentSection.id,
-            accessToken : ""//session?.backendTokens?.accessToken ?? ""
         }).then(resp => {
             storeWebsite.updateSection(resp);
             props.onClose();

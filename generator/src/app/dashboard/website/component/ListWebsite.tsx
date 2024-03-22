@@ -21,7 +21,6 @@ const ListWebsite = () => {
     network.getMyWebsitePaginate({
       page: props.page,
       pageSize: props.pageSize,
-      accessToken: ""//session?.backendTokens?.accessToken ?? ""
     })
       .then(resp => resp.json())
       .then(resp => {
