@@ -8,14 +8,13 @@ export interface IRegister {
     password: string;
 }
 
-
-
 export const register = (props: IRegister) => {
     return fetch(API_AUTH_V2_URL + "/signUp", {
         method: "POST",
         body: JSON.stringify(props),
         headers: BASE_HEADER
-    });
+    })
+    .then(resp => resp.json());
 }
 
 export interface ILogin {
@@ -29,7 +28,8 @@ export const login = (props: ILogin) => {
         body: JSON.stringify(props),
         headers: BASE_HEADER,
         credentials : "include"
-    });
+    })
+    .then(resp => resp.json());
 }
 
 export const me = () => {
@@ -37,7 +37,8 @@ export const me = () => {
         method : "GET",
         headers : BASE_HEADER,
         credentials : "include"
-    });
+    })
+    .then(resp => resp.json());
 }
 
 // OLD API -----==========================================
@@ -54,5 +55,6 @@ export const refreshToken = (props: IRefreshToken) => {
             authorization: `Refresh ${props.refreshToken}`,
             ...BASE_HEADER
         },
-    });
+    })
+    .then(resp => resp.json());
 }
