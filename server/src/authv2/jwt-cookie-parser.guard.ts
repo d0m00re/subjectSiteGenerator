@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
+    
 @Injectable()
 export class JwtCookieParserGuard implements CanActivate {
     constructor(private jwtService: JwtService) { }
