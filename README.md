@@ -26,6 +26,50 @@
 * sectionSubElemImage : image element
 * sectionSubElemConfig : config element
 
+## cookie parser guard
+* when an user login, we create a cookie with this following data in it :
+
+## login routes
+* if success create a cookie with this following info inside
+* cookie name : accessToken
+```json
+{
+    "email" : "user email",
+    "id" : "user id ",
+    "name" : "user name"
+};
+```
+
+## backend guard : jwt-cookie-parser.guard.ts
+* use on route who require the user is log
+```ts
+import { JwtCookieParserGuard } from './jwt-cookie-parser.guard';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+    @Get("me")
+    @UseGuards(JwtCookieParserGuard)
+    async me(@Req() request: Request,  @Body() dto : dto.MeDto) {
+        // request :
+        console.log("me : ")
+        // @ts-ignore
+        let user = request?.user;
+        //let data = await this.authV2Service.me({accessToken : request.cookies.accessToken});
+        return user; 
+    }
+
+    // jwt guard inject inside request['user'] our data like id or email
+```
+
+## get authv2/me
+```json
+{
+    email: "j@j.com",
+    id: 12,
+    name: "j@j.com"
+    exp: 1711924058
+​    iat: 1711060058
+}
+```
+
 ## Goal
 generate a subWebsite with only one phrase
 

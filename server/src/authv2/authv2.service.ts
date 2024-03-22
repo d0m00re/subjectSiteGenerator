@@ -19,9 +19,6 @@ interface IMe {
     accessToken : string
 }
 
-// tmp mooove inside env later
-const JWT_SECRET = 'mykey'
-
 @Injectable()
 export class Authv2Service {
     constructor(
