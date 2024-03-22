@@ -5,15 +5,14 @@ const API_FILE_URL = `${BACKEND_URL}/files`;
 
 interface ISaveFile {
     formData : any;
-    accessToken : string;
 }
 
 export const saveFile =  (props : ISaveFile) : Promise<any> => {
     return fetch(API_FILE_URL, {
         method: 'POST',
+        credentials : "include",
         headers: {
            // ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
         },
         body: props.formData
       })

@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import * as fileNetwork from "@/network/file/file.network";
 
 interface IFileUpload {
-    accessToken : string;
 } 
 
 const FileUpload = (props : IFileUpload) => {
@@ -20,7 +19,6 @@ const FileUpload = (props : IFileUpload) => {
     formData.append('file', selectedFile);
 
     let resp = await fileNetwork.saveFile({
-        accessToken : props.accessToken,
         formData : formData
     })
 

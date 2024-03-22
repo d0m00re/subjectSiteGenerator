@@ -19,39 +19,34 @@ export const getOne = (props: IGetOne) => {
 interface IGenerateOne {
     title: string;
     subject: string;
-    accessToken: string;
 }
 
 export const generateOne = (props: IGenerateOne) => {
     return fetch(`${BACKEND_URL}/site-generator`, {
         method: "POST",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken),
-        },
+        headers: BASE_HEADER,
         body: JSON.stringify({
             title: props.title,
             subject: props.subject
-        })
+        }),
+        credentials : "include"
     })
         .then(resp => resp.json());
 }
 
 interface IDeleteOneWebsiteSection {
     sectionId : number;
-    accessToken : string;
 }
 
 export const deleteWebsiteSection = (props : IDeleteOneWebsiteSection) : Promise<{sectionId : number}> => {
     return fetch(`${BACKEND_URL}/site-generator`, {
         method : "DELETE",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken),
-        },
+        headers: BASE_HEADER,
+        credentials : "include",
         body: JSON.stringify({
             sectionId : props.sectionId
-        })
+        }
+        )
     }).then(resp => resp.json());
 
 }
@@ -59,13 +54,17 @@ export const deleteWebsiteSection = (props : IDeleteOneWebsiteSection) : Promise
 /*
  user update own website section
 */
-export const updateWebsiteSection = (props: { title: string, description: string, sectionId: number, accessToken: string }) => {
+interface IUpdateWebsiteSection {
+    title: string,
+    description: string,
+    sectionId: number
+}
+
+export const updateWebsiteSection = (props: IUpdateWebsiteSection) => {
     return fetch(`${BACKEND_URL}/site-generator/section`, {
         method: "PATCH",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken),
-        },
+        credentials : "include",
+        headers: BASE_HEADER,
         body: JSON.stringify({
             title: props.title,
             description: props.description,
@@ -82,28 +81,34 @@ order	2
 websiteSectionId	95
 websiteId	44
 */
-export const switchPosWebsiteSection = (props: { sectionId: number, dir : "top" | "bottom", accessToken: string }) : Promise<A_I_WebsiteSectionOrder[]> => {
+
+interface ISwitchPosition {
+    sectionId: number,
+    dir : "top" | "bottom"
+}
+
+export const switchPosWebsiteSection = (props: ISwitchPosition) : Promise<A_I_WebsiteSectionOrder[]> => {
     return fetch(`${BACKEND_URL}/site-generator/section/moove`, {
         method: "PATCH",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken),
-        },
+        headers: BASE_HEADER,
         body: JSON.stringify({
             dir: props.dir,
             sectionId: props.sectionId
-        })
+        }),
+        credentials : "include"
     })
         .then(resp => resp.json())
 }
 
-export const duplicateWebsiteSection = (props: { sectionId: number, accessToken: string }) : Promise<I_Website> => {
+interface IDuplicateWebsiteSection {
+    sectionId : number
+}
+
+export const duplicateWebsiteSection = (props: IDuplicateWebsiteSection) : Promise<I_Website> => {
     return fetch(`${BACKEND_URL}/site-generator/section/duplicate`, {
         method: "POST",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken),
-        },
+        headers: BASE_HEADER,
+        credentials : "include",
         body: JSON.stringify({
             sectionId: props.sectionId
         })
@@ -116,7 +121,6 @@ interface ICreateWebsiteSection {
     description : string;
     order : number;
     websiteId : number;
-    accessToken : string;
 }
 
 export interface ICreateWebsiteSectionV2 {
@@ -124,16 +128,13 @@ export interface ICreateWebsiteSectionV2 {
     order : number;
     websiteId : number;
     templateId : number;
-    accessToken : string;
 }
 
 export const createWebsiteSection = (props : ICreateWebsiteSection) : Promise<I_Website> => {
     return fetch(`${BACKEND_URL}/site-generator/section/add`, {
         method : "POST",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken)
-        },
+        headers: BASE_HEADER,
+        credentials : "include",
         body: JSON.stringify({
             title : props.title,
             description : props.description,
@@ -147,7 +148,6 @@ export const createWebsiteSection = (props : ICreateWebsiteSection) : Promise<I_
 interface IGenerateWebSiteInput {
     page: number;
     pageSize: number;
-    accessToken: string;
 }
 
 export interface IWebsiteDb {
@@ -171,10 +171,8 @@ export interface IGenerateWebSiteOutput {
 export const getMyWebsitePaginate = (props: IGenerateWebSiteInput) => {
     return fetch(`${BACKEND_URL}/site-generator/search`, {
         method: "POST",
-        headers: {
-            ...BASE_HEADER,
-            authorization: generateBearerToken(props.accessToken),
-        },
+        credentials : "include",
+        headers: BASE_HEADER,
         body: JSON.stringify({
             page: props.page,
             pageSize: props.pageSize

@@ -49,7 +49,6 @@ function CreateOne() {
         generateWebsiteNetwork.generateOne({
             title: data.title,
             subject: data.subject,
-            accessToken: ""// session?.backendTokens?.accessToken ?? ""
         })
             .then(resp => {
                 navigate(`/dashboard/website/${resp.id}`);
@@ -66,7 +65,6 @@ function CreateOne() {
         let values = getValues();
         console.log("submit create website : " + JSON.stringify(values));
         websiteNetwork.createWebsite({
-            accessToken : "",//session?.backendTokens?.accessToken ?? "",
             title : values.title,
             subject : values.subject
         })
@@ -75,7 +73,7 @@ function CreateOne() {
             setIsLoading(false);
             toast("Success");
         })
-        .catch(err => {
+        .catch(() => {
             setIsLoading(false);
             toast("Error");
         })
