@@ -148,3 +148,18 @@ probably moove the request to api because this is like that
 
 ## other toto
 * hash password directly on the front end
+
+## make a fake cdn
+# base path
+cdn/website
+
+# path img website
+cdn/website/{id}/{filename}.ext
+
+store the fullpath inside db
+{
+    order : 0,
+    filter : "",
+    radius : 25,
+    animation : ""
+}
