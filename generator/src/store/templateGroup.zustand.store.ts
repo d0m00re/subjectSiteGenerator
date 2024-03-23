@@ -10,63 +10,67 @@ import * as entity from "../network/configTemplate/configTemplate.entity";
  * templateVariant : array of parsed config templateGroup sub elem
  */
 interface ITemplateZustand {
-    templateGroup : entity.FinalParsedTemplateGroup[]; //I_TemplateGroup[];
+    templateGroup: entity.FinalParsedTemplateGroup[]; //I_TemplateGroup[];
     // easy access all templazte variant in same array
-    templateVariant : entity.I_TemplateVariant_parse[];
+    templateVariant: entity.I_TemplateVariant_parse[];
     populate: () => void;
 }
 
 const useTemplateGroup = create<ITemplateZustand>()((set) => ({
-    templateGroup : [],
-    templateVariant : [],
-    populate : () => {
+    templateGroup: [],
+    templateVariant: [],
+    populate: () => {
         network
-        .getAllGroup()
-        .then(arrGroup => {
+            .getAllGroup()
+            .then(arrGroup => {
+                console.log("populate data")
+                console.log(arrGroup);
+                // let fakeParse : entity.FinalParsedTemplateGroup[] = arrGroup.map(e => {
+                let shouldBeCorrectlyType: any = arrGroup.map(e => {
 
-           // let fakeParse : entity.FinalParsedTemplateGroup[] = arrGroup.map(e => {
-                let shouldBeCorrectlyType : any = arrGroup.map(e => {
-
-                let res = e.templateVariant.map(varElem => {
-                    // parse cosnfig
-                    let parsedConfig = entity.parseTemplateConfigStringToJSON(varElem.config);
+                    let res = e.templateVariant.map(varElem => {
+                        // parse cosnfig
+                        console.log("==================================================")
+                        let parsedConfig = entity.parseTemplateConfigStringToJSON(varElem.config);
+                        console.log(parsedConfig);
+                        return {
+                            ...varElem,
+                            config: parsedConfig
+                        };
+                    })
                     return {
-                        ...varElem,
-                        config : parsedConfig
-                    };
+                        id: e.id,
+                        kind: e.kind,
+                        templateVariant: res
+                    }
                 })
-                return {
-                    id : e.id,
-                    kind : e.kind,
-                    templateVariant : res
+
+                let arrVariant: entity.I_TemplateVariant_parse[] = [];
+
+
+                // parse template variant group, easy way for accessing data
+                // parse is useless now
+                for (let i = 0; i < arrGroup.length; i++) {
+                    let currElem = shouldBeCorrectlyType[i];
+
+                    arrVariant = [
+                        ...arrVariant,
+                        ...currElem.templateVariant
+                    ];
                 }
+
+                set((state) => {
+                    return {
+                        ...state,
+                        templateGroup: shouldBeCorrectlyType,//arrGroup,
+                        templateVariant: arrVariant
+                    }
+                })
             })
-
-            let arrVariant : entity.I_TemplateVariant_parse[] = [];
-
-
-            // parse template variant group, easy way for accessing data
-            // parse is useless now
-            for (let i = 0; i < arrGroup.length; i++) {
-                let currElem = shouldBeCorrectlyType[i];
-
-                arrVariant = [
-                    ...arrVariant,
-                    ...currElem.templateVariant
-                ];
-            }
-
-            set((state) => {
-                return {
-                    ...state,
-                    templateGroup : shouldBeCorrectlyType,//arrGroup,
-                    templateVariant :  arrVariant
-                }
+            .catch(err => {
+                console.log("fail get template group")
+                console.log(err);
             })
-        })
-        .catch(err => {
-            console.log("fail get template group")
-        })
     }
 }));
 

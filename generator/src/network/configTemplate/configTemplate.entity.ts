@@ -58,17 +58,30 @@ export const TypographyValidator = z.object({
     label: z.string(),
     actionType: z.string(),
     path: z.string(),
-  
     size: z.string(),
-  
     variant : z.string(),
     shape : z.string(),
     animation : z.string()
   });
+
+  /*
+[{'order':0,'kind':'text','label':'title','path':'','size':'big'},
+{'order':1,'kind':'text','label':'description','path':'','size':'medium'},
+{'order':2,'kind':'img','filter':'','radius':10,'animation':''}]
+  */
+  export const ImgValidator = z.object({
+    order : z.number(),
+    kind : z.literal("img"),
+    //url : z.string(),
+    filter : z.string(),
+    radius : z.number(),
+    animation : z.string(),
+    label : z.string()
+  });
   
   // 'variant' : '', 'shape':'', 'animation' : ''
   
-  export const TemplateValidator = z.union([TypographyValidator, ButtonValidator]);
+  export const TemplateValidator = z.discriminatedUnion("kind", [TypographyValidator, ButtonValidator, ImgValidator]);
   export const TemplateValidatorArray = z.array(TemplateValidator);
   export type I_TemplateVariantElem_parse = z.infer<typeof TemplateValidator>
   
@@ -80,6 +93,9 @@ export const TypographyValidator = z.object({
   export const parseTemplateConfigStringToJSON = (json: string) : I_TemplateVariantElem_parse[] => {
     // todo : find a better way for that
     const parsedArray = JSON.parse(json.replaceAll("'", '"'));
+    console.log("parsed array");
+    console.log(parsedArray);
+    console.log("-----------------------")
     return TemplateValidatorArray.parse(parsedArray);
   }
 

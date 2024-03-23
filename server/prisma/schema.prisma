@@ -107,6 +107,7 @@ model TemplateElemButton {
 }
 
 // not use for the moment
+
 model TemplateElemImage {
   id        Int    @id @default(autoincrement())
   order     Int // order of display

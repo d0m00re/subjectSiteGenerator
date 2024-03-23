@@ -28,6 +28,9 @@ const ModalCreateSection = (props: IModalCreateSection) => {
     const templateGroup = useTemplateGroup();
     const [selectedTemplate, setSelectedTemplate] = useState<entity.ParsedTemplateVariant | undefined>(undefined);
 
+    console.log("template group : ")
+    console.log(templateGroup)
+
     return (
         <Dialog open={props.open} onOpenChange={props.setOpen}>
             <DialogContent>
