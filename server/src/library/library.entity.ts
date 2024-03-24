@@ -25,3 +25,8 @@ export const validateLibraryData = z.object({
 })
 
 export type ILibraryEntity = z.infer<typeof validateLibraryData>;
+
+
+export interface IGetAllMyLibrairy {
+    userId : number;
+}

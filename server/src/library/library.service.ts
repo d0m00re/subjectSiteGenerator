@@ -1,6 +1,6 @@
 import { Get, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { ILibraryEntity } from './library.entity';
+import { IGetAllMyLibrairy, ILibraryEntity } from './library.entity';
 
 /*
   id     Int    @id @default(autoincrement())
@@ -13,6 +13,8 @@ import { ILibraryEntity } from './library.entity';
   user   User @relation(fields: [userId], references: [id])
 
 */
+
+
 
 @Injectable()
 export class LibraryService {
@@ -45,5 +47,11 @@ export class LibraryService {
         }})
         
         return result;
+    }
+
+    getAllMyLibrary = async(props : IGetAllMyLibrairy) => {
+        let data = await this.prismaService.library.findMany({where : {userId : props.userId}})
+    
+        return data;
     }
 }
