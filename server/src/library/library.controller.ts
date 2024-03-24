@@ -1,10 +1,10 @@
-import { Controller, Get, Param, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { LibraryService } from './library.service';
 import * as multer from 'multer';
 import { JwtCookieParserGuard } from 'src/authv2/guard/jwt-cookie-parser.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ILibraryEntity } from './library.entity';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -36,11 +36,13 @@ export class LibraryController {
     ) { }
 
     // get one with id
+    /*
     @Get(":id")
     async getWithId(@Param('id') id: number) {
         let data = await this.libraryService.getWithId({ id: id });
         return data;
     }
+    */
 
 
     @UseGuards(JwtCookieParserGuard)
@@ -77,6 +79,18 @@ export class LibraryController {
         let data = await this.libraryService.uploadFile(encodeData);
         return data;
     }
+
+    @Get(':imageName')
+    async getImage(@Param('imageName') imageName: string, @Res() res: Response) {
+      try {
+        const stream = await this.libraryService.getImage(imageName);
+        stream.pipe(res); // Stream the image to the response
+      } catch (error) {
+        // Handle errors, e.g., image not found
+        res.status(404).send('Image not found');
+      }
+    }
+
 
     @UseGuards(JwtCookieParserGuard)
     @Get()

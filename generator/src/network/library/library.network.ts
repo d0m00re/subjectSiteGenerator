@@ -23,3 +23,14 @@ export const getAllMyLibrary = () : Promise<any> => {
   })
   .then(resp => resp.json())
 }
+
+export const getOne = () : Promise<any> => {
+  return fetch(API_FILE_URL, {
+    method : "GET",
+    credentials : "include"
+  })
+}
+
+export const URL_IMAGE = (filename : string) => {
+  return `${API_FILE_URL}/${filename}`;
+}

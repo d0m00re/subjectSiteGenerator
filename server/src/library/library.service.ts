@@ -2,6 +2,9 @@ import { Get, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { IGetAllMyLibrairy, ILibraryEntity } from './library.entity';
 
+import * as path from 'path';
+import * as fs from 'fs';
+
 /*
   id     Int    @id @default(autoincrement())
   url    String
@@ -13,8 +16,6 @@ import { IGetAllMyLibrairy, ILibraryEntity } from './library.entity';
   user   User @relation(fields: [userId], references: [id])
 
 */
-
-
 
 @Injectable()
 export class LibraryService {
@@ -54,4 +55,15 @@ export class LibraryService {
     
         return data;
     }
+
+    getImage(imageName: string): Promise<fs.ReadStream> {
+        console.log("image name :")
+        console.log(imageName)
+        return new Promise((resolve, reject) => {
+          const imagePath = `cdn/${imageName}` //path.join(__dirname, '..', 'images', imageName);
+          const stream = fs.createReadStream(imagePath);
+          stream.on('open', () => resolve(stream));
+          stream.on('error', error => reject(error));
+        });
+      }
 }
