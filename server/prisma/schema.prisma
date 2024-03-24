@@ -11,13 +11,28 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  name     String?
-  password String
-  accessToken String?
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  name         String?
+  password     String
+  accessToken  String?
   refreshToken String?
-  websites Website[]
+  websites     Website[]
+  Library      Library[]
+}
+
+model Library {
+  id           Int     @id @default(autoincrement())
+  path         String // could be path or other things
+  sourceType   String // local / cdn
+  encoding     String // 7bit
+  mimetype     String // image/cdn
+  isPublic     Boolean // if public all tthe peaple copuld acces it and use it
+  size         Int
+  filename     String
+  originalname String
+  userId       Int // Foreign key to reference User
+  user         User    @relation(fields: [userId], references: [id])
 }
 
 model Website {

@@ -1,14 +1,9 @@
 "use client"
 
-import FileUpload from "@/components/File/FileUpload";
 import React, {useEffect} from "react";
 import { me } from "@/network/auth.network";
 
 const DashboardPage = () => {
-
-//  console.log("dashboard page :")
-//  console.log(session)
-
   useEffect(() => {
     me()
     .then(resp => {
@@ -24,8 +19,6 @@ const DashboardPage = () => {
 
   return <div>
     <h1>Home</h1>
-    <FileUpload
-    />
   </div>;
 };
 
