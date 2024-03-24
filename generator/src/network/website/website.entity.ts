@@ -29,7 +29,17 @@ export interface IUpdateButton {
     animation : string;
 }
 
-export type TUpdateDataV4 = (IUpdateTypography | IUpdateButton); 
+export interface IUpdateImg {
+    kind : "img",
+    order : number;
+
+    url : string;
+    filter : string;
+    radius : number;
+    animation : string;
+}
+
+export type TUpdateDataV4 = (IUpdateTypography | IUpdateButton | IUpdateImg); 
 
 export interface ISectionLayout {
     backgroundImage : string;

@@ -2,11 +2,12 @@
 
 import { BACKEND_URL } from '@/lib/constants';
 import React, { useState } from 'react';
-import * as fileNetwork from "@/network/file/file.network";
+import * as libraryNetwork from "@/network/library/library.network";
+import { Button } from '../ui/button';
 
 interface IFileUpload {
 } 
-
+ 
 const FileUpload = (props : IFileUpload) => {
   const [selectedFile, setSelectedFile] = useState<any>();
 
@@ -18,17 +19,18 @@ const FileUpload = (props : IFileUpload) => {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    let resp = await fileNetwork.saveFile({
+    let resp = await libraryNetwork.saveFile({
         formData : formData
     })
 
-    console.log("onFileUpload : ", resp)
+    console.log("resp")
+    console.log(resp)
   }; 
 
   return (
     <div className='p-5 flex justify-center gap-2'>
       <input type="file" onChange={onFileChange} />
-      <button onClick={onFileUpload}>Upload</button>
+      <Button type="button" onClick={onFileUpload}>Upload</Button>
     </div>
   );
 };

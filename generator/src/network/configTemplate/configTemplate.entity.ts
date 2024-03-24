@@ -64,11 +64,6 @@ export const TypographyValidator = z.object({
     animation : z.string()
   });
 
-  /*
-[{'order':0,'kind':'text','label':'title','path':'','size':'big'},
-{'order':1,'kind':'text','label':'description','path':'','size':'medium'},
-{'order':2,'kind':'img','filter':'','radius':10,'animation':''}]
-  */
   export const ImgValidator = z.object({
     order : z.number(),
     kind : z.literal("img"),
@@ -93,9 +88,6 @@ export const TypographyValidator = z.object({
   export const parseTemplateConfigStringToJSON = (json: string) : I_TemplateVariantElem_parse[] => {
     // todo : find a better way for that
     const parsedArray = JSON.parse(json.replaceAll("'", '"'));
-    console.log("parsed array");
-    console.log(parsedArray);
-    console.log("-----------------------")
     return TemplateValidatorArray.parse(parsedArray);
   }
 

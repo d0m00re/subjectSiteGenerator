@@ -1,7 +1,6 @@
 /*
 ** components use for create or update a section (mode)
 */
-
 import React, { useState, useEffect } from 'react'
 import * as entity from "@/network/configTemplate/configTemplate.entity";
 import { Button } from '@/components/Button';
@@ -11,37 +10,37 @@ import * as entityWebsite from '@/network/website/website.entity';
 import { ICreateWebsiteSectionV4, createWebsiteSectionV4, updateSectionV4 } from '@/network/website/website.network';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { cloneDeep } from 'lodash';
- 
+import FileUpload from '@/components/File/FileUpload';
+
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.ParsedTemplateVariant | undefined
   setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.ParsedTemplateVariant | undefined>>
   websiteId: number;
   order: number;
   setOpen: (val: boolean) => void;
-
   defaultData?: any; // default json data
-
   mode: "create" | "edit";
-} 
+}
 
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   // config
   const templateConfig = props.selectedTemplate?.config;
   const [dataFormV4, setDataFormV4] = useState<entityWebsite.TUpdateDataV4[]>([]);
-  //const { data: session } = useSession();
   const storeWebsite = useCurrentWebsiteStore();
   const storeTemplate = useTemplateGroup();
-  const currentSection = storeWebsite.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
+ // const currentSection = storeWebsite.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
 
   useEffect(() => {
+    const dataUpdateSection: entityWebsite.TUpdateDataV4[] = [];
 
+    console.log("MODE : ", props.mode)
     if (props.mode === "edit") {
       // alert(`update data : ${JSON.stringify(props.defaultData)}`)
       let currSection = storeWebsite.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
 
       if (!currSection) {
         console.log("section not found")
-        return ;
+        return;
       }
 
       // get back template
@@ -49,42 +48,36 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
       if (!currTemplate) {
         console.log("template not found")
-        return ;
+        return;
       }
 
       let config = currTemplate.config; //entity.parseTemplateConfigStringToJSON(currTemplate.config);
-
-      const dataUpdateSection : entityWebsite.TUpdateDataV4[] = [];
 
       for (let i = 0; i < config.length; i++) {
         let currTemplate = config[i];
 
         if (currTemplate.kind === "text") {
-          //
           let elemTypo = currSection.typographies.find(e => e.order === currTemplate.order);
           if (elemTypo) {
             dataUpdateSection.push({
-              kind : "typography",
+              kind: "typography",
               ...elemTypo
             })
           }
-        
         } else if (currTemplate.kind === "button") {
           let elemButton = currSection.buttons.find(e => e.order === currTemplate.order);
           if (elemButton) {
             dataUpdateSection.push({
-              kind : "button",
+              kind: "button",
               ...elemButton
             });
           }
         }
       }
       setDataFormV4(dataUpdateSection);
-      // fix edit here
     } else {
       // dataUpdateSection
       let dataUpdateSection: entityWebsite.TUpdateDataV4[] = [];
-
       // generate some default data
       for (let i = 0; templateConfig && i < templateConfig.length; i++) {
         let curr = templateConfig[i];
@@ -114,29 +107,39 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
           }
           dataUpdateSection.push(encodeObjButton);
         }
-      }
+        else if (curr.kind === "img") {
+          let encodeObjImg: entityWebsite.IUpdateImg = {
+            kind: "img",
+            order: curr.order,
+            url: "",
+            filter: curr.filter,
+            radius: curr.radius,
+            animation: ""
+          }
 
+          dataUpdateSection.push(encodeObjImg);
+        }
+
+      }
       setDataFormV4(dataUpdateSection);
     }
   }, [])
 
   const submitFormCreate = () => {
-    
+
     let dataSubmit: ICreateWebsiteSectionV4 = {
       data: dataFormV4,
       order: props.order,
       websiteId: props.websiteId,
       templateId: props.selectedTemplate?.id ?? -1,
     }
- 
+
     createWebsiteSectionV4(dataSubmit)
       .then((resp: any) => {
         storeWebsite.resetWtData(resp);
         props.setOpen(false);
       })
-      .catch(err => {
-        console.log(err);
-      })
+      .catch(err => {console.log(err);})
   }
 
   const submitFormEdit = () => {
@@ -150,7 +153,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
     updateSectionV4({
       data: dataFormV4,//dataFormV2,
-      layout : {backgroundColor : currentSection.backgroundColor, backgroundImage : currentSection.backgroundImage},
+      layout: { backgroundColor: currentSection.backgroundColor, backgroundImage: currentSection.backgroundImage },
       sectionId: currentSection.id,
     })
       .then((resp: any) => {
@@ -165,21 +168,23 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
   const submitForm = (e: any) => {
     e.preventDefault();
-
-    if (props.mode === "create") {
-      submitFormCreate();
-    }
-    else if (props.mode === "edit") {
-      submitFormEdit();
-    }
+    if (props.mode === "create") submitFormCreate();
+    else if (props.mode === "edit") submitFormEdit();
   }
 
-  const handleChange = (event: any, index : number) => {
+  const handleChange = (event: any, index: number) => {
     const { name, value } = event.target;
 
-    //
     let dataDup = cloneDeep(dataFormV4);
-    dataDup[index] = {...dataDup[index], text : value};
+    let elem = dataDup[index];
+    if (elem.kind === "typography" || elem.kind === "button")
+    {
+      elem.text = value;
+      dataDup[index] = elem;//{ ...dataDup[index], text: value };
+    }
+    else if (elem.kind === "img") {
+      elem.url = value;
+    }
     setDataFormV4(dataDup);
   }
 
@@ -193,35 +198,43 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       </Button>
 
       <form
-        onSubmit={submitForm}
         className='flex flex-col gap-2'>
         {
           templateConfig?.map((elem, index) => {
-            if (elem.kind === "text") {
-              return <section className='flex flex-col gap-1'>
-                <p>{elem.label}</p>
-                <Input
-                  name={elem.label}
-                  onChange={(e) => handleChange(e, index)}
-                  type="text"
-                  value={(dataFormV4[index]) ? (dataFormV4[index].text) : ""}
-                />
-              </section>
-            } else if (elem.kind === "button") {
-              return <section className='flex flex-col gap-1'>
-                <p>{elem.label}</p>
-                <Input
-                  name={elem.label}
-                  onChange={(e) => handleChange(e, index)}
-                  type="text"
-                  value={(dataFormV4[index]) ? (dataFormV4[index].text) : ""}
-                />
-              </section>
+            let currElem = dataFormV4[index];
+            if (dataFormV4.length !== templateConfig.length) {
+              return <></>
             }
-            return <></>
-          })
-        }
-        <Button type="submit" className='mt-4'>Save</Button>
+            switch (currElem.kind) {
+              case "typography":
+                return <section className='flex flex-col gap-1'>
+                  <p>{elem.label}</p>
+                  <Input
+                    name={elem.label}
+                    onChange={(e) => handleChange(e, index)}
+                    type="text"
+                    value={(currElem) ? (currElem.text) : ""}
+                  />
+                </section>
+              case "button":
+                return <section className='flex flex-col gap-1'>
+                  <p>{elem.label}</p>
+                  <Input
+                    name={elem.label}
+                    onChange={(e) => handleChange(e, index)}
+                    type="text"
+                    value={(currElem) ? (currElem.text) : ""}
+                  />
+                </section>
+
+              case "img":
+                return <section className='flex flex-col gap-1'>
+                  <p>{elem.label}</p>
+                  <FileUpload /> 
+                </section>
+            }
+          })}
+        <Button onClick={submitForm} className='mt-4'>Save</Button>
       </form>
     </section>
   )

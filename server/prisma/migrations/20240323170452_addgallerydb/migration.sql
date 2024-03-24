@@ -1,0 +1,9 @@
+-- CreateTable
+CREATE TABLE "Library" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "url" TEXT NOT NULL,
+    "source" TEXT NOT NULL,
+    "isPublic" BOOLEAN NOT NULL,
+    "userId" INTEGER NOT NULL,
+    CONSTRAINT "Library_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
