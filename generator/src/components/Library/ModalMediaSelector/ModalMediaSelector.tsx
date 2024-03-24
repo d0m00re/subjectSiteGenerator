@@ -19,14 +19,14 @@ export function ModalMediaSelector() {
             <DialogTrigger asChild>
                 <Button variant="outline">Select a media</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[825px]">
                 <DialogHeader>
                     <DialogTitle>Media selector</DialogTitle>
                     <DialogDescription>
                         Reuse media or import one
                     </DialogDescription>
                 </DialogHeader>
-                <Tabs defaultValue="account" className="w-[400px]">
+                <Tabs defaultValue="account" className="w-[800px]">
                     <TabsList>
                         <TabsTrigger value="library">Library</TabsTrigger>
                         <TabsTrigger value="upload">Upload</TabsTrigger>
