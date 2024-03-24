@@ -8,12 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import * as cpn from "./components"
 
-export function ModalMediaSelector() {
+interface IModalMediaSelector {
+    url : string;
+    setUrl : (url : string) => void;
+}
+
+export function ModalMediaSelector(props : IModalMediaSelector) {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -32,7 +36,10 @@ export function ModalMediaSelector() {
                         <TabsTrigger value="upload">Upload</TabsTrigger>
                     </TabsList>
                     <TabsContent value="library">
-                        <cpn.Library />
+                        <cpn.Library
+                            currentImg={props.url}
+                            setCurrentImg={props.setUrl}
+                        />
                     </TabsContent>
                     <TabsContent value="upload">
                         <cpn.Upload />
