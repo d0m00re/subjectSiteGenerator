@@ -12,6 +12,7 @@ import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { cloneDeep } from 'lodash';
 import FileUpload from '@/components/File/FileUpload';
 import { ModalMediaSelector } from '@/components/Library';
+import Image from 'next/image';
 
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.ParsedTemplateVariant | undefined
@@ -29,7 +30,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   const [dataFormV4, setDataFormV4] = useState<entityWebsite.TUpdateDataV4[]>([]);
   const storeWebsite = useCurrentWebsiteStore();
   const storeTemplate = useTemplateGroup();
- // const currentSection = storeWebsite.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
+  // const currentSection = storeWebsite.website?.websiteSection.find(e => e.websiteSectionOrder.order === props.order);
 
   useEffect(() => {
     const dataUpdateSection: entityWebsite.TUpdateDataV4[] = [];
@@ -140,7 +141,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
         storeWebsite.resetWtData(resp);
         props.setOpen(false);
       })
-      .catch(err => {console.log(err);})
+      .catch(err => { console.log(err); })
   }
 
   const submitFormEdit = () => {
@@ -174,17 +175,16 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   }
 
   const handleChange = (event: any, index: number) => {
-    const { name, value } = event.target;
 
     let dataDup = cloneDeep(dataFormV4);
     let elem = dataDup[index];
-    if (elem.kind === "typography" || elem.kind === "button")
-    {
+    if (elem.kind === "typography" || elem.kind === "button") {
+      const { name, value } = event.target;
       elem.text = value;
       dataDup[index] = elem;//{ ...dataDup[index], text: value };
     }
     else if (elem.kind === "img") {
-      elem.url = value;
+      elem.url = event;
     }
     setDataFormV4(dataDup);
   }
@@ -231,7 +231,23 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
               case "img":
                 return <section className='flex flex-col gap-1'>
                   <p>{elem.label}</p>
-                  <ModalMediaSelector />
+                  {
+                    (currElem.url && currElem.url.length) ?
+                      <Image
+                        src={currElem.url}
+                        width={500}
+                        height={500}
+                        alt="elem"
+                      />
+                      :
+                      <></>
+                  }
+                  <ModalMediaSelector
+                    url={currElem.url}
+                    setUrl={(s: string) => {
+                      handleChange(s, index);
+                    }}
+                  />
                 </section>
             }
           })}
