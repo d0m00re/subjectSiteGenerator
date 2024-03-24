@@ -4,15 +4,22 @@ import { BASE_HEADER, generateBearerToken } from "./../contants.network";
 const API_FILE_URL = `${BACKEND_URL}/library`;
 
 interface ISaveFile {
-    formData : any;
+  formData: any;
 }
 
-export const saveFile =  (props : ISaveFile) : Promise<any> => {
-    return fetch(API_FILE_URL, {
-        method: 'POST',
-        credentials : "include",
-        body: props.formData
-      })
-      .then(resp => resp.json());
-    }
- 
+export const saveFile = (props: ISaveFile): Promise<any> => {
+  return fetch(API_FILE_URL, {
+    method: 'POST',
+    credentials: "include",
+    body: props.formData
+  })
+    .then(resp => resp.json());
+}
+
+export const getAllMyLibrary = () : Promise<any> => {
+  return fetch(API_FILE_URL, {
+    method : "GET",
+    credentials : "include",
+  })
+  .then(resp => resp.json())
+}

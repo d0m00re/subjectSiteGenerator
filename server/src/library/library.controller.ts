@@ -77,4 +77,11 @@ export class LibraryController {
         let data = await this.libraryService.uploadFile(encodeData);
         return data;
     }
+
+    @UseGuards(JwtCookieParserGuard)
+    @Get()
+    async getAllMyLibraryItems  ( @Req() req : Request)  {
+        let data = await this.libraryService.getAllMyLibrary({userId : req.user.id});
+        return data;
+    }
 }

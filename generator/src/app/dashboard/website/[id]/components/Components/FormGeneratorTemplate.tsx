@@ -11,6 +11,7 @@ import { ICreateWebsiteSectionV4, createWebsiteSectionV4, updateSectionV4 } from
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { cloneDeep } from 'lodash';
 import FileUpload from '@/components/File/FileUpload';
+import { ModalMediaSelector } from '@/components/Library';
 
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.ParsedTemplateVariant | undefined
@@ -230,7 +231,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
               case "img":
                 return <section className='flex flex-col gap-1'>
                   <p>{elem.label}</p>
-                  <FileUpload /> 
+                  <ModalMediaSelector />
                 </section>
             }
           })}
