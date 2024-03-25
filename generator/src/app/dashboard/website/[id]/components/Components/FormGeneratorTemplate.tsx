@@ -74,6 +74,14 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
               ...elemButton
             });
           }
+        } else if (currTemplate.kind === "img") {
+          let elemImg = currSection.images.find(e => e.order === currTemplate.order);
+          if (elemImg) {
+            dataUpdateSection.push({
+              kind : "img",
+              ...elemImg
+            })
+          }
         }
       }
       setDataFormV4(dataUpdateSection);

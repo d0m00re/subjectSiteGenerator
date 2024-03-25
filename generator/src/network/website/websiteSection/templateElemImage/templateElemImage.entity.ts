@@ -3,7 +3,7 @@ export interface I_TemplateElemImage_E {
     order : number;
     url : string;
     filter : string;
-    radius : string;
+    radius : number;
     animation : string;
 }
 

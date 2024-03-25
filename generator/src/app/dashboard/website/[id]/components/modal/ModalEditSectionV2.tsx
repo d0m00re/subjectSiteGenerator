@@ -51,6 +51,11 @@ const ModalEditSection = (props: IModalEdit) => {
                 if (currElement) {
                     elementJSON[curr.label] = currElement.text;
                 }
+            } else if (curr.kind === "img") {
+                let currElement = props.section.images.find(e => e.order === curr.order);
+                if (currElement) {
+                    elementJSON[curr.label] = currElement.url;
+                }
             }
         }
        // build json data
@@ -64,7 +69,7 @@ const ModalEditSection = (props: IModalEdit) => {
             <DialogContent>
                 <DialogHeader >
                     <DialogTitle>
-                        Edit your section 
+                        Edit your section
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="flex flex-col gap-4 items-center">

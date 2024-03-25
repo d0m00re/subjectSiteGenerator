@@ -167,3 +167,9 @@ store the fullpath inside db
 ## file upload components
 when we upload a file somewhere we create a ngallery record with image url
 when we create a section we get back url and add it inside our new section
+
+
+## futur rework
+* create / update mecanism too messy on front-end
+* control access
+* entity system
