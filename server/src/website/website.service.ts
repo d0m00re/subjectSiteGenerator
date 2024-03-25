@@ -1,6 +1,6 @@
 import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { IButtonRow, IDataUpdateElem, ITypographyRow, parseTemplateConfigStringToJSON } from './utils/parserConfig';
+import { IButtonRow, IDataUpdateElem, IImageRow, ITypographyRow, IUpdateButton, IUpdateImg, IUpdateTypography, parseTemplateConfigStringToJSON } from './utils/parserConfig';
 import { ConfigTemplateService } from 'src/config-template/config-template.service';
 import { Userv2Service } from 'src/userv2/userv2.service';
 import { ICreateNewSectionV3, IUpdateV4 } from './website.entity';
@@ -52,12 +52,16 @@ export class WebsiteService {
 
         if (!template) throw new HttpException('No template variant found', HttpStatus.NOT_FOUND);
 
+        console.log("parse template config")
         const configJSON = parseTemplateConfigStringToJSON(template.config);
 
         // cxheck if all key are present inside data
         // basic validation for the moment rework with a better version later
         let button: IButtonRow[] = [];
         let typography: ITypographyRow[] = [];
+        let img: IImageRow[] = [];
+
+        console.log("1) encode data")
         for (let i = 0; i < props.data.length; i++) {
             let currentElem = props.data[i];
             let templateElem = configJSON.find(e => e.order === currentElem.order);
@@ -83,10 +87,20 @@ export class WebsiteService {
                     path: currentElem.path,
                     animation: currentElem.animation
                 })
+            } else if (currentElem.kind === "img" && templateElem.kind === "img" && currentElem.order === templateElem.order) {
+                img.push({
+                    order: templateElem.order ?? -1,
+                    url : currentElem.url,
+                    filter : currentElem.filter,
+                    radius : currentElem.radius,
+                    animation : currentElem.animation
+                })
             }
         }
 
         // moove all section order for our new section order
+        console.log("update many")
+        console.log(img);
         await this.prisma.websiteSectionOrder.updateMany({
             where: {
                 websiteId: props.websiteId,
@@ -99,6 +113,7 @@ export class WebsiteService {
             }
         });
 
+        console.log("2 create section")
         await this.prisma.websiteSection.create({
             data: {
                 websiteId: props.websiteId,
@@ -116,10 +131,14 @@ export class WebsiteService {
                 },
                 typographies: {
                     create: typography
+                },
+                images: {
+                    create: img
                 }
             }
         });
 
+        console.log("get website full")
         let newData = await this.getWebsiteFull({ websiteId: props.websiteId });
         return newData;
     }
@@ -162,8 +181,9 @@ export class WebsiteService {
         }
 
         // button
-        let buttons = props.data.filter(e => e.kind === "button");
-        let typography = props.data.filter(e => e.kind === "typography");
+        let buttons = props.data.filter(e => e.kind === "button") as IUpdateButton[];
+        let typography = props.data.filter(e => e.kind === "typography") as IUpdateTypography[];
+        let img = props.data.filter(e => e.kind === "img") as IUpdateImg[];
         // typograpgy
 
         let dataUpdate = await this.prisma.websiteSection.update({
@@ -198,6 +218,19 @@ export class WebsiteService {
                                 variant: t.variant
                             }
                         }))
+                    ]
+                },
+                images : {
+                    updateMany : [
+                    ...img.map(i => ({
+                        where : {order : i.order},
+                        data : {
+                            url : i.url,
+                            filter : i.filter,
+                            radius : i.radius,
+                            animation : i.animation
+                        }
+                    }))
                     ]
                 }
             },
