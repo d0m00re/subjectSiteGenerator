@@ -38,6 +38,7 @@ const FileUpload = (props: IFileUpload) => {
 
   const onFileChange = (event: any) => {
     setSelectedFile(event.target.files[0]);
+
   };
 
   const onFileUpload = async () => {
@@ -64,7 +65,6 @@ const FileUpload = (props: IFileUpload) => {
   );
 
 
-        <Button type="button" onClick={onFileUpload}>BROWSE</Button>
 
       */}
 
@@ -87,7 +87,10 @@ const FileUpload = (props: IFileUpload) => {
         hidden
         ref={fileInputRef}  
       />
+      
       <label htmlFor="upload">Choose file</label>
+      <Button type="button" onClick={onFileUpload}>{
+      (loading) ? <IconLoaderSpin /> : "upload"}</Button>
 
 
       <p>Maximum size : 2MB</p>
