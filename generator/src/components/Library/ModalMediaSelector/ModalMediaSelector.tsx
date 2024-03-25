@@ -11,6 +11,7 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import * as cpn from "./components"
+import { useState } from "react";
 
 interface IModalMediaSelector {
     url : string;
@@ -18,8 +19,10 @@ interface IModalMediaSelector {
 }
 
 export function ModalMediaSelector(props : IModalMediaSelector) {
+    const [open, setOpen] = useState(false);
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline">Select a media</Button>
             </DialogTrigger>
@@ -39,9 +42,10 @@ export function ModalMediaSelector(props : IModalMediaSelector) {
                         <cpn.Library
                             currentImg={props.url}
                             setCurrentImg={props.setUrl}
+                            onCloseModal={() => {setOpen(false)}}
                         />
                     </TabsContent>
-                    <TabsContent value="upload">
+                    <TabsContent value="upload" className="">
                         <cpn.Upload />
                     </TabsContent>
                 </Tabs>

@@ -229,11 +229,12 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                 </section>
 
               case "img":
-                return <section className='flex flex-col gap-1'>
+                return <section className='flex flex-col gap-1 justify-center items-center'>
                   <p>{elem.label}</p>
                   {
                     (currElem.url && currElem.url.length) ?
                       <Image
+                      className='object-contain h-[150px] w-[150px]'
                         src={currElem.url}
                         width={500}
                         height={500}
