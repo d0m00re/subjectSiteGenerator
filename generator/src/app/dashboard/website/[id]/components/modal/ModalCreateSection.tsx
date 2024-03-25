@@ -1,7 +1,6 @@
 // todo : repass on it later
 
 import React, { useState } from 'react';
-//import useCurrentWebsite from "./../currentWebsite.zustand.store";
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import * as entity from "@/network/configTemplate/configTemplate.entity";
 
@@ -13,7 +12,6 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 
-//import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
 import { SelectTemplateAccordion, FormGeneratorTemplate } from './../Components';
 
 interface IModalCreateSection {
@@ -27,9 +25,6 @@ const ModalCreateSection = (props: IModalCreateSection) => {
     //const currentWebsite = useCurrentWebsite();
     const templateGroup = useTemplateGroup();
     const [selectedTemplate, setSelectedTemplate] = useState<entity.ParsedTemplateVariant | undefined>(undefined);
-
-    console.log("template group : ")
-    console.log(templateGroup)
 
     return (
         <Dialog open={props.open} onOpenChange={props.setOpen}>
