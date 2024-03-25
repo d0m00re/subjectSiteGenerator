@@ -6,6 +6,7 @@
  */
 
 import { I_TemplateElemButton } from "../website/websiteSection/templateElemButton/templateElemButton.entity";
+import { I_TemplateElemImage } from "../website/websiteSection/templateElemImage/templateElemImage.entity";
 import { I_TemplateElemTypography } from "../website/websiteSection/templateElemTypography/templateElemTypography.entity";
 import { I_WebsiteSectionOrder, I_WebsiteSectionOrder_E } from "../website/websiteSection/websiteSectionOrder/websiteSectionOrder.entity";
 
@@ -27,7 +28,7 @@ export interface A_I_WebsiteSection_E extends ISectionLayout {
 
     buttons : I_TemplateElemButton[];
     typographies : I_TemplateElemTypography[];
-
+    images : I_TemplateElemImage[];
 
     configTemplateId : number;
 }

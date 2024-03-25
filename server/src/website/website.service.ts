@@ -34,6 +34,7 @@ export class WebsiteService {
                         websiteSectionOrder: true,
                         buttons: true,
                         typographies: true,
+                        images: true
                         //  configTemplate : true
                     }
                 }
@@ -152,7 +153,8 @@ export class WebsiteService {
             },
             include: {
                 typographies: true,
-                buttons: true
+                buttons: true,
+                images : true
             }
         });
 
@@ -191,6 +193,7 @@ export class WebsiteService {
             include : {
                 buttons : true,
                 typographies : true,
+                images : true,
                 websiteSectionOrder : true
             },
             data: {
