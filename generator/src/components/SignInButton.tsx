@@ -33,8 +33,13 @@ const SignInButton = ({ }: Props) => {
                         </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
-                        <DropdownMenuItem>
-                            <Link href="/api/auth/signout" className='flex w-full gap-4 ml-auto text-red-600'>
+                    <DropdownMenuItem className='flex flex-col gap-2'>
+                            <Link href="/dashboard/account" className='flex w-full ml-auto'>
+                                Account
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className='flex flex-col gap-2'>
+                            <Link href="/api/auth/signout" className='flex w-full ml-auto text-red-600'>
                                 Sign Out
                             </Link>
                         </DropdownMenuItem>
