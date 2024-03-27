@@ -14,7 +14,7 @@ sm : 500 px
 function MainLayout(props: Props) {
   return (
     <section className='flex w-full justify-center min-h-screen'>
-        <section className=' w-full xl:max-w-[1000px] lg:max-w-[800px] md:max-w-[600px] sm:max-w-[500px]'>
+        <section className='w-full xl:max-w-[1000px] lg:max-w-[800px] md:max-w-[600px] sm:max-w-[500px]'>
             {props.children}
         </section>
     </section>
