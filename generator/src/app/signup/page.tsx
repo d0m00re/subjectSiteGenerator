@@ -3,13 +3,18 @@ import { Button } from "@/components/Button";
 import InputBox from "@/components/InputBox";
 import { BACKEND_URL } from "@/lib/constants";
 import Link from "next/link";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import * as networkAuth from "@/network/auth.network";
 import navigate from "@/components/navigate";
 import { Separator } from "@/components/ui/separator";
+import IconLoaderSpin from "@/components/CustomIcon/IconLoaderSpin";
 
 const SignupPage = () => {
+  const [onLoad, setOnLoad] = useState<boolean>(false);
+
   const register = async () => {
+    
+    setOnLoad(true);
     const res = await networkAuth.register({
       email: data.current.email,
       password: data.current.password,
@@ -18,7 +23,9 @@ const SignupPage = () => {
         navigate("/login")
       })
       .catch(err => {
-
+      })
+      .finally(() => {
+        setOnLoad(false);
       })
   };
   const data = useRef<networkAuth.IRegister>({
@@ -48,7 +55,9 @@ const SignupPage = () => {
           />
 
           <div className="flex justify-center items-center gap-2">
-            <Button onClick={register}>Register</Button>
+            <Button onClick={register}>{
+              (onLoad) ? <IconLoaderSpin /> : <>Register</>
+            }</Button>
           </div>
 
           <Separator />

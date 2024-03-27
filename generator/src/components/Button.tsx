@@ -24,7 +24,7 @@ const getVariant = (variant?: VariantType) => {
     }
   };
   
-  type VariantType =
+  export type VariantType =
     | "primary"
     | "danger"
     | "success"
