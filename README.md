@@ -192,3 +192,20 @@ sectionLayout : {
 }
 
 ### multiline layout?
+
+
+#### current dev feature
+* button create section rework : done
+* profil page profile update with avatar icon update
+* website global config management : 
+    update title description, custom favicon, custom url
+* rework section create ui
+* rework website list ui
+* improve section render
+* add theme config for each website, or use default theme
+    * opt 1 : propose only preconfigured theme
+    * premium : use specific theme
+* reintegrate ia
+* add contact form components
+    email, phone, message, submit
+* add 
