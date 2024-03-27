@@ -31,30 +31,3 @@ export const login = (props: ILogin) => {
     })
     .then(resp => resp.json());
 }
-
-export const me = () => {
-    return fetch(API_AUTH_V2_URL + "/me", {
-        method : "GET",
-        headers : BASE_HEADER,
-        credentials : "include"
-    })
-    .then(resp => resp.json());
-}
-
-// OLD API -----==========================================
-
-export interface IRefreshToken {
-    refreshToken: string;
-}
-
-export const refreshToken = (props: IRefreshToken) => {
-    //async function refreshToken(token: JWT): Promise<JWT> {
-    return fetch(BACKEND_URL + "/auth/refresh", {
-        method: "POST",
-        headers: {
-            authorization: `Refresh ${props.refreshToken}`,
-            ...BASE_HEADER
-        },
-    })
-    .then(resp => resp.json());
-}

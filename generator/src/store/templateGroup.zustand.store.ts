@@ -29,10 +29,8 @@ const useTemplateGroup = create<ITemplateZustand>()((set) => ({
                 let shouldBeCorrectlyType: any = arrGroup.map(e => {
 
                     let res = e.templateVariant.map(varElem => {
-                        // parse cosnfig
-                        console.log("==================================================")
+                        // parse config
                         let parsedConfig = entity.parseTemplateConfigStringToJSON(varElem.config);
-                        console.log(parsedConfig);
                         return {
                             ...varElem,
                             config: parsedConfig

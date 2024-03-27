@@ -1,5 +1,6 @@
 # Website generator
-* cms for generate a website with ia or not and publish it
+* simple site maker
+* create a basic page in few secondes
 
 ## Current feature - v0.1
 * section v3 : allow styling
@@ -173,3 +174,21 @@ when we create a section we get back url and add it inside our new section
 * create / update mecanism too messy on front-end
 * control access
 * entity system
+
+## layout system reflexion
+* global layout
+* section layout
+### monoline layout
+[1, 2, 3]
+[1, 2, 3, 4, 5]
+a layout could have x columns
+each elements could take one or multiple column
+
+layoutLength : 5
+type : row
+
+sectionLayout : {
+    start : 2, end : 3
+}
+
+### multiline layout?
