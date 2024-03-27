@@ -1,8 +1,6 @@
-import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Userv2Service } from 'src/userv2/userv2.service';
-import * as dto from "./dto/authv2.dto";
-import { hash } from 'bcrypt';
 
 interface IRegister {
     email : string;
@@ -12,11 +10,6 @@ interface IRegister {
 interface ILogin {
     email : string;
     password : string;
-}
-
-interface ILogout {}
-interface IMe {
-    accessToken : string
 }
 
 @Injectable()
@@ -94,9 +87,5 @@ export class Authv2Service {
         })
 
         return ret;
-    }
-
-    async logout(props : ILogout) {
-        return "logout";
     }
 }
