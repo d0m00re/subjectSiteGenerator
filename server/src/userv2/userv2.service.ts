@@ -12,14 +12,12 @@ export class Userv2Service {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
-      },
+      }
     });
 
     if (user) throw new ConflictException('email duplicated');
 
     let passwordHash = await hash(dto.password, 10);
-    console.log("PASSWORDDDD")
-    console.log(`${dto.password} ->${passwordHash}`);
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -47,14 +45,10 @@ export class Userv2Service {
   }
 
   async findByEmailAndPass(props: { email: string, password: string }) {
-    console.log("findByEmailAndPass")
-
     let targetUser = await this.findByEmail(props.email);
 
     if (!targetUser)
       throw new HttpException("error user not found", HttpStatus.NOT_FOUND);
-
-    console.log("find PASSWORDDDD")
 
     let result = compareSync(props.password, targetUser.password);
 

@@ -41,7 +41,7 @@ const RenderWithNav = (props: IRenderWithNav) => {
 
 const whitelistNoLoginRoutes = [
   "/login",
-  "/register",
+  "/signup",
   "/"
 ];
 
@@ -56,21 +56,16 @@ function RootLayout({
   const me = useMe();
   const pathname = usePathname()
 
-  console.log("me")
-  console.log(me.userData);
-
   useEffect(() => {
     if (me.userData?.id === -2) {
       me.populate();
     }
     else if (me.userData?.id === -1) {
-      console.log("*** user not log")
       if (whitelistNoLoginRoutes.find(w => w === pathname) === undefined) {
         navigate(defaultNoLoginRoutes);
       }
     }
     else if (me.userData?.id > 0) {
-      console.log("*** user are log")
       if (whitelistNoLoginRoutes.find(w => w === pathname) !== undefined) {
         navigate(defaultLoginRoutes);
       }
