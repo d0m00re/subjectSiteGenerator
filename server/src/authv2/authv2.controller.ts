@@ -23,7 +23,7 @@ export class Authv2Controller {
 
     @Post("login")
     async login(@Res({ passthrough: true }) response: Response, @Body() dto : dto.LoginDto) {
-        let data = await this.authV2Service.login({
+        let {accessToken, ...data} = await this.authV2Service.login({
             email : dto.email,
             password : dto.password
         })
@@ -31,11 +31,9 @@ export class Authv2Controller {
         if (!data)
             throw new HttpException("invalid", HttpStatus.BAD_REQUEST);
 
-        response.cookie('accessToken', data.accessToken);
+        response.cookie('accessToken', accessToken);
         
-        return {
-            email : data.email
-        };
+        return data;
     } 
 
     @Post("logout")

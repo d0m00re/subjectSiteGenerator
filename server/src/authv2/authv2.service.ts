@@ -86,6 +86,12 @@ export class Authv2Service {
             refreshToken : data.refreshToken
         })
 
-        return ret;
+        return {
+            id : findUser.id,
+            email : findUser.email,
+            name : findUser.name,
+            pictureUrl : findUser.pictureUrl,
+            accessToken : findUser.accessToken
+        };
     }
 }
