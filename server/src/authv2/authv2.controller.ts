@@ -49,11 +49,4 @@ export class Authv2Controller {
         let data = await this.authV2Service.logout({});
         return data;
     }
-
-    @Get("me")
-    @UseGuards(JwtCookieParserGuard)
-    async me(@Req() request: Request,  @Body() dto : dto.MeDto) {
-        let user = request?.user;
-        return user; 
-    }
 }

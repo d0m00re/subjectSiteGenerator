@@ -10,9 +10,11 @@ import AppBar, { Header } from "@/components/AppBar";
 import toast, { Toaster } from 'react-hot-toast';
 
 import "react-loading-skeleton/dist/skeleton.css";
-import React from "react";
-import { usePathname } from 'next/navigation'
-
+import React, { useState, useEffect } from "react";
+import { redirect, usePathname } from 'next/navigation'
+import useMe from "@/store/me.zustand.store";
+import navigate from "@/components/navigate";
+import IconLoaderSpin from "@/components/CustomIcon/IconLoaderSpin";
 const inter = Inter({ subsets: ["latin"] });
 /*
 export const metadata: Metadata = {
@@ -37,24 +39,58 @@ const RenderWithNav = (props: IRenderWithNav) => {
   </>);
 }
 
+const whitelistNoLoginRoutes = [
+  "/login",
+  "/register",
+  "/"
+];
+
+const defaultNoLoginRoutes = "/login";
+const defaultLoginRoutes = "/dashboard";
+
 function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
+  const me = useMe();
   const pathname = usePathname()
-  console.log("pathname : ", pathname)
+
+  console.log("me")
+  console.log(me.userData);
+
+  useEffect(() => {
+    if (me.userData?.id === -2) {
+      me.populate();
+    }
+    else if (me.userData?.id === -1) {
+      console.log("*** user not log")
+      if (whitelistNoLoginRoutes.find(w => w === pathname) === undefined) {
+        navigate(defaultNoLoginRoutes);
+      }
+    }
+    else if (me.userData?.id > 0) {
+      console.log("*** user are log")
+      if (whitelistNoLoginRoutes.find(w => w === pathname) !== undefined) {
+        navigate(defaultLoginRoutes);
+      }
+    }
+  }, [pathname, me]);
 
   return (
     <html lang="en">
       <body className="flex flex-col">
-        {(pathname.startsWith("/view/")) ?
-          <div className={`${inter.className} grow`}>{children}</div>
-          :
-          <RenderWithNav>
-            <div className={`${inter.className} grow`}>{children}</div>
-          </RenderWithNav>}
+        {
+          (me.userData.id === -2) ? <section className="flex w-full h-full justify-center items-center">
+            waiting ....
+            <IconLoaderSpin />
+          </section> :
+            (pathname.startsWith("/view/") || me.userData.id === -1) ?
+              <div className={`${inter.className} grow`}>{children}</div>
+              :
+              <RenderWithNav>
+                <div className={`${inter.className} grow`}>{children}</div>
+              </RenderWithNav>}
       </body>
     </html>
   );

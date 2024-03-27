@@ -99,16 +99,4 @@ export class Authv2Service {
     async logout(props : ILogout) {
         return "logout";
     }
-
-    async me(props : IMe) {
-        // get us
-        // decode token
-        let res = await this.jwtService.decode(props.accessToken);
-
-        return {
-            email : res.email,
-            id : res.id,
-            name : res.name
-        };
-    }
 }

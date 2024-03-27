@@ -85,4 +85,10 @@ export class Userv2Service {
       }
     })
   }
+
+  async getUserWithId(props : {userId : number}) {
+    return await this.prisma.user.findUnique({
+      where : {id : props.userId}
+    })
+  }
 }

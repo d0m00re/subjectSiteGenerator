@@ -1,30 +1,45 @@
 "use client"
 
-import * as authNetwork from "@/network/auth.network";
+import * as userNetwork from "@/network/user/user.network";
+import { IUserEntityDb } from "@/network/user/user.entity";
 import { create } from "zustand";
 
 interface IMeZustand {
-    userData : any;
+    userData : IUserEntityDb;
     populate : () => void;
 }
 
 const useMe = create<IMeZustand>()((set) => ({
-    userData : {},
+    userData : {
+        id : -2,
+        email : "",
+        name : "",
+        pictureUrl : ""
+    },
     populate: () => {
-        authNetwork
+        userNetwork
         .me()
         .then(resp => {
-            console.log("me go")
+            console.log("*** success log")
             console.log(resp)
             set((state) => {
                 return {
-                    ...StaticRange,
+                    ...state,
                     userData : resp
                 }
             })
         })
         .catch(err => {
-
+            console.log("*** error log")
+            set((state) => {
+                return {
+                    ...state,
+                    userData : {
+                        ...state.userData,
+                        id : -1
+                    }
+                }
+            })
         })
     }
 }))
