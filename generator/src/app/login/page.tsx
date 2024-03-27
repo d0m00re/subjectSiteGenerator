@@ -1,23 +1,32 @@
 "use client";
+
+import React, { useRef, useState } from "react";
 import { Button } from "@/components/Button";
 import InputBox from "@/components/InputBox";
-import { BACKEND_URL } from "@/lib/constants";
 import Link from "next/link";
-import React, { useRef } from "react";
 import * as networkAuth from "@/network/auth.network";
 import { Separator } from "@/components/ui/separator";
+import navigate from "@/components/navigate";
+import toast from 'react-hot-toast';
+import ButtonLoader from "@/components/atoms/ButtonLoader";
 
 const LoginPage = () => {
+  const [onLoad, setOnLoad] = useState<boolean>(false);
   const login = async () => {
+    setOnLoad(true);
     const res = await networkAuth.login({
       email: data.current.email,
       password: data.current.password,
     });
+    setOnLoad(false);
 
     if (!res.ok) {
-      alert(res.statusText);
+      toast("Bad login information");
       return;
     }
+
+    navigate("/dashboard");
+
     await res.json();
   };
   const data = useRef<networkAuth.ILogin>({
@@ -46,7 +55,10 @@ const LoginPage = () => {
             onChange={(e) => (data.current.password = e.target.value)}
           />
           <div className="flex justify-center items-center gap-2">
-            <Button onClick={login}>Log In</Button>
+            <ButtonLoader
+              onClick={login}
+              onLoad={onLoad}  
+            >Log In</ButtonLoader>
           </div>
           <Separator />
           <div className="flex justify-center pb-2">

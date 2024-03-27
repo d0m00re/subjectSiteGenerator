@@ -1,13 +1,13 @@
 "use client";
-import { Button } from "@/components/Button";
+
 import InputBox from "@/components/InputBox";
-import { BACKEND_URL } from "@/lib/constants";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import * as networkAuth from "@/network/auth.network";
 import navigate from "@/components/navigate";
 import { Separator } from "@/components/ui/separator";
 import IconLoaderSpin from "@/components/CustomIcon/IconLoaderSpin";
+import ButtonLoader from "@/components/atoms/ButtonLoader";
 
 const SignupPage = () => {
   const [onLoad, setOnLoad] = useState<boolean>(false);
@@ -55,9 +55,9 @@ const SignupPage = () => {
           />
 
           <div className="flex justify-center items-center gap-2">
-            <Button onClick={register}>{
-              (onLoad) ? <IconLoaderSpin /> : <>Register</>
-            }</Button>
+            <ButtonLoader onClick={register} onLoad={onLoad}>
+              Register
+            </ButtonLoader>
           </div>
 
           <Separator />
