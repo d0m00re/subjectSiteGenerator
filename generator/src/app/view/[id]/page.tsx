@@ -8,6 +8,7 @@ import TemplateSkeleton from '@/components/Templates/TemplateSkeleton';
 import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
 import SectionWebsite from '@/app/dashboard/website/[id]/components/SectionWebsite';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
+import MainLayout from '@/components/WebsiteSection/Render/MainLayout/MainLayout';
 
 
 function page() {
@@ -27,6 +28,7 @@ function page() {
 
 
     return (
+        <MainLayout>
         <section className='flex flex-col'>
             {(dataIsLoad) ?
                 storeWebsite?.website?.websiteSection?.map((section, index) =>
@@ -37,6 +39,7 @@ function page() {
                     </section>) : <TemplateSkeleton />
             }
         </section>
+        </MainLayout>
     )
 }
 
