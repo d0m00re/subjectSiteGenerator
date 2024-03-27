@@ -10,7 +10,8 @@ export class Userv2Controller {
   @UseGuards(JwtCookieParserGuard)
   @Get("me")
   async getMe(@Req() req : Request) {
-    return await this.userService.getUserWithId({userId : req.user.id});
+    let {accessToken, refreshToken, password, ...dataUser} =  await this.userService.getUserWithId({userId : req.user.id});
+    return dataUser;
   }
 
   @UseGuards(JwtCookieParserGuard)

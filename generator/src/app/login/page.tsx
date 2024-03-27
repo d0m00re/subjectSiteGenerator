@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Button } from "@/components/Button";
 import InputBox from "@/components/InputBox";
 import Link from "next/link";
 import * as networkAuth from "@/network/auth.network";
@@ -9,8 +8,10 @@ import { Separator } from "@/components/ui/separator";
 import navigate from "@/components/navigate";
 import toast from 'react-hot-toast';
 import ButtonLoader from "@/components/atoms/ButtonLoader";
+import useMe from "@/store/me.zustand.store";
 
 const LoginPage = () => {
+  const me = useMe();
   const [onLoad, setOnLoad] = useState<boolean>(false);
   const login = async () => {
     setOnLoad(true);
@@ -20,14 +21,16 @@ const LoginPage = () => {
     });
     setOnLoad(false);
 
-    if (!res.ok) {
+    console.log(res)
+
+    if (res.ok === false) {
+      // todo : why toast not display ????
+      console.log("show me toast")
       toast("Bad login information");
-      return;
+    } else {
+      // update me and trigger navigate to dashboard
+      me.setDataUser(res) 
     }
-
-    navigate("/dashboard");
-
-    await res.json();
   };
   const data = useRef<networkAuth.ILogin>({
     email: "",
@@ -57,7 +60,7 @@ const LoginPage = () => {
           <div className="flex justify-center items-center gap-2">
             <ButtonLoader
               onClick={login}
-              onLoad={onLoad}  
+              onLoad={onLoad}
             >Log In</ButtonLoader>
           </div>
           <Separator />
