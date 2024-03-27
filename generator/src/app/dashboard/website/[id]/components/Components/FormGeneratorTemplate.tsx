@@ -13,6 +13,7 @@ import { cloneDeep } from 'lodash';
 import FileUpload from '@/components/File/FileUpload';
 import { ModalMediaSelector } from '@/components/Library';
 import Image from 'next/image';
+import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
 
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.ParsedTemplateVariant | undefined
@@ -26,6 +27,7 @@ interface IFormGeneratorTemplate {
 
 function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
   // config
+  const [onLoad, setOnLoad] = useState(false);
   const templateConfig = props.selectedTemplate?.config;
   const [dataFormV4, setDataFormV4] = useState<entityWebsite.TUpdateDataV4[]>([]);
   const storeWebsite = useCurrentWebsiteStore();
@@ -143,13 +145,17 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       websiteId: props.websiteId,
       templateId: props.selectedTemplate?.id ?? -1,
     }
-
+    props.setOpen(false);
+    setOnLoad(true);
     createWebsiteSectionV4(dataSubmit)
       .then((resp: any) => {
         storeWebsite.resetWtData(resp);
-        props.setOpen(false);
       })
       .catch(err => { console.log(err); })
+      .finally(() => {
+        props.setOpen(false);
+        setOnLoad(false);
+      })
   }
 
   const submitFormEdit = () => {
@@ -161,6 +167,8 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       return;
     }
 
+    setOnLoad(true);
+
     updateSectionV4({
       data: dataFormV4,//dataFormV2,
       layout: { backgroundColor: currentSection.backgroundColor, backgroundImage: currentSection.backgroundImage },
@@ -168,11 +176,14 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     })
       .then((resp: any) => {
         // websiteStore.resetWtData(resp);
-        props.setOpen(false);
         storeWebsite.updateSection(resp);
       })
       .catch(err => {
         console.log(err);
+      })
+      .finally(() => {
+        props.setOpen(false);
+        setOnLoad(false);
       })
   }
 
@@ -260,7 +271,9 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
                 </section>
             }
           })}
-        <Button onClick={submitForm} className='mt-4'>Save</Button>
+        <Button onClick={submitForm} className='mt-4'>{
+          (onLoad) ? <IconLoaderSpin /> : <>Save</>
+        }</Button>
       </form>
     </section>
   )
