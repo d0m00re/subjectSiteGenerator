@@ -1,5 +1,6 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER } from "./contants.network";
+import { cookies } from "next/headers";
 
 const API_AUTH_V2_URL = `${BACKEND_URL}/authv2`;
 

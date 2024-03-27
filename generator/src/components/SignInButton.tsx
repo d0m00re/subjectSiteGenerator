@@ -16,22 +16,21 @@ import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 import navigate from './navigate';
 import { Button } from './ui/button';
 import IconLoaderSpin from './CustomIcon/IconLoaderSpin';
+import logoutNext from "@/utils/logoutNext";
+import { me } from '@/network/user/user.network';
+
+import useMe from "@/store/me.zustand.store";
 
 type Props = {}
 const SignInButton = ({ }: Props) => {
+    const me = useMe();
     const [load, setLoad] = useState(false);
     // logout request
         const logout = () => {
-            setLoad(true);
-            authNetwork
-            .logout()
-            .then(resp => {
-                navigate("/login")
-            })
-            .catch(err => {
-                console.error(err)
-            })
-            .finally(() => setLoad(false));
+           setLoad(true);
+           logoutNext();
+           me.reset();
+           setLoad(false);
         }
 
         return (
