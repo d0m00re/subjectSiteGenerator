@@ -1,9 +1,10 @@
 "use client"
 
 import Link from 'next/link';
-import React from 'react';
+import React, {useState} from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import * as authNetwork from "./../network/auth.network";
 
 import {
     DropdownMenu,
@@ -12,16 +13,27 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
+import navigate from './navigate';
+import { Button } from './ui/button';
+import IconLoaderSpin from './CustomIcon/IconLoaderSpin';
 
 type Props = {}
-type Checked = DropdownMenuCheckboxItemProps["checked"]
 const SignInButton = ({ }: Props) => {
-  //  const { data: session } = useSession();
-    const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
-    const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false)
-    const [showPanel, setShowPanel] = React.useState<Checked>(false)
+    const [load, setLoad] = useState(false);
+    // logout request
+        const logout = () => {
+            setLoad(true);
+            authNetwork
+            .logout()
+            .then(resp => {
+                navigate("/login")
+            })
+            .catch(err => {
+                console.error(err)
+            })
+            .finally(() => setLoad(false));
+        }
 
-    if(true)//if (session && session.user)
         return (
             <div className="flex items-center gap-4 ml-auto">
                 <Badge># Free tier</Badge>
@@ -39,30 +51,17 @@ const SignInButton = ({ }: Props) => {
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className='flex flex-col gap-2'>
-                            <Link href="/api/auth/signout" className='flex w-full ml-auto text-red-600'>
-                                Sign Out
-                            </Link>
+                            <Button onClick={logout} variant={"destructive"} className='flex w-full ml-auto'>
+                                {(load) ? <IconLoaderSpin />
+                                :
+                                <>Sign Out</>
+                                }
+                            </Button>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
         )
-
-    return (
-        <div className="flex gap-4 ml-auto items-center">
-            <Link
-                href={"/login"}
-                className="flex gap-4 ml-auto text-green-600"
-            >
-                Login
-            </Link>
-            <Link
-                href={"/signup"}
-                className="flex gap-4 ml-auto bg-green-600 text-green-200 p-2 rounded"
-            >
-                Sign Up
-            </Link>
-        </div>);
 }
 
 export default SignInButton

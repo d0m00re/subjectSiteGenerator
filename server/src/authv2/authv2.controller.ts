@@ -1,18 +1,13 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import * as dto from "./dto/authv2.dto";
-import { Userv2Service } from 'src/userv2/userv2.service';
-import { JwtService } from '@nestjs/jwt';
 import { Authv2Service } from './authv2.service';
 
-import { Response, Request } from "express";
-import { JwtCookieParserGuard } from './guard/jwt-cookie-parser.guard';
+import { Response } from "express";
 
 @Controller('authv2')
 export class Authv2Controller {
     constructor(
-        private userV2Service: Userv2Service,
         private authV2Service : Authv2Service,
-        private jwtService : JwtService
     ){};
 
     // ok
@@ -33,9 +28,8 @@ export class Authv2Controller {
             password : dto.password
         })
 
-        if (!data) {
+        if (!data)
             throw new HttpException("invalid", HttpStatus.BAD_REQUEST);
-        }
 
         response.cookie('accessToken', data.accessToken);
         
@@ -45,8 +39,8 @@ export class Authv2Controller {
     } 
 
     @Post("logout")
-    async logout(@Body() dto : dto.LogoutDto) {
-        let data = await this.authV2Service.logout({});
-        return data;
+    async logout(@Req() res : Response) {
+        res.clearCookie('accessToken');
+        return  {msg : "logout success"};
     }
 }

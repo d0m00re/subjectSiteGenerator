@@ -9,7 +9,7 @@ export interface IRegister {
 }
 
 export const register = (props: IRegister) => {
-    return fetch(API_AUTH_V2_URL + "/signUp", {
+    return fetch(`${API_AUTH_V2_URL}/signUp`, {
         method: "POST",
         body: JSON.stringify(props),
         headers: BASE_HEADER
@@ -23,11 +23,19 @@ export interface ILogin {
 }
 
 export const login = (props: ILogin) => {
-    return fetch(API_AUTH_V2_URL + "/login", {
+    return fetch(`${API_AUTH_V2_URL}/login`, {
         method: "POST",
         body: JSON.stringify(props),
         headers: BASE_HEADER,
         credentials : "include"
     })
     .then(resp => resp.json());
+}
+
+export const logout = () => {
+    return fetch(`${API_AUTH_V2_URL}/logout`, {
+        method : "POST",
+        credentials : "include"
+    })
+    .then(resp => resp.json())
 }
