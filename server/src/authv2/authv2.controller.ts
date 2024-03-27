@@ -39,8 +39,9 @@ export class Authv2Controller {
     } 
 
     @Post("logout")
-    async logout(@Req() res : Response) {
-        res.clearCookie('accessToken');
+    async logout(@Res() res : Response) {
+        //res.clearCookie('accessToken');
+        res.cookie('accessToken', '', { expires: new Date(0) });
         return  {msg : "logout success"};
     }
 }
