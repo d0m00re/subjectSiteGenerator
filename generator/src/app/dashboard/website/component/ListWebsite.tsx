@@ -49,7 +49,7 @@ const ListWebsite = () => {
         <div className="flex flex-col gap-2">
           {
             listWebsite.rows.map(website =>
-              <section className=" cursor-pointer" onClick={() => navigate(`/dashboard/website/${website.id}`)}>
+              <section className=" cursor-pointer">
                 <CardWebsite
                   {...website}
                 />

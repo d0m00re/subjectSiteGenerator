@@ -2,6 +2,7 @@
 
 import * as network from "@/network/generateWebsite/generateWebsite.network";
 import { Button } from "@/components/Button";
+import navigate from "@/components/navigate";
 
 const CardWebsite = (props: network.IWebsiteDb) => {
     return <section className="flex flex-row bg-slate-400 p-2">
@@ -12,8 +13,12 @@ const CardWebsite = (props: network.IWebsiteDb) => {
 
 
         <section className="flex flex-row">
-            <Button>edit</Button>
-            <Button>view</Button>
+            <Button onClick={() => navigate(`/dashboard/website/${props.id}`)}>
+                edit
+            </Button>
+            <Button onClick={() => navigate(`/view/${props.id}`)}>
+                view
+            </Button>
             <Button>remove</Button>
         </section>
     </section>

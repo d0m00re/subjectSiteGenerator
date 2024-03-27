@@ -1,3 +1,5 @@
+"use client"
+
 import useMe from '@/store/me.zustand.store'
 import Image from 'next/image';
 import React, {useEffect} from 'react'
