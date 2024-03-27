@@ -208,4 +208,4 @@ sectionLayout : {
 * reintegrate ia
 * add contact form components
     email, phone, message, submit
-* add 
+* ...
