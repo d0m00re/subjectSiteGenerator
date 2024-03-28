@@ -4,7 +4,7 @@ import * as Components from "./component";
 function page() {
   return (
     <main className="">
-        <Components.CreateOne />
+        <Components.ModalCreateWebsite />
         <Components.ListWebsite />
     </main>
   )

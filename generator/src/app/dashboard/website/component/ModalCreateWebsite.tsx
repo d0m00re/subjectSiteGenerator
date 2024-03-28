@@ -1,15 +1,17 @@
 "use client"
 
+import { useState } from "react";
+import { z } from "zod";
+import toast from 'react-hot-toast';
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from "@/components/ui/label";
 import * as generateWebsiteNetwork from "@/network/generateWebsite/generateWebsite.network";
 import * as websiteNetwork from "@/network/website/website.network";
 import navigate from "@/components/navigate";
-import toast from 'react-hot-toast';
 
 import {
     Dialog,
@@ -19,7 +21,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { useState } from "react";
 import IconLoaderSpin from "@/components/CustomIcon/IconLoaderSpin";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -30,7 +31,7 @@ const ValidateForm = z.object({
 
 type TValidateForm = z.infer<typeof ValidateForm>;
 
-function CreateOne() {
+function ModalCreateWebsite() {
     const [open, setOpen] = useState(false);
     const onOpen = () => setOpen(true);
     const [onLoad, setOnLoad] = useState(false);
@@ -110,4 +111,4 @@ function CreateOne() {
     )
 }
 
-export default CreateOne
+export default ModalCreateWebsite;

@@ -1,7 +1,7 @@
-import CreateOne from "./CreateOne";
+import ModalCreateWebsite from "./ModalCreateWebsite";
 import ListWebsite from "./ListWebsite";
 
 export {
-    CreateOne,
+    ModalCreateWebsite,
     ListWebsite
 }
