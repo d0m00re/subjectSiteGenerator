@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import useCurrentWebsiteStore from '../../store/currentWebsite.zustand.store'
 import { I_TemplateElemTypography } from '@/network/website/websiteSection/templateElemTypography/templateElemTypography.entity';
 import { I_TemplateElemButton } from '@/network/website/websiteSection/templateElemButton/templateElemButton.entity';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
@@ -18,6 +17,7 @@ import {
 import { updateSectionV4 } from '@/network/website/website.network';
 import ChangeBackground from '@/components/WebsiteSection/Render/Layout/ChangeBackground/ChangeBackground';
 import { ISectionLayout } from '@/network/generateWebsite/generateWebsite.entity';
+import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
 
 interface ISelectSizeElem {
     key: string;
