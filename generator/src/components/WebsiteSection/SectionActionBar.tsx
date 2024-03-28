@@ -20,21 +20,38 @@ const VerticalSeparator = () => {
  * chevronUp : moove section on the top
  * chevronDown : moove section on bottom
  */
+const hoverStyle = "hover:stroke-blue-800";
+
 function SectionActionBar(props: Props) {
     return (
-        <div className='flex flex-row gap-2 bg-cyan-300 rounded-lg border border-gray-300 shadow-md w-60 p-2'>
+        <div className='flex flex-row gap-2 bg-white rounded-lg border border-gray-500 hover:border-blue-800 shadow-md p-4'>
             <div className='flex flex-row gap-2'>
                 <div className='flex flex-row gap-1' onClick={props.onOpenEdit}>
-                    <Pencil />
-                    Edit
+                    <Pencil className={hoverStyle} />
+                    <p className=' hover:text-blue-800'>Edit</p>
                 </div>
-                <FilePenLine onClick={props.onOpenStyleEdit} />
+                <FilePenLine
+                    className={hoverStyle}
+                    onClick={props.onOpenStyleEdit}   
+                />
                 <VerticalSeparator />
-                <Trash2 onClick={props.onOpenDelete} />
-                <Copy onClick={props.onOpenDuplicate}/>
+                <Trash2
+                    className={hoverStyle}
+                    onClick={props.onOpenDelete}
+                />
+                <Copy
+                    className={hoverStyle}
+                    onClick={props.onOpenDuplicate}
+                />
                 <VerticalSeparator />
-                <ChevronUp onClick={props.onMooveTop} />
-                <ChevronDown onClick={props.onMooveBottom} />
+                <ChevronUp
+                    className={hoverStyle}
+                    onClick={props.onMooveTop}
+                />
+                <ChevronDown
+                    className={hoverStyle}
+                    onClick={props.onMooveBottom}
+                />
             </div>
         </div>
     )
