@@ -23,8 +23,6 @@ const useTemplateGroup = create<ITemplateZustand>()((set) => ({
         network
             .getAllGroup()
             .then(arrGroup => {
-                console.log("populate data")
-                console.log(arrGroup);
                 // let fakeParse : entity.FinalParsedTemplateGroup[] = arrGroup.map(e => {
                 let shouldBeCorrectlyType: any = arrGroup.map(e => {
 
@@ -47,7 +45,6 @@ const useTemplateGroup = create<ITemplateZustand>()((set) => ({
 
 
                 // parse template variant group, easy way for accessing data
-                // parse is useless now
                 for (let i = 0; i < arrGroup.length; i++) {
                     let currElem = shouldBeCorrectlyType[i];
 

@@ -1,13 +1,16 @@
 // todo : need rework because of new implementation
 import React, { useState, useEffect } from 'react';
+
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+  } from "@/components/ui/sheet"
+
+
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { I_TemplateVariant_parse } from '@/network/configTemplate/configTemplate.entity';
@@ -65,14 +68,14 @@ const ModalEditSection = (props: IModalEdit) => {
     }, []);
 
     return (
-        <Dialog open={props.open} onOpenChange={props.setOpen}>
-            <DialogContent>
-                <DialogHeader >
-                    <DialogTitle>
+        <Sheet open={props.open} onOpenChange={props.setOpen}>
+            <SheetContent>
+                <SheetHeader >
+                    <SheetTitle>
                         Edit your section
-                    </DialogTitle>
-                </DialogHeader>
-                <DialogDescription className="flex flex-col gap-4 items-center">
+                    </SheetTitle>
+                </SheetHeader>
+                <SheetDescription className="flex flex-col gap-4 items-center">
                     {(props.open && template) ? <EditSection
                             selectedTemplate={template}
                             setSelectedTemplate={setTemplate}
@@ -82,9 +85,9 @@ const ModalEditSection = (props: IModalEdit) => {
                             defaultData={jsonData}
                         /> : <IconLoaderSpin />
                     }
-                </DialogDescription>
-            </DialogContent>
-        </Dialog >
+                </SheetDescription>
+            </SheetContent>
+        </Sheet >
     )
 }
 

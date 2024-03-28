@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
-import StyleEditing from '@/app/dashboard/website/[id]/components/Components/StyleEditing';
+import StyleEditing from './StyleEditing';
 
 interface IModalEditSectionStyle {
-    open : boolean;
-    setOpen: (val : boolean) => void;
-    sectionIndex : number;
+    open: boolean;
+    setOpen: (val: boolean) => void;
+    sectionIndex: number;
 }
 
 function ModalEditSectionStyle(props: IModalEditSectionStyle) {
-  return (
-<Dialog open={props.open} onOpenChange={props.setOpen}>
-            <DialogContent>
-                <DialogHeader >
-                    <DialogTitle>
+    return (
+        <Sheet open={props.open} onOpenChange={props.setOpen}>
+            <SheetContent>
+                <SheetHeader >
+                    <SheetTitle>
                         Edit section style
-                    </DialogTitle>
-                </DialogHeader>
-                <DialogDescription className="flex flex-col gap-4 items-center">
+                    </SheetTitle>
+                </SheetHeader>
+                <SheetDescription className="flex flex-col gap-4 items-center">
                     {(props.open) ? <StyleEditing
                         sectionIndex={props.sectionIndex}
                         onClose={() => props.setOpen(false)}
                     /> : <IconLoaderSpin />
                     }
-                </DialogDescription>
-            </DialogContent>
-        </Dialog >
+                </SheetDescription>
+            </SheetContent>
+        </Sheet >
     )
 }
 
