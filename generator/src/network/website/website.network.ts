@@ -51,6 +51,7 @@ export const createWebsiteSectionV4 = (props : ICreateWebsiteSectionV4) : Promis
         }),
         credentials : "include"
     })
+    .then(resp => resp.json())
 }
 
 interface IUpdateSessionV4 {

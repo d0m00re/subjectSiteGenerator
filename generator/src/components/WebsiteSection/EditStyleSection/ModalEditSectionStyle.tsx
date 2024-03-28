@@ -8,8 +8,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
-
-import StyleEditing from '../Components/StyleEditing';
+import StyleEditing from '@/app/dashboard/website/[id]/components/Components/StyleEditing';
 
 interface IModalEditSectionStyle {
     open : boolean;

@@ -22,8 +22,6 @@ const useMe = create<IMeZustand>()((set) => ({
         userNetwork
             .me()
             .then(resp => {
-                console.log("*** success log")
-                console.log(resp)
                 set((state) => {
                     return {
                         ...state,
@@ -32,7 +30,6 @@ const useMe = create<IMeZustand>()((set) => ({
                 })
             })
             .catch(err => {
-                console.log("*** error log")
                 set((state) => {
                     return {
                         ...state,

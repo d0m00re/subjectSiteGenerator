@@ -9,10 +9,11 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
-import FormGeneratorTemplate from './../Components/FormGeneratorTemplate';
+//import FormGeneratorTemplate from './../Components/FormGeneratorTemplate';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { A_I_TemplateVariant, I_TemplateVariant_parse, parseTemplateConfigStringToJSON } from '@/network/configTemplate/configTemplate.entity';
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
+import EditSection from '@/components/WebsiteSection/EditSection/EditSection';
 
 interface IModalEdit {
     open: boolean;
@@ -73,8 +74,7 @@ const ModalEditSection = (props: IModalEdit) => {
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="flex flex-col gap-4 items-center">
-                    {(props.open && template) ? <FormGeneratorTemplate
-                            mode={"edit"}
+                    {(props.open && template) ? <EditSection
                             selectedTemplate={template}
                             setSelectedTemplate={setTemplate}
                             order={props.section.websiteSectionOrder.order}
