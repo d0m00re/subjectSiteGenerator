@@ -41,7 +41,7 @@ const LinkInfoList : ILinkInfoElem[] = [
 
 const AppBar = () => {
   return (
-    <main className="flex flex-col gap-2 p-4 bg-gradient-to-b from-white to-gray-200 shadow min-h-screen h-full fixed">
+    <main className="fixed w-[150px] flex flex-col gap-2 p-4 bg-gradient-to-b from-white to-gray-200 shadow min-h-screen h-full">
       {
         LinkInfoList.map(elem => <Link key={elem.id} className="transition-colors hover:text-blue-500 flex flex-row gap-2 w-[100px] p-2 hover:bg-slate-200 rounded  " href={elem.href}>
           <elem.icon /> {elem.name}
