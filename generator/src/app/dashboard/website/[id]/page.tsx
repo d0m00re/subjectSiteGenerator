@@ -13,6 +13,7 @@ import useCurrentWebsite from "./components/store/currentWebsite.zustand.store";
 import ModalCreateSection from './components/modal/ModalCreateSection';
 import { Plus } from 'lucide-react';
 import ButtonCreate from '@/components/atoms/ButtonCreate';
+import MainLayout from '@/components/WebsiteSection/Render/MainLayout/MainLayout';
 
 //----- duplicate
 
@@ -45,34 +46,36 @@ function page() {
   }, []);
 
   return (
-    <>
-      <section className='flex flex-col m-8 items-center'>
-        {/* basic case */}
-        {(dataIsLoad) ?
-          storeWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
-            key={`section-website-${section.id}`}
-            section={section}
-            index={index}
-          />) : <TemplateSkeleton />
-        }
-        {/* cas with no section */}
-        {
-          storeWebsite?.website?.websiteSection.length === 0 ?
-            <ButtonCreate onClick={() => setModalAddSection({ open: true, index: 0 })} />
-            :
-            <></>
-        }
-      </section>
-      <ModalCreateSection
-        open={modalAddSection.open}
-        order={modalAddSection.index}
-        websiteId={storeWebsite.website?.id ?? -1}
-        setOpen={(val: boolean) => {
-          setModalAddSection(old => ({ ...old, open: val }))
-        }
-        }
-      />
-    </>
+    <MainLayout>
+      <>
+        <section className='flex flex-col m-8 items-center'>
+          {/* basic case */}
+          {(dataIsLoad) ?
+            storeWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
+              key={`section-website-${section.id}`}
+              section={section}
+              index={index}
+            />) : <TemplateSkeleton />
+          }
+          {/* cas with no section */}
+          {
+            storeWebsite?.website?.websiteSection.length === 0 ?
+              <ButtonCreate onClick={() => setModalAddSection({ open: true, index: 0 })} />
+              :
+              <></>
+          }
+        </section>
+        <ModalCreateSection
+          open={modalAddSection.open}
+          order={modalAddSection.index}
+          websiteId={storeWebsite.website?.id ?? -1}
+          setOpen={(val: boolean) => {
+            setModalAddSection(old => ({ ...old, open: val }))
+          }
+          }
+        />
+      </>
+    </MainLayout>
   )
 }
 
