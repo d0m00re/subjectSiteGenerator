@@ -198,6 +198,7 @@ sectionLayout : {
 * button create section rework : done
 * adaptative bk n: done
 * add multiline text variation : done
+* fix update data when we add a section
 * profil page profile update with avatar icon update
 * website global config management : 
     update title description, custom favicon, custom url

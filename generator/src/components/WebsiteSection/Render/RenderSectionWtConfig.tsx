@@ -22,14 +22,23 @@ function RenderSectionWtConfig(props: { section: I_WebsiteSection }) {
         if (e.kind === "text") {
           // find typo - order for the moment but later base on other things
           let elemTypo = props.section.typographies.find(typo => typo.order === e.order);
-          return <RenderTypography text={elemTypo?.text ?? ""} size={elemTypo?.size ?? "medium"} />
+          return <RenderTypography
+            key={`renderTypo-${props.section.id}-${elemTypo?.id}`}
+            text={elemTypo?.text ?? ""}
+            size={elemTypo?.size ?? "medium"} />
         } else if (e.kind === "button") {
           let elemButton = props.section.buttons.find(but => but.order === e.order)
-          return <RenderButton text={elemButton?.text ?? ""} size={elemButton?.size ?? "medium"} />
+          return <RenderButton
+            key={`renderButton-${props.section.id}-${elemButton?.id}`}
+            text={elemButton?.text ?? ""}
+            size={elemButton?.size ?? "medium"} />
         } else if (e.kind === "img") {
           let elemImg = props.section.images.find(img => img.order === e.order);
           if (!elemImg) return <></>
-          return <RenderImg url={elemImg.url} alt="" />
+          return <RenderImg
+            key={`renderImg-${props.section.id}-${elemImg?.id}`}
+            url={elemImg.url}
+            alt="" />
         }
         return <p>unknown</p>
       })
