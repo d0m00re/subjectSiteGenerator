@@ -74,6 +74,8 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
             website.websiteSection[i1].websiteSectionOrder.order = data[0].order;
             website.websiteSection[i2].websiteSectionOrder.order = data[1].order;
 
+            website.websiteSection = website.websiteSection.sort((a, b) => a.websiteSectionOrder.order - b.websiteSectionOrder.order)
+
             return {
                 ...state,
                 website : cloneDeep(website)
