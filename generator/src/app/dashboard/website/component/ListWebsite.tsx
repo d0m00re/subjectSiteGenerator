@@ -4,7 +4,6 @@ import * as network from "@/network/generateWebsite/generateWebsite.network";
 import { useEffect, useState } from "react";
 import { IGenerateWebSiteOutput } from "@/network/generateWebsite/generateWebsite.network";
 import Pagination from "@/components/Pagination";
-import navigate from "@/components/navigate";
 import CardWebsite from "./CardWebsite";
 import TemplateSkeleton from "@/components/Templates/TemplateSkeleton";
 
@@ -15,7 +14,6 @@ interface IFetchAndLoad {
 }
 
 const ListWebsite = () => {
- // const { data: session } = useSession();
   const [listWebsite, setListWebsite] = useState<IGenerateWebSiteOutput | undefined>(undefined);
   const fetchAndLoad = (props: IFetchAndLoad) => {
     network.getMyWebsitePaginate({

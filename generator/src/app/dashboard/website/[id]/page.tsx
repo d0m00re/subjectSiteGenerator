@@ -5,17 +5,13 @@ import { useParams } from 'next/navigation'
 
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import TemplateSkeleton from '@/components/Templates/TemplateSkeleton';
-import { Button } from '@/components/Button';
 
 import SectionWebsite from './components/SectionWebsite';
 import useCurrentWebsite from "./components/store/currentWebsite.zustand.store";
 
 import ModalCreateSection from './components/modal/ModalCreateSection';
-import { Plus } from 'lucide-react';
 import ButtonCreate from '@/components/atoms/ButtonCreate';
 import MainLayout from '@/components/WebsiteSection/Render/MainLayout/MainLayout';
-
-//----- duplicate
 
 interface IModalCreateSection {
   index: number;

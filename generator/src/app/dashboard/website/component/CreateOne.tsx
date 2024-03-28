@@ -31,7 +31,6 @@ const ValidateForm = z.object({
 type TValidateForm = z.infer<typeof ValidateForm>;
 
 function CreateOne() {
-    // const { data: session } = useSession();
     const [open, setOpen] = useState(false);
     const onOpen = () => setOpen(true);
     const [onLoad, setOnLoad] = useState(false);

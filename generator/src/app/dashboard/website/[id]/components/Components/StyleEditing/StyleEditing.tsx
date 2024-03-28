@@ -79,7 +79,6 @@ function StyleEditing(props: IStyleEditing) {
     const [dupSection, setDupSection] = useState<I_TemplateGen>([]);
     // use for global layout of section
     const [layout, setLayout] = useState<ISectionLayout>({backgroundColor : "", backgroundImage : ""});
- //   const { data: session } = useSession();
 
 
     if (!currentSection || !currentTemplate)
@@ -97,7 +96,6 @@ function StyleEditing(props: IStyleEditing) {
             backgroundColor : currentSection.backgroundColor,
             backgroundImage : currentSection.backgroundImage
         });
-        // 
     }, []);
 
     const handleSubmit = () => {
