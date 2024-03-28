@@ -31,7 +31,7 @@ interface IRenderWithNav {
 const RenderWithNav = (props: IRenderWithNav) => {
   return (<>
     <Header />
-    <section className="flex flex-row">
+    <section className="flex flex-row h-full min-h-screen">
       <AppBar />
       <Toaster />
       <div className={`${inter.className} grow`}>{props.children}</div>

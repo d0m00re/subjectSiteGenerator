@@ -5,7 +5,7 @@ type Props = {
 
 const DashBoardLayout = async (props: Props) => {
   return (
-    <div className="grid-cols-4 border-r shadow h-screen p-2">
+    <div className="grid-cols-4 border-r shadow  p-2">
       {props.children}
     </div>
   );
