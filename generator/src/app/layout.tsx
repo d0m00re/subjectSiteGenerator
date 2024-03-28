@@ -1,7 +1,5 @@
 "use client"
 
-// 
-
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -10,7 +8,7 @@ import AppBar, { Header } from "@/components/AppBar";
 import toast, { Toaster } from 'react-hot-toast';
 
 import "react-loading-skeleton/dist/skeleton.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { redirect, usePathname } from 'next/navigation'
 import useMe from "@/store/me.zustand.store";
 import navigate from "@/components/navigate";

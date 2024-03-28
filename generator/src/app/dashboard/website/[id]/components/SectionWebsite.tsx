@@ -61,7 +61,6 @@ function SectionWebsite(props: Props) {
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
   const [isHovered, setIsHovered] = useState(false);
   const currentWebsite = useCurrentWebsite();
-  // const { data: session } = useSession();
 
   const handleHover = () => {
     setIsHovered(!isHovered);
