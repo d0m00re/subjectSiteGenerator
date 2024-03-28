@@ -1,14 +1,12 @@
 import React from 'react';
 import * as Components from "./component";
 
-type Props = {}
-
-function page({}: Props) {
+function page() {
   return (
-    <div className="flex flex-col gap-2">
+    <main className="">
         <Components.CreateOne />
         <Components.ListWebsite />
-    </div>
+    </main>
   )
 }
 

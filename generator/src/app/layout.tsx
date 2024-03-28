@@ -33,8 +33,7 @@ const RenderWithNav = (props: IRenderWithNav) => {
     <Header />
     <section className="flex flex-row h-full min-h-screen">
       <AppBar />
-      <Toaster />
-      <div className={`${inter.className} grow`}>{props.children}</div>
+      <div className={`${inter.className} grow ml-[150px]`}>{props.children}</div>
     </section>
   </>);
 }
@@ -84,7 +83,10 @@ function RootLayout({
               :
               <RenderWithNav>
                 <div className={`${inter.className} grow`}>{children}</div>
-              </RenderWithNav>}
+              </RenderWithNav>
+        }
+        <Toaster />
+
       </body>
     </html>
   );
