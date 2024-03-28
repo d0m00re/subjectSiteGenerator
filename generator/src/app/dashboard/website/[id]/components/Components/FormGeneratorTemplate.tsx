@@ -146,7 +146,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       websiteId: props.websiteId,
       templateId: props.selectedTemplate?.id ?? -1,
     }
-    props.setOpen(false);
     setOnLoad(true);
     createWebsiteSectionV4(dataSubmit)
       .then((resp: any) => {

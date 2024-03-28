@@ -8,9 +8,9 @@ import ContainerSectionActionBar from '@/components/WebsiteSection/SectionAction
 
 import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import ModalCreateSection from './modal/ModalCreateSection';
-import ModalEditSectionV2 from './modal/ModalEditSectionV2';
-import ModalEditSectionStyle from './modal/ModalEditSectionStyle';
 import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
+import ModalEditSectionV2 from '@/components/WebsiteSection/EditSection/ModalEditSectionV2';
+import ModalEditSectionStyle from '@/components/WebsiteSection/EditStyleSection/ModalEditSectionStyle';
 
 type Props = { 
   section: I_WebsiteSection;

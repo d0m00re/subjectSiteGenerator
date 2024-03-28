@@ -35,7 +35,7 @@ const ModalCreateSection = (props: IModalCreateSection) => {
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="flex flex-col gap-4 items-center">
-
+ 
                     {selectedTemplate === undefined ?
                         <SelectTemplateAccordion
                             groupTemplates={templateGroup.templateGroup}
