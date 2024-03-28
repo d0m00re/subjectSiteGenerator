@@ -125,7 +125,6 @@ function SectionWebsite(props: Props) {
   }
 
   return (
-    <MainLayout>
       <>
         <ButtonAddSection
           show={props.index === 0}
@@ -136,7 +135,7 @@ function SectionWebsite(props: Props) {
           onPointerEnter={handleHover}
           onPointerLeave={handleHover}
           className={`w-full flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer ${props.section.backgroundColor}`}>
-
+ 
           <ContainerSectionActionBar
             onOpenEdit={() => { setModalEdit(true) }}
             onOpenStyleEdit={() => { setModalEditSectionStyle(() => ({ index: props.index, open: true })) }}
@@ -183,7 +182,6 @@ function SectionWebsite(props: Props) {
         </section>
         <ButtonAddSection show onOpenModalAddSection={onOpenModalAddSection} index={props.index + 1} />
       </>
-    </MainLayout>
   )
 }
 
