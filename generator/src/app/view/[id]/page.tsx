@@ -29,7 +29,7 @@ function page() {
 
     return (
         <MainLayout>
-        <section className='flex flex-col'>
+            <>
             {(dataIsLoad) ?
                 storeWebsite?.website?.websiteSection?.map((section, index) =>
                     <section key={`section-${section.id}`} className={`flex flex-col p-4 gap-2 ${section.backgroundColor}`}>
@@ -38,7 +38,7 @@ function page() {
                         />
                     </section>) : <TemplateSkeleton />
             }
-        </section>
+            </>
         </MainLayout>
     )
 }
