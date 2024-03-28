@@ -163,7 +163,6 @@ function SectionWebsite(props: Props) {
               order={modalAddSection.index}
               websiteId={props.section.websiteId}
               setOpen={(val: boolean) => {
-                //alert("onclick modal add section")
                 if (modalEdit === false || val === false)
                   setModalAddSection(old => ({ ...old, open: val }))
               }

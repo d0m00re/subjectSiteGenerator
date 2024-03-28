@@ -58,7 +58,7 @@ function page() {
         {/* cas with no section */}
         {
           storeWebsite?.website?.websiteSection.length === 0 ?
-            <ButtonCreate onClick={() => setModalAddSection({open : true, index : 0})}/>
+            <ButtonCreate onClick={() => setModalAddSection({ open: true, index: 0 })} />
             :
             <></>
         }
@@ -68,9 +68,7 @@ function page() {
         order={modalAddSection.index}
         websiteId={storeWebsite.website?.id ?? -1}
         setOpen={(val: boolean) => {
-          //alert("onclick modal add section")
-          //if (modalEdit === false || val === false)
-            setModalAddSection(old => ({ ...old, open: val }))
+          setModalAddSection(old => ({ ...old, open: val }))
         }
         }
       />

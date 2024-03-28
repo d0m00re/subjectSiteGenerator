@@ -41,8 +41,7 @@ const RenderWithNav = (props: IRenderWithNav) => {
 
 const whitelistNoLoginRoutes = [
   "/login",
-  "/signup",
-  "/"
+  "/signup"
 ];
 
 const defaultNoLoginRoutes = "/login";
