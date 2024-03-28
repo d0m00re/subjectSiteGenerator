@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from "react";
 import IconLoaderSpin from "@/components/CustomIcon/IconLoaderSpin";
+import { Textarea } from "@/components/ui/textarea";
 
 const ValidateForm = z.object({
     title: z.string(),
@@ -30,10 +31,10 @@ const ValidateForm = z.object({
 type TValidateForm = z.infer<typeof ValidateForm>;
 
 function CreateOne() {
-   // const { data: session } = useSession();
+    // const { data: session } = useSession();
     const [open, setOpen] = useState(false);
     const onOpen = () => setOpen(true);
-    const [isLoading, setIsLoading] = useState(false);
+    const [onLoad, setOnLoad] = useState(false);
 
     const {
         register,
@@ -45,18 +46,18 @@ function CreateOne() {
     });
 
     const submitForm: SubmitHandler<TValidateForm> = (data, event) => {
-        setIsLoading(true);
+        setOnLoad(true);
         generateWebsiteNetwork.generateOne({
             title: data.title,
             subject: data.subject,
         })
             .then(resp => {
                 navigate(`/dashboard/website/${resp.id}`);
-                setIsLoading(false);
+                setOnLoad(false);
                 toast("Success");
             })
             .catch(err => {
-                setIsLoading(false);
+                setOnLoad(false);
                 toast("Error");
             })
     }
@@ -64,48 +65,49 @@ function CreateOne() {
     const submitCreateWebsite = () => {
         let values = getValues();
         console.log("submit create website : " + JSON.stringify(values));
+        setOnLoad(true);
         websiteNetwork.createWebsite({
-            title : values.title,
-            subject : values.subject
+            title: values.title,
+            subject: values.subject
         })
-        .then(resp => {
-            navigate(`/dashboard/website/${resp.id}`);
-            setIsLoading(false);
-            toast("Success");
-        })
-        .catch(() => {
-            setIsLoading(false);
-            toast("Error");
-        })
+            .then(resp => {
+                navigate(`/dashboard/website/${resp.id}`);
+                setOnLoad(false);
+                toast("Success");
+            })
+            .catch(() => {
+                setOnLoad(false);
+                toast("Error");
+            })
     }
 
     return (
-            <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger onClick={onOpen}>Generate a website</DialogTrigger>
-                <DialogContent>
-                    <DialogHeader >
-                        <DialogTitle>
-                            Generate your website
-                        </DialogTitle>
-                    </DialogHeader>
-                    <DialogDescription className="flex flex-col gap-4 items-center">
-                        {isLoading ? <IconLoaderSpin /> : 
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger onClick={onOpen}>Generate a website</DialogTrigger>
+            <DialogContent>
+                <DialogHeader >
+                    <DialogTitle>
+                        Generate your website
+                    </DialogTitle>
+                </DialogHeader>
+                <DialogDescription className="flex flex-col gap-4 items-center">
+                    {onLoad ? <IconLoaderSpin /> :
                         <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-2 max-w-lg p-4">
                             <Label className="text-2xl text-black">Title</Label>
                             <Input {...register("title")}></Input>
 
                             <Label className="text-2xl text-black">Description</Label>
-                            <Input {...register("subject")}></Input>
+                            <Textarea {...register("subject")} placeholder="Type your description here." />
 
                             <div className="flex flex-row gap-2">
                                 <Button type="submit" name="generate" className="mt-4">Generate</Button>
                                 <Button type="button" className="mt-4" onClick={submitCreateWebsite}>Create</Button>
                             </div>
                         </form>
-                        }
-                    </DialogDescription>
-                </DialogContent>
-            </Dialog>
+                    }
+                </DialogDescription>
+            </DialogContent>
+        </Dialog>
     )
 }
 

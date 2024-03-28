@@ -14,6 +14,7 @@ import FileUpload from '@/components/File/FileUpload';
 import { ModalMediaSelector } from '@/components/Library';
 import Image from 'next/image';
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
+import { Textarea } from '@/components/ui/textarea';
 
 interface IFormGeneratorTemplate {
   selectedTemplate: entity.ParsedTemplateVariant | undefined
@@ -80,7 +81,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
           let elemImg = currSection.images.find(e => e.order === currTemplate.order);
           if (elemImg) {
             dataUpdateSection.push({
-              kind : "img",
+              kind: "img",
               ...elemImg
             })
           }
@@ -220,55 +221,63 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
       <form
         className='flex flex-col gap-2'>
         {
-          templateConfig?.map((elem, index) => {
+          templateConfig?.map((templateElem, index) => {
             let currElem = dataFormV4[index];
             if (dataFormV4.length !== templateConfig.length) {
               return <></>
             }
-            switch (currElem.kind) {
-              case "typography":
-                return <section className='flex flex-col gap-1'>
-                  <p>{elem.label}</p>
+            // switch (currElem.kind) {
+            if (currElem.kind === "typography" && templateElem.kind === "text") {
+              return <section className='flex flex-col gap-1'>
+                <p>{templateElem.label}</p>
+                {templateElem.formVariant === "line" ?
                   <Input
-                    name={elem.label}
+                    name={templateElem.label}
                     onChange={(e) => handleChange(e, index)}
                     type="text"
                     value={(currElem) ? (currElem.text) : ""}
-                  />
-                </section>
-              case "button":
-                return <section className='flex flex-col gap-1'>
-                  <p>{elem.label}</p>
-                  <Input
-                    name={elem.label}
+                  /> :
+                  <Textarea
+                    name={templateElem.label}
                     onChange={(e) => handleChange(e, index)}
-                    type="text"
                     value={(currElem) ? (currElem.text) : ""}
                   />
-                </section>
-
-              case "img":
-                return <section className='flex flex-col gap-1 justify-center items-center'>
-                  <p>{elem.label}</p>
-                  {
-                    (currElem.url && currElem.url.length) ?
-                      <Image
+                }
+              </section>
+            }
+            else if (currElem.kind === "button" && templateElem.kind === "button") {
+              return <section className='flex flex-col gap-1'>
+                <p>{templateElem.label}</p>
+                <Input
+                  name={templateElem.label}
+                  onChange={(e) => handleChange(e, index)}
+                  type="text"
+                  value={(currElem) ? (currElem.text) : ""}
+                />
+              </section>
+            }
+            else if (currElem.kind === "img" && templateElem.kind === "img") {
+              return <section className='flex flex-col gap-1 justify-center items-center'>
+                <p>{templateElem.label}</p>
+                {
+                  (currElem.url && currElem.url.length) ?
+                    <Image
                       className='object-contain h-[150px] w-[150px]'
-                        src={currElem.url}
-                        width={500}
-                        height={500}
-                        alt="elem"
-                      />
-                      :
-                      <></>
-                  }
-                  <ModalMediaSelector
-                    url={currElem.url}
-                    setUrl={(s: string) => {
-                      handleChange(s, index);
-                    }}
-                  />
-                </section>
+                      src={currElem.url}
+                      width={500}
+                      height={500}
+                      alt="elem"
+                    />
+                    :
+                    <></>
+                }
+                <ModalMediaSelector
+                  url={currElem.url}
+                  setUrl={(s: string) => {
+                    handleChange(s, index);
+                  }}
+                />
+              </section>
             }
           })}
         <Button onClick={submitForm} className='mt-4'>{

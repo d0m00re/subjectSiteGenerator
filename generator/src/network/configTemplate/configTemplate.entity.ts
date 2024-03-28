@@ -47,7 +47,9 @@ export const TypographyValidator = z.object({
   
     variant : z.string(),
     animation : z.string(),
-    decorator : z.string()
+    decorator : z.string(),
+
+    formVariant : z.enum(["line", "multiline"])
   });
   
   // 'variant' : '', 'animation' : '', 'decorator' : ''
