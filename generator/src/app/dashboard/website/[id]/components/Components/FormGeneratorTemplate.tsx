@@ -150,6 +150,8 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     setOnLoad(true);
     createWebsiteSectionV4(dataSubmit)
       .then((resp: any) => {
+        console.log("reset with data after create");
+        console.log(resp);
         storeWebsite.resetWtData(resp);
       })
       .catch(err => { console.log(err); })
@@ -214,10 +216,11 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
   return (
     <section className='flex flex-col gap-2'>
-      <Button onClick={() => props.setSelectedTemplate(undefined)}>
-        Return
-      </Button>
-
+      {props.mode === "create" ?
+        <Button onClick={() => props.setSelectedTemplate(undefined)}>
+          Return
+        </Button> : <></>
+      }
       <form
         className='flex flex-col gap-2'>
         {
@@ -228,7 +231,9 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
             }
             // switch (currElem.kind) {
             if (currElem.kind === "typography" && templateElem.kind === "text") {
-              return <section className='flex flex-col gap-1'>
+              return <section
+                key={`formgeneratortemplate-typo-${templateElem.label}`}
+                className='flex flex-col gap-1'>
                 <p>{templateElem.label}</p>
                 {templateElem.formVariant === "line" ?
                   <Input
@@ -246,7 +251,9 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
               </section>
             }
             else if (currElem.kind === "button" && templateElem.kind === "button") {
-              return <section className='flex flex-col gap-1'>
+              return <section
+              key={`formgeneratortemplate-button-${templateElem.label}`}
+              className='flex flex-col gap-1'>
                 <p>{templateElem.label}</p>
                 <Input
                   name={templateElem.label}
@@ -257,7 +264,9 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
               </section>
             }
             else if (currElem.kind === "img" && templateElem.kind === "img") {
-              return <section className='flex flex-col gap-1 justify-center items-center'>
+              return <section
+                key={`formgeneratortemplate-img-${templateElem.label}`}
+                className='flex flex-col gap-1 justify-center items-center'>
                 <p>{templateElem.label}</p>
                 {
                   (currElem.url && currElem.url.length) ?
@@ -280,6 +289,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
               </section>
             }
           })}
+        
         <Button onClick={submitForm} className='mt-4'>{
           (onLoad) ? <IconLoaderSpin /> : <>Save</>
         }</Button>
