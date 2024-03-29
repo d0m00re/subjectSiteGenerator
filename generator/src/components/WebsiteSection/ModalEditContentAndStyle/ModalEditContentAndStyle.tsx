@@ -8,19 +8,37 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 
-type Props = {}
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+  } from "@/components/ui/tabs";
 
-function ModalEditContentAndStyle({ }: Props) {
+type Props = {
+    open: boolean;
+    setOpen: (v: boolean) => void;
+}
+
+function ModalEditContentAndStyle(props: Props) {
     return (
-        <Sheet>
+        <Sheet open={props.open} onOpenChange={props.setOpen}>
             <SheetTrigger>Open</SheetTrigger>
             <SheetContent>
                 <SheetHeader>
                     <SheetTitle>Are you absolutely sure?</SheetTitle>
-                    <SheetDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
-                    </SheetDescription>
+                    <Tabs defaultValue="account" className="w-[800px]">
+                    <TabsList>
+                        <TabsTrigger value="content">Content</TabsTrigger>
+                        <TabsTrigger value="style">Style</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="content">
+                        content                        
+                    </TabsContent>
+                    <TabsContent value="style">
+                        style
+                    </TabsContent>
+                </Tabs>
                 </SheetHeader>
             </SheetContent>
         </Sheet>

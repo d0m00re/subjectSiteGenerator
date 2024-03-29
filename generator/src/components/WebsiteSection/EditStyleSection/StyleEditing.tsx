@@ -1,67 +1,20 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { I_TemplateElemTypography } from '@/network/website/websiteSection/templateElemTypography/templateElemTypography.entity';
 import { I_TemplateElemButton } from '@/network/website/websiteSection/templateElemButton/templateElemButton.entity';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { Button } from '@/components/Button';
 import cloneDeep from 'lodash/cloneDeep';
-
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { updateSectionV4 } from '@/network/website/website.network';
 import ChangeBackground from '@/components/WebsiteSection/Render/Layout/ChangeBackground/ChangeBackground';
 import { ISectionLayout } from '@/network/generateWebsite/generateWebsite.entity';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
-
-interface ISelectSizeElem {
-    key: string;
-    value: string;
-    name: string;
-}
-
-type TSizeEnum = "small" | "medium" | "big"
-
-const selectSizeArray: ISelectSizeElem[] = [
-    { value: "small", name: "small", key: "size-small" },
-    { value: "medium", name: "medium", key: "size-medium" },
-    { value: "big", name: "big", key: "size-big" }
-];
-
-interface ISelectSize {
-    value : string;
-    onChange : (size : string) => void;
-}
-
-const SelectSize = (props : ISelectSize) => {
-    return <Select defaultValue={props.value} onValueChange={props.onChange}>
-        <SelectTrigger>
-            <SelectValue placeholder="select a size" />
-        </SelectTrigger>
-        <SelectContent
-            className='flex flex-col gap-2'>
-            <SelectGroup>
-            <SelectLabel>size</SelectLabel>
-            {
-                selectSizeArray.map(elem => <SelectItem
-                    key={elem.key}
-                    value={elem.value}>
-                    {elem.name}
-                </SelectItem>)
-            }
-            </SelectGroup>
-        </SelectContent>
-    </Select>
-}
+import CustomSelect from '@/components/atoms/Select/CustomSelect/CustomSelect';
+import { selectSizeArray } from '@/components/atoms/Select/CustomSelect/options';
+import { TSizeEnum } from '@/components/atoms/Select/CustomSelect/CustomSelect.d';
 
 type IStyleEditing = {
     sectionIndex: number;
-    onClose : () => void;
+    onClose: () => void;
 }
 
 // aya maybe make a better type later
@@ -78,13 +31,11 @@ function StyleEditing(props: IStyleEditing) {
     // use for storing a list of typography section and button section
     const [dupSection, setDupSection] = useState<I_TemplateGen>([]);
     // use for global layout of section
-    const [layout, setLayout] = useState<ISectionLayout>({backgroundColor : "", backgroundImage : ""});
-
+    const [layout, setLayout] = useState<ISectionLayout>({ backgroundColor: "", backgroundImage: "" });
 
     if (!currentSection || !currentTemplate)
         return <></>
 
-    
     useEffect(() => {
         const allElemSection: I_TemplateGen = [
             ...currentSection.typographies.map(e => ({ ...e, kind: "typography" as const })),
@@ -93,26 +44,26 @@ function StyleEditing(props: IStyleEditing) {
 
         setDupSection(allElemSection);
         setLayout({
-            backgroundColor : currentSection.backgroundColor,
-            backgroundImage : currentSection.backgroundImage
+            backgroundColor: currentSection.backgroundColor,
+            backgroundImage: currentSection.backgroundImage
         });
     }, []);
 
     const handleSubmit = () => {
         updateSectionV4({
-            data : dupSection,
-            layout : layout,
-            sectionId : currentSection.id,
+            data: dupSection,
+            layout: layout,
+            sectionId: currentSection.id,
         }).then(resp => {
             storeWebsite.updateSection(resp);
             props.onClose();
-        }).catch((err : any) => {
+        }).catch((err: any) => {
             props.onClose();
         })
     }
 
-    const setBackgroundColor = (bgColor : string) => {
-        setLayout(old => ({...old, backgroundColor : bgColor}));
+    const setBackgroundColor = (bgColor: string) => {
+        setLayout(old => ({ ...old, backgroundColor: bgColor }));
     }
 
     return (
@@ -130,9 +81,11 @@ function StyleEditing(props: IStyleEditing) {
                     if (templateElem.kind === "text" && findElem?.kind === "typography") {
                         return <section className='flex flex-col gap-2'>
                             <p>typography : {templateElem.label}</p>
-                            <SelectSize
+                            <CustomSelect
+                                options={selectSizeArray}
+                                label={"size"}
                                 value={findElem.size}
-                                onChange={(size : string) => {
+                                onChange={(size: string) => {
                                     let tmp = cloneDeep(dupSection);
                                     tmp[index].size = size as TSizeEnum;
                                     setDupSection(tmp);
@@ -143,9 +96,11 @@ function StyleEditing(props: IStyleEditing) {
                     else if (templateElem.kind === "button" && findElem?.kind === "button") {
                         return <section className='flex flex-col gap-2'>
                             <p>button : {templateElem.label}</p>
-                            <SelectSize
+                            <CustomSelect
+                                options={selectSizeArray}
+                                label="size"
                                 value={findElem.size}
-                                onChange={(size : string) => {
+                                onChange={(size: string) => {
                                     let tmp = cloneDeep(dupSection);
                                     tmp[index].size = size as TSizeEnum;
                                     setDupSection(tmp);
@@ -159,10 +114,8 @@ function StyleEditing(props: IStyleEditing) {
             <div>
                 <Button onClick={props.onClose}>Discard</Button>
                 <Button onClick={() => {
-                        console.log("send new data");
-                        console.log(dupSection);
-                        handleSubmit();
-                    }
+                    handleSubmit();
+                }
                 }>Save</Button>
             </div>
         </section>
