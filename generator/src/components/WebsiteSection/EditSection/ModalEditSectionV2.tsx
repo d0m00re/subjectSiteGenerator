@@ -6,10 +6,8 @@ import {
     SheetContent,
     SheetDescription,
     SheetHeader,
-    SheetTitle,
-    SheetTrigger,
+    SheetTitle
   } from "@/components/ui/sheet"
-
 
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
@@ -23,48 +21,69 @@ interface IModalEdit {
     section: I_WebsiteSection;
 }
 
-const ModalEditSection = (props: IModalEdit) => {
+interface IEncodeElemJson {
+    templateVariant : I_TemplateVariant_parse[];
+    section : I_WebsiteSection;
+}
+
+// encode elem json
+const encodeElemJson = (props : IEncodeElemJson) => {
+       // 1) get current config template
+       let templateG = props.templateVariant.find(e => props.section.configTemplateId === e.id);
+
+       if (!templateG || !templateG.config) {
+           console.log("template group");
+           return null;
+       }
+
+       let templateConfig = templateG.config;
+
+       // populate json
+       let elementJSON : any = {};
+       for (let x = 0; x < templateConfig.length; x++) {
+           let curr = templateConfig[x];
+           if (curr.kind === "text") {
+               let currElement = props.section.typographies.find(e => e.order === curr.order);
+               if (currElement) {
+                   elementJSON[curr.label] = currElement.text;
+               }
+           } else if (curr.kind === "button") {
+               let currElement = props.section.buttons.find(e => e.order === curr.order);
+               if (currElement) {
+                   elementJSON[curr.label] = currElement.text;
+               }
+           } else if (curr.kind === "img") {
+               let currElement = props.section.images.find(e => e.order === curr.order);
+               if (currElement) {
+                   elementJSON[curr.label] = currElement.url;
+               }
+           }
+       }
+
+      return {
+        elementJSON,
+        templateG
+      }
+}
+
+const ModalEditSectionV2 = (props: IModalEdit) => {
     const [jsonData, setJsonData] = useState<any>({});
     const [template, setTemplate] = useState<I_TemplateVariant_parse | undefined>(undefined);
     const templateGroup = useTemplateGroup();
 
     // rework later with json object property
     useEffect(() => {
-       // 1) get current config template
-        let templateG = templateGroup.templateVariant.find(e => props.section.configTemplateId === e.id);
+        let data = encodeElemJson({
+            templateVariant : templateGroup.templateVariant,
+            section : props.section
+        });
 
-        if (!templateG || !templateG.config) {
-            console.log("template group");
-            return ;
-        }
-
-        let templateConfig = templateG.config;
-
-        // populate json
-        let elementJSON : any = {};
-        for (let x = 0; x < templateConfig.length; x++) {
-            let curr = templateConfig[x];
-            if (curr.kind === "text") {
-                let currElement = props.section.typographies.find(e => e.order === curr.order);
-                if (currElement) {
-                    elementJSON[curr.label] = currElement.text;
-                }
-            } else if (curr.kind === "button") {
-                let currElement = props.section.buttons.find(e => e.order === curr.order);
-                if (currElement) {
-                    elementJSON[curr.label] = currElement.text;
-                }
-            } else if (curr.kind === "img") {
-                let currElement = props.section.images.find(e => e.order === curr.order);
-                if (currElement) {
-                    elementJSON[curr.label] = currElement.url;
-                }
-            }
-        }
        // build json data
        // templateG : give template
-       setJsonData(elementJSON);
-       setTemplate(templateG);
+       if (data) {
+        setJsonData(data.elementJSON);
+        setTemplate(data.templateG);
+       }
     }, []);
 
     return (
@@ -91,4 +110,4 @@ const ModalEditSection = (props: IModalEdit) => {
     )
 }
 
-export default ModalEditSection;
+export default ModalEditSectionV2;

@@ -12,6 +12,7 @@ import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSect
 import ModalEditSectionV2 from '@/components/WebsiteSection/EditSection/ModalEditSectionV2';
 import ModalEditSectionStyle from '@/components/WebsiteSection/EditStyleSection/ModalEditSectionStyle';
 import MainLayout from '@/components/WebsiteSection/Render/MainLayout/MainLayout';
+import ModalEditContentAndStyle from '@/components/WebsiteSection/ModalEditContentAndStyle/ModalEditContentAndStyle';
 
 type Props = {
   section: I_WebsiteSection;
@@ -148,14 +149,21 @@ function SectionWebsite(props: Props) {
             section={props.section}
           />
 
-          {
+          {modalEdit ?
+            <ModalEditContentAndStyle
+              open={modalEdit}
+              setOpen={setModalEdit}
+            /> : <></>
+          }
+
+          {/*
             modalEdit ?
               <ModalEditSectionV2
                 open={modalEdit}
                 setOpen={setModalEdit}
                 section={props.section}
               /> : <></>
-          }
+        */}
           {
             modalAddSection.open ?
               <ModalCreateSection
