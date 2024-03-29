@@ -13,7 +13,7 @@ import { selectSizeArray } from '@/components/atoms/Select/CustomSelect/options'
 import { TSizeEnum } from '@/components/atoms/Select/CustomSelect/CustomSelect.d';
 
 type IStyleEditing = {
-    sectionIndex: number;
+    sectionId: number;
     onClose: () => void;
 }
 
@@ -26,7 +26,7 @@ type I_TemplateGen = (I_TemplateElemTypography_kind | I_TemplateElemButton_kind)
 function StyleEditing(props: IStyleEditing) {
     const storeWebsite = useCurrentWebsiteStore();
     const storeTemplate = useTemplateGroup();
-    const currentSection = storeWebsite.website?.websiteSection[props.sectionIndex];
+    const currentSection = storeWebsite.website?.websiteSection.find(e => e.id === props.sectionId) //[props.sectionIndex];
     const currentTemplate = storeTemplate.templateVariant.find(e => e.id === currentSection?.configTemplateId);
     // use for storing a list of typography section and button section
     const [dupSection, setDupSection] = useState<I_TemplateGen>([]);

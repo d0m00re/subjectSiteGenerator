@@ -3,7 +3,6 @@ import React from 'react'
 
 type Props = {
     onOpenEdit: () => void;
-    onOpenStyleEdit: () => void;
     onOpenDelete: () => void;
     onOpenDuplicate: () => void;
     onMooveTop: () => void;
@@ -30,10 +29,6 @@ function SectionActionBar(props: Props) {
                     <Pencil className={hoverStyle} />
                     <p className=' hover:text-blue-800'>Edit</p>
                 </div>
-                <FilePenLine
-                    className={hoverStyle}
-                    onClick={props.onOpenStyleEdit}   
-                />
                 <VerticalSeparator />
                 <Trash2
                     className={hoverStyle}

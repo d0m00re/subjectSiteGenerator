@@ -138,7 +138,6 @@ function SectionWebsite(props: Props) {
  
           <ContainerSectionActionBar
             onOpenEdit={() => { setModalEdit(true) }}
-            onOpenStyleEdit={() => { setModalEditSectionStyle(() => ({ index: props.index, open: true })) }}
             onOpenDelete={onDeleteSection}
             onOpenDuplicate={onDuplicate}
             onMooveTop={onSwitchWebsitePositionTop}
@@ -153,6 +152,7 @@ function SectionWebsite(props: Props) {
             <ModalEditContentAndStyle
               open={modalEdit}
               setOpen={setModalEdit}
+              section={props.section}
             /> : <></>
           }
 

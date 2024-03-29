@@ -17,7 +17,6 @@ import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/stor
 
 interface IFormGeneratorTemplate {
     selectedTemplate: entity.ParsedTemplateVariant | undefined
-    setSelectedTemplate: React.Dispatch<React.SetStateAction<entity.ParsedTemplateVariant | undefined>>
     websiteId: number;
     order: number;
     setOpen: (val: boolean) => void;
