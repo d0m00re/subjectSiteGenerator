@@ -97,7 +97,6 @@ const ModalEditSectionV2 = (props: IModalEdit) => {
                 <SheetDescription className="flex flex-col gap-4 items-center">
                     {(props.open && template) ? <EditSection
                             selectedTemplate={template}
-                            setSelectedTemplate={setTemplate}
                             order={props.section.websiteSectionOrder.order}
                             websiteId={props.section.websiteId}
                             setOpen={props.setOpen}

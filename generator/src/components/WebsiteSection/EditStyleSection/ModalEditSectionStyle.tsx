@@ -13,7 +13,7 @@ import StyleEditing from './StyleEditing';
 interface IModalEditSectionStyle {
     open: boolean;
     setOpen: (val: boolean) => void;
-    sectionIndex: number;
+    sectionId: number;
 }
 
 function ModalEditSectionStyle(props: IModalEditSectionStyle) {
@@ -27,14 +27,14 @@ function ModalEditSectionStyle(props: IModalEditSectionStyle) {
                 </SheetHeader>
                 <SheetDescription className="flex flex-col gap-4 items-center">
                     {(props.open) ? <StyleEditing
-                        sectionIndex={props.sectionIndex}
+                        sectionId={props.sectionId}
                         onClose={() => props.setOpen(false)}
                     /> : <IconLoaderSpin />
                     }
                 </SheetDescription>
             </SheetContent>
         </Sheet >
-    )
+    ) 
 }
 
 export default ModalEditSectionStyle
