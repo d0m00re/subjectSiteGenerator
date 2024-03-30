@@ -178,14 +178,6 @@ function SectionWebsite(props: Props) {
               /> :
               <></>
           }
-          {
-            modalEditSectionStyle.open ?
-              <ModalEditSectionStyle
-                open={modalEditSectionStyle.open}
-                setOpen={(open: boolean) => setModalEditSectionStyle(old => ({ ...old, open: open }))}
-                sectionIndex={props.index}
-              /> : <></>
-          }
         </section>
         <ButtonAddSection show onOpenModalAddSection={onOpenModalAddSection} index={props.index + 1} />
       </>

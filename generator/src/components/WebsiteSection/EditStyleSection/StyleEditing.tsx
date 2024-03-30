@@ -5,7 +5,6 @@ import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { Button } from '@/components/Button';
 import cloneDeep from 'lodash/cloneDeep';
 import { updateSectionV4 } from '@/network/website/website.network';
-import ChangeBackground from '@/components/WebsiteSection/Render/Layout/ChangeBackground/ChangeBackground';
 import { ISectionLayout } from '@/network/generateWebsite/generateWebsite.entity';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
 import CustomSelect from '@/components/atoms/Select/CustomSelect/CustomSelect';
@@ -62,17 +61,8 @@ function StyleEditing(props: IStyleEditing) {
         })
     }
 
-    const setBackgroundColor = (bgColor: string) => {
-        setLayout(old => ({ ...old, backgroundColor: bgColor }));
-    }
-
     return (
         <section className='flex flex-col gap-2 w-full'>
-       
-            <ChangeBackground
-                backgroundColor={layout.backgroundColor}
-                setBackgroundColor={setBackgroundColor}
-            />
             <p>section style</p>
             {
                 currentTemplate.config.map((templateElem, index) => {
@@ -110,12 +100,9 @@ function StyleEditing(props: IStyleEditing) {
                     return <></>
                 })
             }
-            <div>
+            <div className='flex flex-row gap-2'>
                 <Button onClick={props.onClose}>Discard</Button>
-                <Button onClick={() => {
-                    handleSubmit();
-                }
-                }>Save</Button>
+                <Button onClick={handleSubmit}>Save</Button>
             </div>
         </section>
     )
