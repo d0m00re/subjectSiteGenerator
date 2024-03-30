@@ -9,9 +9,6 @@ import ContainerSectionActionBar from '@/components/WebsiteSection/SectionAction
 import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import ModalCreateSection from './modal/ModalCreateSection';
 import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
-import ModalEditSectionV2 from '@/components/WebsiteSection/EditSection/ModalEditSectionV2';
-import ModalEditSectionStyle from '@/components/WebsiteSection/EditStyleSection/ModalEditSectionStyle';
-import MainLayout from '@/components/WebsiteSection/Render/MainLayout/MainLayout';
 import ModalEditContentAndStyle from '@/components/WebsiteSection/ModalEditContentAndStyle/ModalEditContentAndStyle';
 
 type Props = {
@@ -156,14 +153,6 @@ function SectionWebsite(props: Props) {
             /> : <></>
           }
 
-          {/*
-            modalEdit ?
-              <ModalEditSectionV2
-                open={modalEdit}
-                setOpen={setModalEdit}
-                section={props.section}
-              /> : <></>
-        */}
           {
             modalAddSection.open ?
               <ModalCreateSection
