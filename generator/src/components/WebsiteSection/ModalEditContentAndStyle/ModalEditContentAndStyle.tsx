@@ -30,15 +30,13 @@ function ModalEditContentAndStyle(props: Props) {
 
     const selectedTemplate = templateGroup.templateVariant.find(e => e.id === props.section.configTemplateId)
 
-    console.log("selected template")
-
     return (
         <Sheet open={props.open} onOpenChange={props.setOpen}>
             <SheetTrigger>Open</SheetTrigger>
             <SheetContent>
                 <SheetHeader>
                     <SheetTitle>Edit</SheetTitle>
-                    <Tabs defaultValue="account" className="w-[800px]">
+                    <Tabs defaultValue="account" className="w-full">
                         <TabsList>
                             <TabsTrigger value="content">Content</TabsTrigger>
                             <TabsTrigger value="styleElem">Style</TabsTrigger>

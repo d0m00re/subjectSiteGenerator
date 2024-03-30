@@ -68,8 +68,7 @@ function StyleEditing(props: IStyleEditing) {
 
     return (
         <section className='flex flex-col gap-2 w-full'>
-            <h1>{currentSection?.kind} | {currentSection?.configTemplateId}</h1>
-            <p>layout style</p>
+       
             <ChangeBackground
                 backgroundColor={layout.backgroundColor}
                 setBackgroundColor={setBackgroundColor}
