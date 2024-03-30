@@ -9,6 +9,9 @@ import { ConfigTemplateModule } from './config-template/config-template.module';
 import { WebsiteModule } from './website/website.module';
 import { Authv2Module } from './authv2/authv2.module';
 import { LibraryModule } from './library/library.module';
+import { ThemeGroupModule } from './theme/theme-group/theme-group.module';
+import { ThemePaletteModule } from './theme/theme-palette/theme-palette.module';
+import { ThemePaletteElemModule } from './theme/theme-palette-elem/theme-palette-elem.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { LibraryModule } from './library/library.module';
     WebsiteModule,
     Authv2Module,
     LibraryModule,
+    ThemeGroupModule,
+    ThemePaletteModule,
+    ThemePaletteElemModule,
   ],
   controllers: [],
   providers: [PrismaService, JwtService, OpenaiModule],
