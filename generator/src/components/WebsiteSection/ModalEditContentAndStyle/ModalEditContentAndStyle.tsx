@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
@@ -20,7 +19,6 @@ import EditSection from '../EditSection/EditSection';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import GlobalSectionStyle from '../GlobalSectionStyle/GlobalSectionStyle';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
-import { cloneDeep, template } from 'lodash';
 import { I_TemplateGen } from './modalEditContentAndStyle.d';
 import { updateSectionV4 } from '@/network/website/website.network';
 import { Button } from '@/components/ui/button';
@@ -122,8 +120,8 @@ function ModalEditContentAndStyle(props: Props) {
                             />
                         </TabsContent>
                     </Tabs>
-                    <section>
-                        <Button className='flex gap-2' onClick={handleSubmit}>Send global</Button>
+                    <section className='flex flex-row gap-1'>
+                        <Button className='flex gap-2' onClick={handleSubmit}>Save Section</Button>
                         <Button onClick={() => props.setOpen(false)}>Discard</Button>
                     </section>
                 </SheetHeader>
