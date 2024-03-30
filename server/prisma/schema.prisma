@@ -11,8 +11,8 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
   name         String?
   pictureUrl   String?
   password     String
@@ -20,6 +20,7 @@ model User {
   refreshToken String?
   websites     Website[]
   Library      Library[]
+  ThemePalette ThemePalette[]
 }
 
 model Library {
@@ -139,3 +140,37 @@ model TemplateElemImage {
 model WebsiteTheme {
   id Int @id @default(autoincrement())
 }
+
+//-------------------------------------------
+//------------- THEME PALETTE ---------------
+model ThemeGroup {
+  id            Int            @id @default(autoincrement())
+  name          String
+  themePalettes ThemePalette[]
+}
+
+model ThemePalette {
+  id Int @id @default(autoincrement())
+
+  ThemeGroup   ThemeGroup? @relation(fields: [themeGroupId], references: [id])
+  themeGroupId Int?
+
+  name String
+
+  themePaletteElems ThemePaletteElem[]
+
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model ThemePaletteElem {
+  id        Int    @id @default(autoincrement())
+  key       String
+  bgColor   String
+  textColor String
+
+  ThemePalette   ThemePalette? @relation(fields: [themePaletteId], references: [id])
+  themePaletteId Int?
+}
+
+//----------------------------------------
