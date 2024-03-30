@@ -18,6 +18,7 @@ import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.enti
 import StyleEditing from '../EditStyleSection/StyleEditing';
 import EditSection from '../EditSection/EditSection';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
+import GlobalSectionStyle from '../GlobalSectionStyle/GlobalSectionStyle';
 
 type Props = {
     open: boolean;
@@ -39,6 +40,7 @@ function ModalEditContentAndStyle(props: Props) {
                     <Tabs defaultValue="account" className="w-full">
                         <TabsList>
                             <TabsTrigger value="content">Content</TabsTrigger>
+                            <TabsTrigger value="globalStyle">Global style</TabsTrigger>
                             <TabsTrigger value="styleElem">Style</TabsTrigger>
                         </TabsList>
                         <TabsContent value="content">
@@ -46,15 +48,21 @@ function ModalEditContentAndStyle(props: Props) {
                                 selectedTemplate={selectedTemplate}
                                 websiteId={props.section.websiteId}
                                 order={props.section.websiteSectionOrder.order}
-                                setOpen={(val: boolean) => {}}
+                                setOpen={(val: boolean) => { }}
                                 defaultData={undefined}
                             />
                         </TabsContent>
+                        <TabsContent value="globalStyle">
+                            <GlobalSectionStyle
+                                sectionId={props.section.id}
+                                onClose={() => props.setOpen(false)}
+                            />
+                        </TabsContent>
                         <TabsContent value="styleElem">
-                                <StyleEditing
-                                    sectionId={props.section.id}
-                                    onClose={() => props.setOpen(false)}
-                                />
+                            <StyleEditing
+                                sectionId={props.section.id}
+                                onClose={() => props.setOpen(false)}
+                            />
                         </TabsContent>
                     </Tabs>
                 </SheetHeader>
