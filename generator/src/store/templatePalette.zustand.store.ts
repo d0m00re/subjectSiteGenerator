@@ -3,8 +3,6 @@
 // todo : fix type problem
 import { create } from 'zustand'
 
-import * as network from "../network/configTemplate/configTemplate.network";
-import * as entity from "../network/configTemplate/configTemplate.entity";
 import { ITemplateGroup } from '@/network/templettePalette/templatePalette.entity';
 import { getAllThemeGroup } from '@/network/templettePalette/templatePalette.network';
 
