@@ -14,8 +14,9 @@ export interface IThemePalette {
 
 export interface IThemePaletteElem {
     id : number;
-    key : string;
+    order : number;
     bgColor : string;
     textColor : string;
     themePaletteId : number;
+    public : boolean;
 }

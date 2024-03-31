@@ -11,7 +11,7 @@ export class ThemeGroupController {
       ) { }
 
         // create
-        @UseGuards(JwtCookieParserGuard)
+    @UseGuards(JwtCookieParserGuard)
         @Post()
         async create(@Body() dto : dto.CreateThemeGroupDto) {
             let data = await this.themeGroupService.create({

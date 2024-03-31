@@ -1,10 +1,7 @@
 import { Type } from "class-transformer";
 import { IsNumber, IsString, ValidateNested } from "class-validator";
-import { string } from "zod";
 
 export class PaletteWithElem {
-    @IsString()
-    key: string;
     @IsString()
     bgColor: string;
     @IsString()
