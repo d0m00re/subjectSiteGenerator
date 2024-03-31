@@ -2,10 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigTemplateService } from 'src/config-template/config-template.service';
 import { PrismaService } from 'src/prisma.service';
 import { Userv2Service } from 'src/userv2/userv2.service';
-import { promise } from 'zod';
 
 interface IPaletteWtElem {
-    key : string;
     bgColor : string;
     textColor : string;
 }
@@ -33,10 +31,15 @@ export class ThemePaletteService {
         });
 
         //
-        let dataPalette = props.paletteElements.map(elems => this.prisma.themePaletteElem.create({
+        let dataPalette = props.paletteElements.map((elems, order) => this.prisma.themePaletteElem.create({
             data : {
-                ...elems,
-                themePaletteId : data.id
+              //  ...elems,
+                textColor : elems.textColor,
+                bgColor : elems.bgColor,
+                order : order,
+                themePaletteId : data.id,
+                public : true
+            //    themePaletteId : data.id
             }
         }))
 

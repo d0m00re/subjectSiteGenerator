@@ -199,8 +199,9 @@ sectionLayout : {
 * adaptative bk n: done
 * add multiline text variation : done
 * fix update data when we add a section : done
-* merge update content / update style and update global style insid the same modal
-* have section update everything
+* merge update content / update style and update global style insid the same modal : done
+* user order inside theme palette
+* have section update everything : done
 * profil page profile update with avatar icon update
 * website global config management : 
     update title description, custom favicon, custom url

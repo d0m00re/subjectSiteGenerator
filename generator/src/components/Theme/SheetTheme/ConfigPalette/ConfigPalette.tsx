@@ -8,6 +8,13 @@ type TCardConfigPalette = {
     themePalette: IThemePalette
 }
 
+const orderKey = [
+    "aa",
+    "bb",
+    "cc",
+    "dd"
+]
+
 function CardConfigPalette(props: TCardConfigPalette) {
     return <section className='flex flex-row rounded-2xl h-24 border-cyan-100 border overflow-hidden'>
         {
@@ -27,7 +34,7 @@ function CardConfigPalette(props: TCardConfigPalette) {
                                     backgroundColor: color.bgColor,
                                     color: color.textColor
                                 }}>
-                                {color.key}
+                                {orderKey[color.order]}
                             </span>
                         </div>
                     </div>
