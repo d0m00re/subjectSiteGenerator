@@ -10,4 +10,34 @@ export class ThemeGroupService {
         private configTemplateService: ConfigTemplateService,
         private userv2Service: Userv2Service
     ) { }
+
+    /**
+     * create a theme group
+     * @param props {name : string}
+     * @returns 
+     */
+    create = async (props : {name : string}) => {
+        let data = await this.prisma.themeGroup.create({
+            data : {
+                name : props.name
+            }
+        });
+        return data;
+    }
+
+    /**
+     * get all with join of themePalette and themePaletteElem
+     */
+    getAll = async () => {
+        let data = await this.prisma.themeGroup.findMany({
+            include : {
+                themePalettes : {
+                    include : {
+                        themePaletteElems : true
+                    }
+                }   
+            }
+        })
+        return data;
+    }
 }
