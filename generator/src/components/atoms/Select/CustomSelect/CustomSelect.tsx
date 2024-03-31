@@ -20,7 +20,7 @@ interface ICustomSelect {
 }
 
 const CustomSelect = (props: ICustomSelect) => {
-    return <Select defaultValue={props.value} onValueChange={props.onChange}>
+    return <Select defaultValue={props.value} value={props.value} onValueChange={props.onChange}>
         <SelectTrigger>
             <SelectValue placeholder="select a size" />
         </SelectTrigger>
