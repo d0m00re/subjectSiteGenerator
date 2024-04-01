@@ -66,6 +66,8 @@ model WebsiteSection {
   images           TemplateElemImage[]
   configTemplateId Int // foreign key
   configTemplate   TemplateVariant          @relation(fields: [configTemplateId], references: [id])
+
+  themePaletteOrder Int
 }
 
 model WebsiteSectionOrder {

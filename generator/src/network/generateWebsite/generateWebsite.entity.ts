@@ -31,6 +31,8 @@ export interface A_I_WebsiteSection_E extends ISectionLayout {
     typographies : I_TemplateElemTypography[];
     images : I_TemplateElemImage[];
 
+    themePaletteOrder : number;
+
     configTemplateId : number;
 
     themePaletteId : number;
