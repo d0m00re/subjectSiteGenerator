@@ -45,6 +45,9 @@ model Website {
   user                User                  @relation(fields: [userId], references: [id])
   websiteSection      WebsiteSection[]
   websiteSectionOrder WebsiteSectionOrder[]
+
+  themePalette   ThemePalette @relation(fields: [themePaletteId], references: [id])
+  themePaletteId Int
 }
 
 model WebsiteSection {
@@ -137,10 +140,6 @@ model TemplateElemImage {
   websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
 }
 
-model WebsiteTheme {
-  id Int @id @default(autoincrement())
-}
-
 //-------------------------------------------
 //------------- THEME PALETTE ---------------
 model ThemeGroup {
@@ -159,8 +158,9 @@ model ThemePalette {
 
   themePaletteElems ThemePaletteElem[]
 
-  User   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  User    User?     @relation(fields: [userId], references: [id])
+  userId  Int?
+  Website Website[]
 }
 
 model ThemePaletteElem {
