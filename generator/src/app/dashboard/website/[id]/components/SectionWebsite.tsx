@@ -10,10 +10,12 @@ import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import ModalCreateSection from './modal/ModalCreateSection';
 import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
 import ModalEditContentAndStyle from '@/components/WebsiteSection/ModalEditContentAndStyle/ModalEditContentAndStyle';
+import { IThemePalette } from '@/network/templettePalette/templatePalette.entity';
 
 type ISectionWebsite = {
   section: I_WebsiteSection;
   index: number;
+  themePalette : IThemePalette;
 }
 
 interface IButtonAddSection {
@@ -120,9 +122,7 @@ function SectionWebsite(props: ISectionWebsite) {
         console.log(err);
       })
   }
-
-  console.log("section palette : ");
-  console.log(props.section.themePaletteOrder)
+  let currentPaletteElem = props.themePalette.themePaletteElems[props.section.themePaletteOrder];
 
   return (
       <>
@@ -134,8 +134,9 @@ function SectionWebsite(props: ISectionWebsite) {
         <section
           onPointerEnter={handleHover}
           onPointerLeave={handleHover}
-          className={`w-full flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer ${props.section.backgroundColor}`}>
- 
+          className={`w-full flex flex-col hover:border-2 p-4 hover:border-indigo-600 gap-2 hover:cursor-pointer`}
+          style={{backgroundColor : currentPaletteElem.bgColor}}
+          >
           <ContainerSectionActionBar
             onOpenEdit={() => { setModalEdit(true) }}
             onOpenDelete={onDeleteSection}
@@ -146,6 +147,7 @@ function SectionWebsite(props: ISectionWebsite) {
 
           <RenderSectionWtConfig
             section={props.section}
+            themePalette={currentPaletteElem}
           />
 
           {modalEdit ?

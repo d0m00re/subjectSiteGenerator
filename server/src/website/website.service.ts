@@ -20,7 +20,7 @@ export class WebsiteService {
                 userId: props.userId,
                 title: props.title,
                 subject: props.subject,
-                themePaletteId : 3 // todo rework that 
+                themePaletteId: 3 // todo rework that 
             }
         })
 
@@ -31,7 +31,11 @@ export class WebsiteService {
         let website = await this.prisma.website.findUnique({
             where: { id: props.websiteId },
             include: {
-                themePalette : true,
+                themePalette: {
+                    include: {
+                        themePaletteElems: true
+                    }
+                },
                 websiteSection: {
                     include: {
                         websiteSectionOrder: true,
@@ -40,7 +44,8 @@ export class WebsiteService {
                         images: true,
                         //  configTemplate : true
                     }
-                }
+                },
+
             }
         });
 
@@ -80,7 +85,7 @@ export class WebsiteService {
                     path: currentElem.path,
                     animation: currentElem.animation,
                     decorator: currentElem.decorator
-                })              
+                })
             } else if (currentElem.kind === "button" && templateElem.kind === "button" && currentElem.order === templateElem.order) {
                 button.push({
                     order: templateElem.order ?? -1,
@@ -95,10 +100,10 @@ export class WebsiteService {
             } else if (currentElem.kind === "img" && templateElem.kind === "img" && currentElem.order === templateElem.order) {
                 img.push({
                     order: templateElem.order ?? -1,
-                    url : currentElem.url,
-                    filter : currentElem.filter,
-                    radius : currentElem.radius,
-                    animation : currentElem.animation
+                    url: currentElem.url,
+                    filter: currentElem.filter,
+                    radius: currentElem.radius,
+                    animation: currentElem.animation
                 })
             }
         }
@@ -125,7 +130,7 @@ export class WebsiteService {
                 backgroundImage: "unimplemented",
                 backgroundColor: "unimplemented",
                 configTemplateId: props.templateId,
-                themePaletteOrder : 0,
+                themePaletteOrder: 0,
                 websiteSectionOrder: {
                     create: {
                         websiteId: props.websiteId,
@@ -159,8 +164,8 @@ export class WebsiteService {
             include: {
                 typographies: true,
                 buttons: true,
-                images : true
-            }
+                images: true
+            },
         });
 
         if (!section)
@@ -195,15 +200,15 @@ export class WebsiteService {
 
         let dataUpdate = await this.prisma.websiteSection.update({
             where: { id: props.sectionId },
-            include : {
-                buttons : true,
-                typographies : true,
-                images : true,
-                websiteSectionOrder : true
+            include: {
+                buttons: true,
+                typographies: true,
+                images: true,
+                websiteSectionOrder: true
             },
             data: {
-                backgroundColor : props.layout.backgroundColor ?? "",
-                backgroundImage : props.layout.backgroundImage ?? "",
+                backgroundColor: props.layout.backgroundColor ?? "",
+                backgroundImage: props.layout.backgroundImage ?? "",
                 buttons: {
                     updateMany: [
                         ...buttons.map(b => ({
@@ -228,17 +233,17 @@ export class WebsiteService {
                         }))
                     ]
                 },
-                images : {
-                    updateMany : [
-                    ...img.map(i => ({
-                        where : {order : i.order},
-                        data : {
-                            url : i.url,
-                            filter : i.filter,
-                            radius : i.radius,
-                            animation : i.animation
-                        }
-                    }))
+                images: {
+                    updateMany: [
+                        ...img.map(i => ({
+                            where: { order: i.order },
+                            data: {
+                                url: i.url,
+                                filter: i.filter,
+                                radius: i.radius,
+                                animation: i.animation
+                            }
+                        }))
                     ]
                 }
             },
@@ -262,21 +267,25 @@ export class WebsiteService {
     }
 }
 */
-    updateThemeV1 = async (props : IUpdateThemeV1)  => {
+    updateThemeV1 = async (props: IUpdateThemeV1) => {
         // let s go
 
         // check theme is valid
 
         // save new theme
         let ret = await this.prisma.website.update({
-            where : {
-                id : props.websiteId,
+            where: {
+                id: props.websiteId,
             },
-            data : {
-                themePaletteId : props.themePaletteId
+            data: {
+                themePaletteId: props.themePaletteId
             },
-            include : {
-                themePalette : true
+            include: {
+                themePalette: {
+                    include: {
+                        themePaletteElems: true
+                    }
+                }
             }
         });
 
