@@ -8,6 +8,12 @@ export interface ICreateNewSectionV3 {
     templateId: number;
 }
 
+export interface IUpdateThemeV1 {
+    websiteId : number;
+    themePaletteId : number;
+    userId : number;
+}
+
 /**
  * prepare v3 update / create
  */

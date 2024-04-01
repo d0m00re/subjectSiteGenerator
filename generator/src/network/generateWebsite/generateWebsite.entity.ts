@@ -5,6 +5,7 @@
  * E -> ENTITY
  */
 
+import { IThemePalette } from "../templettePalette/templatePalette.entity";
 import { I_TemplateElemButton } from "../website/websiteSection/templateElemButton/templateElemButton.entity";
 import { I_TemplateElemImage } from "../website/websiteSection/templateElemImage/templateElemImage.entity";
 import { I_TemplateElemTypography } from "../website/websiteSection/templateElemTypography/templateElemTypography.entity";
@@ -31,6 +32,9 @@ export interface A_I_WebsiteSection_E extends ISectionLayout {
     images : I_TemplateElemImage[];
 
     configTemplateId : number;
+
+    themePaletteId : number;
+    themePalette : IThemePalette;
 }
 
 export interface A_I_WebsiteSection extends A_I_WebsiteSection_E {
@@ -51,7 +55,20 @@ export interface I_WebsiteSection extends A_I_WebsiteSection {
 export interface A_I_Website_E {
     title: string;
     subject: string;
+    themePaletteId : number;
+    themePalette : IThemePalette;
 }
+
+// again another one you need to rework this s******
+export interface A_I_Website_E_2_Header {
+    id : number;
+    title: string;
+    subject: string;
+    userId : number;
+    themePaletteId : number;
+    themePalette : IThemePalette;
+}
+
 
 export interface A_I_Website extends A_I_Website_E {
     id: number,

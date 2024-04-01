@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import ChangeBackground from '@/components/WebsiteSection/Render/Layout/ChangeBackground/ChangeBackground';
+
 import { ISectionLayout } from '@/network/generateWebsite/generateWebsite.entity';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
 
@@ -7,8 +8,8 @@ type Props = {
     sectionId: number;
     onClose: () => void;
 
-    layout : ISectionLayout;
-    setLayout : React.Dispatch<React.SetStateAction<ISectionLayout>>;
+    layout: ISectionLayout;
+    setLayout: React.Dispatch<React.SetStateAction<ISectionLayout>>;
 }
 
 function GlobalSectionStyle(props: Props) {
@@ -16,7 +17,7 @@ function GlobalSectionStyle(props: Props) {
     const currentSection = storeWebsite.website?.websiteSection.find(e => e.id === props.sectionId) //[props.sectionIndex];
 
     if (!currentSection)
-    return <></>
+        return <></>;
 
     useEffect(() => {
         props.setLayout({
@@ -38,5 +39,7 @@ function GlobalSectionStyle(props: Props) {
         </section>
     )
 }
+
+//
 
 export default GlobalSectionStyle

@@ -1,50 +1,16 @@
 import CustomSelect from '@/components/atoms/Select/CustomSelect';
 import { ISelectSizeElem } from '@/components/atoms/Select/CustomSelect/CustomSelect.d';
-import { IThemePalette } from '@/network/templettePalette/templatePalette.entity';
 import useTemplatePalette from '@/store/templatePalette.zustand.store';
 import React, { useState, useEffect } from 'react'
+import { ITmpTheme } from '../SheetTheme.entity';
+import CardConfigPalette from '@/components/Card/CardConfigPalette';
 
-type TCardConfigPalette = {
-    themePalette: IThemePalette
+interface IConfigPalette {
+    theme : ITmpTheme;
+    setTheme :  React.Dispatch<React.SetStateAction<ITmpTheme>>;
 }
 
-const orderKey = [
-    "aa",
-    "bb",
-    "cc",
-    "dd"
-]
-
-function CardConfigPalette(props: TCardConfigPalette) {
-    return <section className='flex flex-row rounded-2xl h-24 border-cyan-100 border overflow-hidden'>
-        {
-            props.themePalette.themePaletteElems.map(color => {
-                return <div
-                    key={`CardConfigPalette-${color.id}`}
-                    className='flex flex-grow align-bottom p-4 cursor-pointer'
-                    style={{
-                        backgroundColor: color.bgColor,
-                        color: color.textColor
-                    }}>
-                    <div className='flex items-end'>
-                        <div className='flex flex-row items-baseline gap-1'>
-                            <div style={{ backgroundColor: color.textColor }} className={` h-2 w-2 rounded`}></div>
-                            <span
-                                style={{
-                                    backgroundColor: color.bgColor,
-                                    color: color.textColor
-                                }}>
-                                {orderKey[color.order]}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            })
-        }
-    </section>
-}
-
-function ConfigPalette() {
+function ConfigPalette(props : IConfigPalette) {
     const storeTemplatePalette = useTemplatePalette();
     const [currentKey, setCurrentKey] = useState<string>("");
 
@@ -80,7 +46,12 @@ function ConfigPalette() {
             />
             {
                 currentTheme ? currentTheme.themePalettes.map(palette => {
-                    return <CardConfigPalette key={`config-palette-${palette.id}`} themePalette={palette} />
+                    return <CardConfigPalette
+                        key={`config-palette-${palette.id}`}
+                        themePalette={palette}
+                        themeSelectId={props.theme.themeId}
+                        onClick={(i : number) => {props.setTheme(old => ({...old, themeId : i}))}}
+                    />
                 }) : <></>
             }
         </section>

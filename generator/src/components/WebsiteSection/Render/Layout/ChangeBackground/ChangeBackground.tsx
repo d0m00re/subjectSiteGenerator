@@ -12,8 +12,7 @@ const stylesChangeBackgroundElem: IStyleChangeBackgroundElem[] = [
     {
         name: "white",
         bgColor: "bg-white"
-    },
-    {
+    }, {
         name: "basic",
         bgColor: "bg-orange-100"
     }, {
@@ -46,7 +45,7 @@ function CardBackgroundColor(props: ICardBackgroundColor) {
         </section>
     )
 }
-
+    
 function ChangeBackground(props: IChangeBackground) {
     const [open, setOpen] = useState(false);
 
