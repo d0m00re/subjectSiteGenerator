@@ -125,6 +125,7 @@ export class WebsiteService {
                 backgroundImage: "unimplemented",
                 backgroundColor: "unimplemented",
                 configTemplateId: props.templateId,
+                themePaletteOrder : 0,
                 websiteSectionOrder: {
                     create: {
                         websiteId: props.websiteId,

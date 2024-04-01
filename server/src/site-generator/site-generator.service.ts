@@ -217,6 +217,7 @@ export class SiteGeneratorService {
                 backgroundImage: "unimplemented",
                 backgroundColor : "unimplemented",
                 configTemplateId: 1,
+                themePaletteOrder : 0,
                 websiteSectionOrder: {
                     create: {
                         websiteId: websiteSection.websiteId,
