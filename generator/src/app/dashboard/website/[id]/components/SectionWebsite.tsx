@@ -11,7 +11,7 @@ import ModalCreateSection from './modal/ModalCreateSection';
 import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
 import ModalEditContentAndStyle from '@/components/WebsiteSection/ModalEditContentAndStyle/ModalEditContentAndStyle';
 
-type Props = {
+type ISectionWebsite = {
   section: I_WebsiteSection;
   index: number;
 }
@@ -53,7 +53,7 @@ const ButtonAddSection = (props: IButtonAddSection) => {
   )
 }
 
-function SectionWebsite(props: Props) {
+function SectionWebsite(props: ISectionWebsite) {
   const [modalEdit, setModalEdit] = useState(false);
   const [modalEditSectionStyle, setModalEditSectionStyle] = useState<IModalEditSectionStyle>(resetModalSectionEditStyle());
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
@@ -120,6 +120,9 @@ function SectionWebsite(props: Props) {
         console.log(err);
       })
   }
+
+  console.log("section palette : ");
+  console.log(props.section.themePaletteOrder)
 
   return (
       <>

@@ -58,7 +58,7 @@ function page() {
             {(dataIsLoad) ?
               storeWebsite?.website?.websiteSection?.map((section, index) => <SectionWebsite
                 key={`section-website-${section.id}`}
-                section={section}
+                section={section} 
                 index={index}
               />) : <TemplateSkeleton />
             }
