@@ -59,4 +59,21 @@ export class WebsiteController {
 
     return data;
   }
+
+  @UseGuards(JwtCookieParserGuard)
+  @Patch("theme")
+  async updateThemeV1(@Req() req : Request, @Body() dto : dto.UpdateTheme) {
+    let userId = req.user.id;
+
+    let data = await this.websiteService.updateThemeV1({
+      userId : userId,
+      themePaletteId : dto.themePaletteId,
+      websiteId : dto.websiteId
+    });
+
+    console.log("returnded data")
+    console.log(data)
+
+    return data;
+  }
 }

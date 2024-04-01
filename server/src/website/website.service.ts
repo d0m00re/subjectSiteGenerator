@@ -1,9 +1,10 @@
-import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+// todo : rework
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { IButtonRow, IDataUpdateElem, IImageRow, ITypographyRow, IUpdateButton, IUpdateImg, IUpdateTypography, parseTemplateConfigStringToJSON } from './utils/parserConfig';
+import { IButtonRow, IImageRow, ITypographyRow, IUpdateButton, IUpdateImg, IUpdateTypography, parseTemplateConfigStringToJSON } from './utils/parserConfig';
 import { ConfigTemplateService } from 'src/config-template/config-template.service';
 import { Userv2Service } from 'src/userv2/userv2.service';
-import { ICreateNewSectionV3, IUpdateV4 } from './website.entity';
+import { ICreateNewSectionV3, IUpdateThemeV1, IUpdateV4 } from './website.entity';
 
 @Injectable()
 export class WebsiteService {
@@ -18,7 +19,8 @@ export class WebsiteService {
             data: {
                 userId: props.userId,
                 title: props.title,
-                subject: props.subject
+                subject: props.subject,
+                themePaletteId : 3 // todo rework that 
             }
         })
 
@@ -29,17 +31,19 @@ export class WebsiteService {
         let website = await this.prisma.website.findUnique({
             where: { id: props.websiteId },
             include: {
+                themePalette : true,
                 websiteSection: {
                     include: {
                         websiteSectionOrder: true,
                         buttons: true,
                         typographies: true,
-                        images: true
+                        images: true,
                         //  configTemplate : true
                     }
                 }
             }
         });
+
         if (!website) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
         return website;
     }
@@ -241,5 +245,59 @@ export class WebsiteService {
 
         return dataUpdate;
     }
+
+    /*
+{
+    "id": 59,
+    "title": "test",
+    "subject": "testouille",
+    "userId": 18,
+    "themePaletteId": 3,
+    "themePalette": {
+        "id": 3,
+        "themeGroupId": 1,
+        "name": "ananas",
+        "userId": null
+    }
 }
+*/
+    updateThemeV1 = async (props : IUpdateThemeV1)  => {
+        // let s go
+
+        // check theme is valid
+
+        // save new theme
+        let ret = await this.prisma.website.update({
+            where : {
+                id : props.websiteId,
+            },
+            data : {
+                themePaletteId : props.themePaletteId
+            },
+            include : {
+                themePalette : true
+            }
+        });
+
+        return ret;
+    }
+}
+
+/**
+ * themeGroupId
+ * {
+    "id": 59,
+    "title": "test",
+    "subject": "testouille",
+    "userId": 18,
+    "themePaletteId": 3,
+    "themePalette": {
+        "id": 3,
+        "themeGroupId": 1,
+        "name": "ananas",
+        "userId": null
+    }
+}
+ */
+
 

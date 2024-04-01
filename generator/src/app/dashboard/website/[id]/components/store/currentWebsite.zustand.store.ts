@@ -15,6 +15,8 @@ interface WebsiteZustand {
     deleteWebsiteSection: (sectionId: number) => Promise<void>;
     sectionOrderSwitch: (data : A_I_WebsiteSectionOrder[]) => void;
     sectionDuplicate: (sectionid : I_WebsiteSection) => void;
+
+    partialUpdate: (data : Partial<I_Website>) => void;
 }
 
 const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
@@ -58,6 +60,21 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
             website : data,
             websiteisLoading: "done",
         }))
+    },
+
+    partialUpdate: (data) => {
+        set((state) => {
+            // secu
+            if (!state.website)
+                return state;
+            return {
+                ...state,
+                website : {
+                    ...state.website,
+                    ...data
+                }
+            }
+        })
     },
 
     sectionOrderSwitch: (data) => {
