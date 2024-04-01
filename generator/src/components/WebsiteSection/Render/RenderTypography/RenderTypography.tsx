@@ -3,6 +3,7 @@ import { TSizeTypography } from "@/network/website/websiteSection/templateElemTy
 interface IRenderTypography {
     text : string;
     size : TSizeTypography;
+    color : string;
   }
   
   const renderTypographyStyle = {
@@ -14,7 +15,10 @@ interface IRenderTypography {
   }
   
   function RenderTypography(props : IRenderTypography) {
-    return <p className={`${renderTypographyStyle.size[props.size]}`}>{props.text}</p>
+    return <p
+      className={`${renderTypographyStyle.size[props.size]}`}
+      style={{color : props.color}}  
+    >{props.text}</p>
   }
 
   export default RenderTypography;

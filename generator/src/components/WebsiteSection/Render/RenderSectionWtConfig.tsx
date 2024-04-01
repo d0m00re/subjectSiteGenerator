@@ -4,8 +4,14 @@ import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.enti
 import RenderTypography from '@/components/WebsiteSection/Render/RenderTypography/RenderTypography';
 import RenderButton from '@/components/WebsiteSection/Render/RenderButton/RenderButton';
 import RenderImg from './RenderImg/RenderImg';
+import { IThemePaletteElem } from '@/network/templettePalette/templatePalette.entity';
 
-function RenderSectionWtConfig(props: { section: I_WebsiteSection }) {
+interface IRenderSectionWtConfig {
+  section : I_WebsiteSection;
+  themePalette : IThemePaletteElem;
+}
+ 
+function RenderSectionWtConfig(props: IRenderSectionWtConfig) {
   // get back config
   const templateGroupStore = useTemplateGroup();
 
@@ -16,7 +22,9 @@ function RenderSectionWtConfig(props: { section: I_WebsiteSection }) {
 
   let config = templateV.config;
 
-  return (<section className='flex flex-col gap-2'>
+  return (<section
+      style={{backgroundColor : props.themePalette.bgColor}}
+      className={`flex flex-col gap-2`}>
     {
       config?.map(e => {
         if (e.kind === "text") {
@@ -24,7 +32,9 @@ function RenderSectionWtConfig(props: { section: I_WebsiteSection }) {
           let elemTypo = props.section.typographies.find(typo => typo.order === e.order);
           return <RenderTypography
             key={`renderTypo-${props.section.id}-${elemTypo?.id}`}
+            color={props.themePalette.textColor}
             text={elemTypo?.text ?? ""}
+            
             size={elemTypo?.size ?? "medium"} />
         } else if (e.kind === "button") {
           let elemButton = props.section.buttons.find(but => but.order === e.order)

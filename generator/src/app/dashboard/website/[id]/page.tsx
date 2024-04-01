@@ -15,6 +15,8 @@ import MainLayout from '@/components/WebsiteSection/Render/MainLayout/MainLayout
 import useTemplatePalette from '@/store/templatePalette.zustand.store';
 import { Button } from '@/components/Button';
 import SheetTheme from '@/components/Theme/SheetTheme/SheetTheme';
+import { map } from 'lodash';
+import { ITemplateGroup, IThemePalette } from '@/network/templettePalette/templatePalette.entity';
 
 interface IModalCreateSection {
   index: number;
@@ -47,6 +49,16 @@ function page() {
     setDataIsLoad(true);
   }, []);
 
+  /*
+  let currentTheme : IThemePalette | undefined = undefined;  
+  for (let i = 0; !currentTheme && i < storeTemplatePalette.templateGroups.length; i++) {
+    currentTheme = storeTemplatePalette.templateGroups[i].themePalettes.find(e => e.id === storeWebsite.website?.themePaletteId); 
+  }
+  */
+ let currentTheme = storeWebsite.website?.themePalette;
+  
+  if (!currentTheme) return <></>
+  let realCurrentTheme = currentTheme;
   return (
     <>
       <SheetTheme />
@@ -60,6 +72,7 @@ function page() {
                 key={`section-website-${section.id}`}
                 section={section} 
                 index={index}
+                themePalette={realCurrentTheme}
               />) : <TemplateSkeleton />
             }
             {/* cas with no section */}
