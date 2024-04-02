@@ -48,6 +48,9 @@ model Website {
 
   themePalette   ThemePalette @relation(fields: [themePaletteId], references: [id])
   themePaletteId Int
+
+  //themeFont   ThemeFont @relation(fields: [themeFontId], references: [id])
+  //themeFontId Int  
 }
 
 model WebsiteSection {
@@ -177,3 +180,9 @@ model ThemePaletteElem {
 }
 
 //----------------------------------------
+//------------------ theme font ----------
+model ThemeFont {
+  id          Int       @id @default(autoincrement())
+  fontName    String
+  placeholder String
+}
