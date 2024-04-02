@@ -12,6 +12,7 @@ import { LibraryModule } from './library/library.module';
 import { ThemeGroupModule } from './theme/theme-group/theme-group.module';
 import { ThemePaletteModule } from './theme/theme-palette/theme-palette.module';
 import { ThemePaletteElemModule } from './theme/theme-palette-elem/theme-palette-elem.module';
+import { ThemeFontModule } from './theme/theme-font/theme-font.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ThemePaletteElemModule } from './theme/theme-palette-elem/theme-palette
     ThemeGroupModule,
     ThemePaletteModule,
     ThemePaletteElemModule,
+    ThemeFontModule,
   ],
   controllers: [],
   providers: [PrismaService, JwtService, OpenaiModule],
