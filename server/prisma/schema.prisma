@@ -113,7 +113,7 @@ model TemplateElemTypography {
   decorator String // decorator applied on typography
 
   websiteSectionId Int
-  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id], onDelete: Cascade)
 }
 
 model TemplateElemButton {
@@ -128,7 +128,7 @@ model TemplateElemButton {
   animation  String // animation applied on the button
 
   websiteSectionId Int
-  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id], onDelete: Cascade)
 }
 
 // not use for the moment
@@ -142,7 +142,7 @@ model TemplateElemImage {
   animation String // animation applied on image
 
   websiteSectionId Int
-  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id], onDelete: Cascade)
 }
 
 //-------------------------------------------
@@ -156,7 +156,7 @@ model ThemeGroup {
 model ThemePalette {
   id Int @id @default(autoincrement())
 
-  ThemeGroup   ThemeGroup? @relation(fields: [themeGroupId], references: [id])
+  ThemeGroup   ThemeGroup? @relation(fields: [themeGroupId], references: [id], onDelete: Cascade)
   themeGroupId Int?
 
   name String
@@ -175,7 +175,7 @@ model ThemePaletteElem {
   textColor String
   public    Boolean
 
-  ThemePalette   ThemePalette? @relation(fields: [themePaletteId], references: [id])
+  ThemePalette   ThemePalette? @relation(fields: [themePaletteId], references: [id],  onDelete: Cascade)
   themePaletteId Int?
 }
 
