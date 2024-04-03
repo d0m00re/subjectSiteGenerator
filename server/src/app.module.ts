@@ -13,6 +13,7 @@ import { ThemeGroupModule } from './theme/theme-group/theme-group.module';
 import { ThemePaletteModule } from './theme/theme-palette/theme-palette.module';
 import { ThemePaletteElemModule } from './theme/theme-palette-elem/theme-palette-elem.module';
 import { ThemeFontModule } from './theme/theme-font/theme-font.module';
+import { ThemeButtonModule } from './theme/theme-button/theme-button.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ThemeFontModule } from './theme/theme-font/theme-font.module';
     ThemePaletteModule,
     ThemePaletteElemModule,
     ThemeFontModule,
+    ThemeButtonModule,
   ],
   controllers: [],
   providers: [PrismaService, JwtService, OpenaiModule],

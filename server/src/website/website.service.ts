@@ -15,13 +15,39 @@ export class WebsiteService {
     ) { }
 
     create = async (props: { userId: number, title: string; subject: string }) => {
+        // default button
+        // default button
+        const b1 = {
+            variant: "solid",
+            shape: "rounded"
+        };
+        const b2 = {
+            variant: "outlined",
+            shape: "rounded"
+        };
+        //
         let newWebsite = await this.prisma.website.create({
             data: {
                 userId: props.userId,
                 title: props.title,
                 subject: props.subject,
                 themePaletteId: 3, // todo rework that 
-                themeFontId : 1
+                themeFontId: 1,// same
+                ThemeButton : {
+                    create : {
+                        themeButtonArr : {
+                            create : [{
+                                name : "primary",
+                                variant: "solid",
+                                shape: "rounded"
+                            }, {
+                                name : "secondary",
+                                variant: "solid",
+                                shape: "rounded"
+                            }]
+                        }
+                    }
+                }
             }
         })
 
@@ -37,7 +63,12 @@ export class WebsiteService {
                         themePaletteElems: true
                     }
                 },
-                themeFont : true,
+                themeFont: true,
+                ThemeButton: {
+                    include : {
+                        themeButtonArr : true
+                    }
+                },
                 websiteSection: {
                     include: {
                         websiteSectionOrder: true,
@@ -262,7 +293,7 @@ export class WebsiteService {
             },
             data: {
                 themePaletteId: props.themePaletteId,
-                themeFontId : props.themeFontId
+                themeFontId: props.themeFontId
             },
             include: {
                 themePalette: {
@@ -270,8 +301,12 @@ export class WebsiteService {
                         themePaletteElems: true,
                     }
                 },
-                themeFont : true,
-
+                themeFont: true,
+                ThemeButton: {
+                    include : {
+                        themeButtonArr : true
+                    }
+                }
             }
         });
 
