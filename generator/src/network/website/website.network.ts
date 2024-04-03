@@ -1,7 +1,7 @@
 import { BACKEND_URL } from "@/lib/constants";
 import { BASE_HEADER, generateBearerToken } from "./../contants.network";
 import { A_I_Website_E_2_Header, ISectionLayout, I_Website } from "../generateWebsite/generateWebsite.entity";
-import { ICreateWebsiteInput, TUpdateDataV4 } from "./website.entity";
+import { ICreateWebsiteInput, IThemeButton, TUpdateDataV4 } from "./website.entity";
 
 const API_WEBSITE_URL = `${BACKEND_URL}/website`;
 
@@ -75,14 +75,15 @@ export const updateSectionV4 = (props : IUpdateSessionV4) : Promise<any> => {
 }
 
 // update theme
-export const updateTheme = (props : {themePaletteId : number, websiteId : number, themeFontId : number}) : Promise<A_I_Website_E_2_Header> => {
+export const updateTheme = (props : {themePaletteId : number, websiteId : number, themeFontId : number, themeButton : IThemeButton | undefined}) : Promise<A_I_Website_E_2_Header> => {
     return fetch(`${API_WEBSITE_URL}/theme`, {
         method : "PATCH",
         headers : BASE_HEADER,
         body : JSON.stringify({
             themePaletteId : props.themePaletteId,
             websiteId : props.websiteId,
-            themeFontId : props.themeFontId
+            themeFontId : props.themeFontId,
+            themeButton : props.themeButton
         }),
         credentials : "include"
     })

@@ -293,7 +293,7 @@ export class WebsiteService {
             },
             data: {
                 themePaletteId: props.themePaletteId,
-                themeFontId: props.themeFontId
+                themeFontId: props.themeFontId,
             },
             include: {
                 themePalette: {
@@ -310,6 +310,42 @@ export class WebsiteService {
             }
         });
 
-        return ret;
+        // update theme button
+        let themeButton = props.themeButton;
+        let arrProm : Promise<any>[] = [];
+        for (let i = 0; i < props.themeButton.themeButtonArr.length; i++) {
+            let currElem = props.themeButton.themeButtonArr[i];
+            arrProm.push(this.prisma.themeButtonElem.update({
+                where : {id : currElem.id},
+                data : {
+                    name : currElem.name,
+                    shape : currElem.shape,
+                    variant : currElem.variant
+                }
+            }))
+        }
+        let consumeAll = await Promise.allSettled(arrProm);
+
+        // get back data
+        let newData = await this.prisma.website.findUnique({
+            where: {
+                id: props.websiteId,
+            },
+            include: {
+                themePalette: {
+                    include: {
+                        themePaletteElems: true,
+                    }
+                },
+                themeFont: true,
+                ThemeButton: {
+                    include : {
+                        themeButtonArr : true
+                    }
+                }
+            }
+        });
+
+        return newData;
     }
 }

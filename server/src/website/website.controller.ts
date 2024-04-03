@@ -69,7 +69,8 @@ export class WebsiteController {
       userId : userId,
       themePaletteId : dto.themePaletteId,
       themeFontId : dto.themeFontId,
-      websiteId : dto.websiteId
+      websiteId : dto.websiteId,
+      themeButton : dto.themeButton
     });
 
     console.log("returnded data")

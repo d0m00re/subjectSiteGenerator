@@ -1,6 +1,7 @@
 import { IsArray, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 import { IDataUpdateElem } from "../utils/parserConfig";
 import { ISectionLayout } from "../website.entity";
+import { ThemeButton } from "@prisma/client";
 
 export class CreateWebsiteDto {
     @IsString()
@@ -97,4 +98,6 @@ export class UpdateThemeDto {
     themePaletteId : number;
     @IsNumber()
     themeFontId : number;
+    @IsObject()
+    themeButton : any;//ThemeButton;
 }
