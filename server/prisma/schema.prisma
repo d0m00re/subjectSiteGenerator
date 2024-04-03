@@ -49,7 +49,7 @@ model Website {
   themePalette   ThemePalette @relation(fields: [themePaletteId], references: [id])
   themePaletteId Int
 
-  themeFont ThemeFont @relation(fields: [themeFontId], references: [id])
+  themeFont   ThemeFont @relation(fields: [themeFontId], references: [id])
   themeFontId Int
 }
 
@@ -186,4 +186,20 @@ model ThemeFont {
   fontName    String
   placeholder String
   Website     Website[]
+}
+
+//--------------------------------------
+//------------------ button theme
+model ThemeButton {
+  id             Int               @id @default(autoincrement())
+  themeButtonArr ThemeButtonElem[]
+}
+
+model ThemeButtonElem {
+  id            Int          @id @default(autoincrement())
+  name          String // primary or secondary could add morre later
+  variant       String // solid or outlined
+  shape         String // square or rounded
+  ThemeButton   ThemeButton? @relation(fields: [themeButtonId], references: [id])
+  themeButtonId Int?
 }
