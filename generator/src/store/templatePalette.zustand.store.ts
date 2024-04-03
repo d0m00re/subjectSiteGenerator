@@ -3,9 +3,8 @@
 // todo : fix type problem
 import { create } from 'zustand'
 
-import { ITemplateGroup } from '@/network/templettePalette/templatePalette.entity';
-import { getAllThemeGroup } from '@/network/templettePalette/templatePalette.network';
-
+import { ITemplateGroup } from '@/network/theme/themePalette/templatePalette.entity';
+import { getAllThemeGroup } from '@/network/theme/themePalette/templatePalette.network';
 
 /**
  * templateVariant : array of parsed config templateGroup sub elem

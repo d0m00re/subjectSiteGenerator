@@ -3,8 +3,8 @@ import useTemplateGroup from '@/store/templateGroup.zustand.store';
 import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
 import RenderTypography from '@/components/WebsiteSection/Render/RenderTypography/RenderTypography';
 import RenderButton from '@/components/WebsiteSection/Render/RenderButton/RenderButton';
+import { IThemePaletteElem } from '@/network/theme/themePalette/templatePalette.entity';
 import RenderImg from './RenderImg/RenderImg';
-import { IThemePaletteElem } from '@/network/templettePalette/templatePalette.entity';
 
 interface IRenderSectionWtConfig {
   section : I_WebsiteSection;
