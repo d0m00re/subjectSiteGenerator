@@ -20,7 +20,8 @@ export class WebsiteService {
                 userId: props.userId,
                 title: props.title,
                 subject: props.subject,
-                themePaletteId: 3 // todo rework that 
+                themePaletteId: 3, // todo rework that 
+                themeFontId : 1
             }
         })
 
@@ -36,6 +37,7 @@ export class WebsiteService {
                         themePaletteElems: true
                     }
                 },
+                themeFont : true,
                 websiteSection: {
                     include: {
                         websiteSectionOrder: true,
@@ -252,62 +254,27 @@ export class WebsiteService {
         return dataUpdate;
     }
 
-    /*
-{
-    "id": 59,
-    "title": "test",
-    "subject": "testouille",
-    "userId": 18,
-    "themePaletteId": 3,
-    "themePalette": {
-        "id": 3,
-        "themeGroupId": 1,
-        "name": "ananas",
-        "userId": null
-    }
-}
-*/
     updateThemeV1 = async (props: IUpdateThemeV1) => {
-        // let s go
-
-        // check theme is valid
-
         // save new theme
         let ret = await this.prisma.website.update({
             where: {
                 id: props.websiteId,
             },
             data: {
-                themePaletteId: props.themePaletteId
+                themePaletteId: props.themePaletteId,
+                themeFontId : props.themeFontId
             },
             include: {
                 themePalette: {
                     include: {
-                        themePaletteElems: true
+                        themePaletteElems: true,
                     }
-                }
+                },
+                themeFont : true,
+
             }
         });
 
         return ret;
     }
 }
-
-/**
- * themeGroupId
- * {
-    "id": 59,
-    "title": "test",
-    "subject": "testouille",
-    "userId": 18,
-    "themePaletteId": 3,
-    "themePalette": {
-        "id": 3,
-        "themeGroupId": 1,
-        "name": "ananas",
-        "userId": null
-    }
-}
- */
-
-

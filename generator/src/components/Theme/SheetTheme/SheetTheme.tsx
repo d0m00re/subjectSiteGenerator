@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ConfigButton from './ConfigButton/ConfigButton';
 import ConfigPalette from './ConfigPalette/ConfigPalette';
-import ConfigPolicies from './ConfigPolicies/ConfigPolicies';
+import ConfigFont from './ConfigFont/ConfigFont';
 
 import {
     Sheet,
@@ -20,19 +20,23 @@ import {
 } from "@/components/ui/tabs";
 import { Button } from '@/components/Button';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
-import { ITmpTheme } from './SheetTheme.entity';
+import { ITmpTheme, makeEmptyTmpTheme } from './SheetTheme.entity';
 import { updateTheme } from '@/network/website/website.network';
 import ButtonLoader from '@/components/atoms/ButtonLoader';
 
 function SheetTheme() {
     const [open, setOpen] = useState(false)
     const storeWebsite = useCurrentWebsiteStore();
-    const [theme, setTheme] = useState<ITmpTheme>({themeId : -1});
+    const [theme, setTheme] = useState<ITmpTheme>(makeEmptyTmpTheme());
     const [onLoad, setOnload] = useState<boolean>(false);
+
+    const setThemePaletteId = (id : number) => setTheme(old => ({...old, themePaletteId : id}));
+    const setThemeFontId = (id : number) => setTheme(old => ({...old, themeFontId : id}));
 
     useEffect(() => {
         setTheme({
-            themeId : storeWebsite.website?.themePaletteId ?? -1
+            themePaletteId : storeWebsite.website?.themePaletteId ?? -1,
+            themeFontId : storeWebsite.website?.themeFontId ?? -1
         })
     }, [storeWebsite])
 
@@ -46,7 +50,8 @@ function SheetTheme() {
         setOnload(true);
         let data = await updateTheme({
             websiteId : storeWebsite.website.id,
-            themePaletteId : theme.themeId
+            themePaletteId : theme.themePaletteId,
+            themeFontId : theme.themeFontId
         });
 
         // update store
@@ -72,12 +77,16 @@ function SheetTheme() {
                     </TabsContent>
                     <TabsContent value="configPalette">
                         <ConfigPalette
-                            theme={theme}
-                            setTheme={setTheme}
+                            themePaletteId={theme.themePaletteId}
+                            setThemePaletteId={setThemePaletteId}
                         />
                     </TabsContent>
                     <TabsContent value="configPolicies">
-                        <ConfigPolicies />
+                        <ConfigFont
+                            currentFontId={theme.themeFontId ?? -1}
+                            themeFontId={theme.themePaletteId ?? -1}
+                            setThemeFontId={setThemeFontId}
+                        />
                     </TabsContent>
                 </Tabs>
                 <section className="flex flex-row gap-2 mt-4">

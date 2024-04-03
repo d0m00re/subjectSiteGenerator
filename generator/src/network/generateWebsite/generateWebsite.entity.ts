@@ -10,6 +10,7 @@ import { I_TemplateElemButton } from "../website/websiteSection/templateElemButt
 import { I_TemplateElemImage } from "../website/websiteSection/templateElemImage/templateElemImage.entity";
 import { I_TemplateElemTypography } from "../website/websiteSection/templateElemTypography/templateElemTypography.entity";
 import { I_WebsiteSectionOrder, I_WebsiteSectionOrder_E } from "../website/websiteSection/websiteSectionOrder/websiteSectionOrder.entity";
+import { IThemeFont } from '../theme/themeFont/themeFont.entity';
 
 
 // ----------------------
@@ -59,6 +60,8 @@ export interface A_I_Website_E {
     subject: string;
     themePaletteId : number;
     themePalette : IThemePalette;
+    themeFontId : number;
+    themeFont : IThemeFont;
 }
 
 // again another one you need to rework this s******

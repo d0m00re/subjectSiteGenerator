@@ -12,6 +12,7 @@ export interface IUpdateThemeV1 {
     websiteId : number;
     themePaletteId : number;
     userId : number;
+    themeFontId : number;
 }
 
 /**

@@ -90,9 +90,11 @@ export class CreateSectionV4 {
     templateId : number;
 }
 
-export class UpdateTheme {
+export class UpdateThemeDto {
     @IsNumber()
     websiteId : number;
     @IsNumber()
-    themePaletteId : number
+    themePaletteId : number;
+    @IsNumber()
+    themeFontId : number;
 }

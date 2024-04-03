@@ -75,13 +75,14 @@ export const updateSectionV4 = (props : IUpdateSessionV4) : Promise<any> => {
 }
 
 // update theme
-export const updateTheme = (props : {themePaletteId : number, websiteId : number}) : Promise<A_I_Website_E_2_Header> => {
+export const updateTheme = (props : {themePaletteId : number, websiteId : number, themeFontId : number}) : Promise<A_I_Website_E_2_Header> => {
     return fetch(`${API_WEBSITE_URL}/theme`, {
         method : "PATCH",
         headers : BASE_HEADER,
         body : JSON.stringify({
             themePaletteId : props.themePaletteId,
-            websiteId : props.websiteId
+            websiteId : props.websiteId,
+            themeFontId : props.themeFontId
         }),
         credentials : "include"
     })

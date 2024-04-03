@@ -4,7 +4,6 @@ import { JwtCookieParserGuard } from 'src/authv2/guard/jwt-cookie-parser.guard';
 import { Request, Response} from "express";
 import * as dto from "./dto/themeFont.dto";
 
-import { from } from 'form-data';
 @Controller('theme-font')
 export class ThemeFontController {
     constructor(
@@ -50,7 +49,7 @@ export class ThemeFontController {
             id : dto.id
         });
         if (!data)
-        throw new HttpException("not found", HttpStatus.NOT_FOUND);
+            throw new HttpException("not found", HttpStatus.NOT_FOUND);
 
 
         return data;

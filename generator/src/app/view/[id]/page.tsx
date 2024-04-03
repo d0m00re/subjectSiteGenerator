@@ -9,6 +9,7 @@ import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSect
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
 import MainLayout from '@/components/WebsiteSection/Render/MainLayout/MainLayout';
 import useTemplatePalette from '@/store/templatePalette.zustand.store';
+import useThemeFont from '@/store/themeFont.zustand.store';
 
 
 function page() {
@@ -17,6 +18,7 @@ function page() {
     const storeTemplate = useTemplateGroup();
     const storeTemplatePalette = useTemplatePalette();
     const [dataIsLoad, setDataIsLoad] = useState<boolean>(false);
+    const storeThemeFont = useThemeFont();
 
     if (typeof (id) !== "string") return <></>
 
@@ -25,6 +27,7 @@ function page() {
         storeWebsite.populate(parseInt(id));
         storeTemplate.populate();
         storeTemplatePalette.populate();
+        storeThemeFont.populate();
         setDataIsLoad(true);
     }, []);
 

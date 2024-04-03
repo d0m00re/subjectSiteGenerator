@@ -62,12 +62,13 @@ export class WebsiteController {
 
   @UseGuards(JwtCookieParserGuard)
   @Patch("theme")
-  async updateThemeV1(@Req() req : Request, @Body() dto : dto.UpdateTheme) {
+  async updateThemeV1(@Req() req : Request, @Body() dto : dto.UpdateThemeDto) {
     let userId = req.user.id;
 
     let data = await this.websiteService.updateThemeV1({
       userId : userId,
       themePaletteId : dto.themePaletteId,
+      themeFontId : dto.themeFontId,
       websiteId : dto.websiteId
     });
 
