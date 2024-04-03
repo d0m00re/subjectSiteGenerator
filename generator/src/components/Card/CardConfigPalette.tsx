@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { IThemePalette } from '@/network/templettePalette/templatePalette.entity';
+import { IThemePalette } from '@/network/theme/themePalette/templatePalette.entity';
 
 type TCardConfigPalette = {
     themePalette: IThemePalette;

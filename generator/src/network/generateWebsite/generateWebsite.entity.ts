@@ -5,7 +5,7 @@
  * E -> ENTITY
  */
 
-import { IThemePalette } from "../templettePalette/templatePalette.entity";
+import { IThemePalette } from '@/network/theme/themePalette/templatePalette.entity';
 import { I_TemplateElemButton } from "../website/websiteSection/templateElemButton/templateElemButton.entity";
 import { I_TemplateElemImage } from "../website/websiteSection/templateElemImage/templateElemImage.entity";
 import { I_TemplateElemTypography } from "../website/websiteSection/templateElemTypography/templateElemTypography.entity";

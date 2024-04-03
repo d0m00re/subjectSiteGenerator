@@ -16,7 +16,7 @@ import useTemplatePalette from '@/store/templatePalette.zustand.store';
 import { Button } from '@/components/Button';
 import SheetTheme from '@/components/Theme/SheetTheme/SheetTheme';
 import { map } from 'lodash';
-import { ITemplateGroup, IThemePalette } from '@/network/templettePalette/templatePalette.entity';
+import { ITemplateGroup, IThemePalette } from '@/network/theme/themePalette/templatePalette.entity';
 
 interface IModalCreateSection {
   index: number;

@@ -10,7 +10,7 @@ import useCurrentWebsite from "./store/currentWebsite.zustand.store";
 import ModalCreateSection from './modal/ModalCreateSection';
 import RenderSectionWtConfig from '@/components/WebsiteSection/Render/RenderSectionWtConfig';
 import ModalEditContentAndStyle from '@/components/WebsiteSection/ModalEditContentAndStyle/ModalEditContentAndStyle';
-import { IThemePalette } from '@/network/templettePalette/templatePalette.entity';
+import { IThemePalette } from '@/network/theme/themePalette/templatePalette.entity';
 
 type ISectionWebsite = {
   section: I_WebsiteSection;

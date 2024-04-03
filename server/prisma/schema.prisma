@@ -49,8 +49,8 @@ model Website {
   themePalette   ThemePalette @relation(fields: [themePaletteId], references: [id])
   themePaletteId Int
 
-  //themeFont   ThemeFont @relation(fields: [themeFontId], references: [id])
-  //themeFontId Int  
+  themeFont ThemeFont @relation(fields: [themeFontId], references: [id])
+  themeFontId Int
 }
 
 model WebsiteSection {
@@ -175,7 +175,7 @@ model ThemePaletteElem {
   textColor String
   public    Boolean
 
-  ThemePalette   ThemePalette? @relation(fields: [themePaletteId], references: [id],  onDelete: Cascade)
+  ThemePalette   ThemePalette? @relation(fields: [themePaletteId], references: [id], onDelete: Cascade)
   themePaletteId Int?
 }
 
@@ -185,4 +185,5 @@ model ThemeFont {
   id          Int       @id @default(autoincrement())
   fontName    String
   placeholder String
+  Website     Website[]
 }
