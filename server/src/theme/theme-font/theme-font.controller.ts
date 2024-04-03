@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { ThemeFontService } from './theme-font.service';
 import { JwtCookieParserGuard } from 'src/authv2/guard/jwt-cookie-parser.guard';
 import { Request, Response} from "express";
@@ -15,6 +15,10 @@ export class ThemeFontController {
     @Get(':id')
     async getOne(@Param('id') id: number) {
         let data = await this.themeFontService.getWithid({id : id});
+        
+        if (!data)
+            throw new HttpException("not found", HttpStatus.NOT_FOUND);
+        
         return data;
     }
     // get all
@@ -32,6 +36,9 @@ export class ThemeFontController {
             fontName : dto.fontName,
             placeholder : dto.placeholder
         })
+        if (!data)
+        throw new HttpException("not found", HttpStatus.NOT_FOUND);
+
         return data;
     }
 
@@ -42,6 +49,9 @@ export class ThemeFontController {
         let data = await this.themeFontService.deleteOne({
             id : dto.id
         });
+        if (!data)
+        throw new HttpException("not found", HttpStatus.NOT_FOUND);
+
 
         return data;
     }

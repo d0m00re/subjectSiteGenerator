@@ -48,7 +48,9 @@ export class SiteGeneratorService {
 
 
         // delete section
-        await this.prisma.websiteSection.delete({
+        console.log("why you don't delete it : ")
+        console.log(props.sectionId)
+        let data = await this.prisma.websiteSection.delete({
             where: { id: props.sectionId },
             include: { websiteSectionOrder: true }
         });
