@@ -13,6 +13,7 @@ export interface IUpdateThemeV1 {
     themePaletteId : number;
     userId : number;
     themeFontId : number;
+    themeButton : IThemeButton;//ThemeButton;
 }
 
 /**
@@ -34,4 +35,18 @@ export interface IUpdateV4 {
 export interface ISectionLayout {
     backgroundImage : string;
     backgroundColor : string;
+}
+
+//--------------------------------------------
+export interface IThemeButtonElem {
+    id : number;
+    name : string;
+    variant : string;
+    shape : string;
+}
+
+export interface IThemeButton {
+    id : number;
+    themeButtonArr : IThemeButtonElem[]
+    websiteId : number;
 }

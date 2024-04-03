@@ -23,6 +23,8 @@ import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/stor
 import { ITmpTheme, makeEmptyTmpTheme } from './SheetTheme.entity';
 import { updateTheme } from '@/network/website/website.network';
 import ButtonLoader from '@/components/atoms/ButtonLoader';
+import { cloneDeep } from 'lodash';
+import { IThemeButton } from '@/network/website/website.entity';
 
 function SheetTheme() {
     const [open, setOpen] = useState(false)
@@ -32,11 +34,12 @@ function SheetTheme() {
 
     const setThemePaletteId = (id : number) => setTheme(old => ({...old, themePaletteId : id}));
     const setThemeFontId = (id : number) => setTheme(old => ({...old, themeFontId : id}));
-
+    const setThemeButton = (themeButton : IThemeButton) => setTheme(old => ({...old, themeButton : themeButton}))
     useEffect(() => {
         setTheme({
             themePaletteId : storeWebsite.website?.themePaletteId ?? -1,
-            themeFontId : storeWebsite.website?.themeFontId ?? -1
+            themeFontId : storeWebsite.website?.themeFontId ?? -1,
+            themeButton : cloneDeep(storeWebsite.website?.ThemeButton) ?? undefined
         })
     }, [storeWebsite])
 
@@ -51,7 +54,8 @@ function SheetTheme() {
         let data = await updateTheme({
             websiteId : storeWebsite.website.id,
             themePaletteId : theme.themePaletteId,
-            themeFontId : theme.themeFontId
+            themeFontId : theme.themeFontId,
+            themeButton : theme.themeButton
         });
 
         // update store
@@ -73,7 +77,10 @@ function SheetTheme() {
                         <TabsTrigger value="configPolicies">font</TabsTrigger>
                     </TabsList>
                     <TabsContent value="configButton">
-                        <ConfigButton />
+                        <ConfigButton
+                            buttonConfig={theme?.themeButton}
+                            setThemeButton={setThemeButton}
+                        />
                     </TabsContent>
                     <TabsContent value="configPalette">
                         <ConfigPalette

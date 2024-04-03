@@ -1,3 +1,19 @@
+// font theme
+export interface IThemeButtonElem {
+    id : number;
+    name : string;
+    variant : string;
+    shape : string;
+}
+
+export interface IThemeButton {
+    id : number;
+    themeButtonArr : IThemeButtonElem[]
+    websiteId : number;
+}
+
+// ---------------
+
 export interface ICreateWebsiteInput {
     title : string;
     subject : string;

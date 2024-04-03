@@ -11,6 +11,7 @@ import { I_TemplateElemImage } from "../website/websiteSection/templateElemImage
 import { I_TemplateElemTypography } from "../website/websiteSection/templateElemTypography/templateElemTypography.entity";
 import { I_WebsiteSectionOrder, I_WebsiteSectionOrder_E } from "../website/websiteSection/websiteSectionOrder/websiteSectionOrder.entity";
 import { IThemeFont } from '../theme/themeFont/themeFont.entity';
+import { IThemeButton } from '../website/website.entity';
 
 
 // ----------------------
@@ -62,6 +63,7 @@ export interface A_I_Website_E {
     themePalette : IThemePalette;
     themeFontId : number;
     themeFont : IThemeFont;
+    ThemeButton ?: IThemeButton;
 }
 
 // again another one you need to rework this s******
