@@ -17,6 +17,7 @@ import { Button } from '@/components/Button';
 import SheetTheme from '@/components/Theme/SheetTheme/SheetTheme';
 import { map } from 'lodash';
 import { ITemplateGroup, IThemePalette } from '@/network/theme/themePalette/templatePalette.entity';
+import useThemeFont from '@/store/themeFont.zustand.store';
 
 interface IModalCreateSection {
   index: number;
@@ -35,6 +36,7 @@ function page() {
   const [dataIsLoad, setDataIsLoad] = useState<boolean>(false);
   const storeWebsite = useCurrentWebsite();
   const storeTemplate = useTemplateGroup();
+  const storeThemeFont = useThemeFont();
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
   const storeTemplatePalette = useTemplatePalette();
 
@@ -45,6 +47,7 @@ function page() {
     storeWebsite.populate(parseInt(id));
     storeTemplate.populate();
     storeTemplatePalette.populate();
+    storeThemeFont.populate();
 
     setDataIsLoad(true);
   }, []);

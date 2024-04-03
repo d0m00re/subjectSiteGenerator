@@ -6,8 +6,8 @@ import { ITmpTheme } from '../SheetTheme.entity';
 import CardConfigPalette from '@/components/Card/CardConfigPalette';
 
 interface IConfigPalette {
-    theme : ITmpTheme;
-    setTheme :  React.Dispatch<React.SetStateAction<ITmpTheme>>;
+    themePaletteId : number;
+    setThemePaletteId : (id: number) => void;
 }
 
 function ConfigPalette(props : IConfigPalette) {
@@ -49,8 +49,8 @@ function ConfigPalette(props : IConfigPalette) {
                     return <CardConfigPalette
                         key={`config-palette-${palette.id}`}
                         themePalette={palette}
-                        themeSelectId={props.theme.themeId}
-                        onClick={(i : number) => {props.setTheme(old => ({...old, themeId : i}))}}
+                        themeSelectId={props.themePaletteId}
+                        onClick={props.setThemePaletteId}
                     />
                 }) : <></>
             }
