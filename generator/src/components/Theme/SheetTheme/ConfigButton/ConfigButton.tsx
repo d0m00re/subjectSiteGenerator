@@ -4,7 +4,14 @@ type Props = {}
 
 function ConfigButton({}: Props) {
   return (
-    <div>ConfigButton</div>
+    <section>
+      <div>
+        button 1
+      </div>
+      <div>
+        button 2
+      </div>
+    </section>
   )
 }
 
