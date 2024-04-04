@@ -41,7 +41,9 @@ function RenderSectionWtConfig(props: IRenderSectionWtConfig) {
           return <RenderButton
             key={`renderButton-${props.section.id}-${elemButton?.id}`}
             text={elemButton?.text ?? ""}
-            size={elemButton?.size ?? "medium"} />
+            size={elemButton?.size ?? "medium"}
+            rounded={true}  
+          />
         } else if (e.kind === "img") {
           let elemImg = props.section.images.find(img => img.order === e.order);
           if (!elemImg) return <></>
