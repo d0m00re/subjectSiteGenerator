@@ -4,6 +4,7 @@ import { TSizeButton } from "@/network/website/websiteSection/templateElemButton
 interface IRenderButton {
     text : string;
     size : TSizeButton;
+    variant ?: "outline" | "default";
   } 
   
   const renderButtonStyle = {
@@ -15,7 +16,10 @@ interface IRenderButton {
   }
   
   function RenderButton(props : IRenderButton) {
-    return <Button size={renderButtonStyle.size[props.size]}>{props.text}</Button>
+    return <Button
+      size={renderButtonStyle.size[props.size]}
+      variant={props.variant ?? "default"}
+      >{props.text}</Button>
   }
 
   export default RenderButton;

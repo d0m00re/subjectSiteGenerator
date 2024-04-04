@@ -14,7 +14,7 @@ interface ICardConfigButton {
 //
 let optionsVariant: ISelectSizeElem[] = [
   { key: "solid", value: "solid", name: "solid" },
-  { key: "outlined", value: "outlined", name: "outlined" }
+  { key: "outline", value: "outline", name: "outline" }
 ];
 
 let optionsShape: ISelectSizeElem[] = [
@@ -49,7 +49,11 @@ const CardConfigButton = (props: ICardConfigButton) => {
         props.setThemeButtonElem(tmp, props.index);
       }} />
 
-    <RenderButton text={"hoola"} size="medium" />
+    <RenderButton
+      text={"hoola"}
+      size="medium"
+      variant={(props.buttonConfig.variant !== "outline") ? "default" : "outline"}  
+    />
   </section>
 }
 

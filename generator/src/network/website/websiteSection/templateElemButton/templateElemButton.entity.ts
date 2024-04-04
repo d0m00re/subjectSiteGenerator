@@ -1,5 +1,5 @@
 export type TSizeButton = "small" | "medium" | "big";
-export type TVariantButton = "solid" | "outlined";
+export type TVariantButton = "solid" | "outline";
 export type TShapeButton = "round" | "square";
 export type TActionTypeButton = "external" | "internal";
 
