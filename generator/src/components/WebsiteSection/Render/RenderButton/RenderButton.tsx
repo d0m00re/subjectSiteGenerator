@@ -5,6 +5,7 @@ interface IRenderButton {
     text : string;
     size : TSizeButton;
     variant ?: "outline" | "default";
+    rounded : boolean;
   } 
   
   const renderButtonStyle = {
@@ -19,6 +20,7 @@ interface IRenderButton {
     return <Button
       size={renderButtonStyle.size[props.size]}
       variant={props.variant ?? "default"}
+      rounded={props.rounded ? "rounded" : "solid"}
       >{props.text}</Button>
   }
 

@@ -25,21 +25,22 @@ import { updateTheme } from '@/network/website/website.network';
 import ButtonLoader from '@/components/atoms/ButtonLoader';
 import { cloneDeep } from 'lodash';
 import { IThemeButton } from '@/network/website/website.entity';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 function SheetTheme() {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true) //useState(false)
     const storeWebsite = useCurrentWebsiteStore();
     const [theme, setTheme] = useState<ITmpTheme>(makeEmptyTmpTheme());
     const [onLoad, setOnload] = useState<boolean>(false);
 
-    const setThemePaletteId = (id : number) => setTheme(old => ({...old, themePaletteId : id}));
-    const setThemeFontId = (id : number) => setTheme(old => ({...old, themeFontId : id}));
-    const setThemeButton = (themeButton : IThemeButton) => setTheme(old => ({...old, themeButton : themeButton}))
+    const setThemePaletteId = (id: number) => setTheme(old => ({ ...old, themePaletteId: id }));
+    const setThemeFontId = (id: number) => setTheme(old => ({ ...old, themeFontId: id }));
+    const setThemeButton = (themeButton: IThemeButton) => setTheme(old => ({ ...old, themeButton: themeButton }))
     useEffect(() => {
         setTheme({
-            themePaletteId : storeWebsite.website?.themePaletteId ?? -1,
-            themeFontId : storeWebsite.website?.themeFontId ?? -1,
-            themeButton : cloneDeep(storeWebsite.website?.ThemeButton) ?? undefined
+            themePaletteId: storeWebsite.website?.themePaletteId ?? -1,
+            themeFontId: storeWebsite.website?.themeFontId ?? -1,
+            themeButton: cloneDeep(storeWebsite.website?.ThemeButton) ?? undefined
         })
     }, [storeWebsite])
 
@@ -49,13 +50,13 @@ function SheetTheme() {
     }, [theme]);
 
     const onSave = async () => {
-        if (storeWebsite.website?.id === undefined) return ;
+        if (storeWebsite.website?.id === undefined) return;
         setOnload(true);
         let data = await updateTheme({
-            websiteId : storeWebsite.website.id,
-            themePaletteId : theme.themePaletteId,
-            themeFontId : theme.themeFontId,
-            themeButton : theme.themeButton
+            websiteId: storeWebsite.website.id,
+            themePaletteId: theme.themePaletteId,
+            themeFontId: theme.themeFontId,
+            themeButton: theme.themeButton
         });
 
         // update store
@@ -69,20 +70,22 @@ function SheetTheme() {
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger>Theme manager</SheetTrigger>
-            <SheetContent>
-                <Tabs defaultValue="configPalette" className="w-full">    
+            <SheetContent className='h-full flex flex-col'>
+                <Tabs defaultValue="configButton" className="w-full h-full max-h-full">
                     <TabsList>
                         <TabsTrigger value="configButton">button</TabsTrigger>
                         <TabsTrigger value="configPalette">palette</TabsTrigger>
-                        <TabsTrigger value="configPolicies">font</TabsTrigger>
+                        <TabsTrigger value="configPolicies" className='mr-2'>font</TabsTrigger>
+                        <ButtonLoader onLoad={onLoad} onClick={onSave}>Save</ButtonLoader>
                     </TabsList>
+                    <section className='max-h-full h-full overflow-y-auto pb-6 pt-6'>
                     <TabsContent value="configButton">
                         <ConfigButton
                             buttonConfig={theme?.themeButton}
                             setThemeButton={setThemeButton}
                         />
                     </TabsContent>
-                    <TabsContent value="configPalette">
+                    <TabsContent value="configPalette" >
                         <ConfigPalette
                             themePaletteId={theme.themePaletteId}
                             setThemePaletteId={setThemePaletteId}
@@ -95,13 +98,9 @@ function SheetTheme() {
                             setThemeFontId={setThemeFontId}
                         />
                     </TabsContent>
+                    </section>
                 </Tabs>
-                <section className="flex flex-row gap-2 mt-4">
-                    <ButtonLoader onLoad={onLoad} onClick={onSave}>Save</ButtonLoader>
-                    <Button onClick={() => {setOpen(false)}} variant="danger">Discard</Button>
-                </section>
             </SheetContent>
-
         </Sheet>
     )
 }
