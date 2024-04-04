@@ -22,7 +22,7 @@ export class WebsiteService {
             shape: "rounded"
         };
         const b2 = {
-            variant: "outlined",
+            variant: "outline",
             shape: "rounded"
         };
         //

@@ -123,7 +123,7 @@ model TemplateElemButton {
   order      Int
   text       String // text button
   size       String // small / medium / big
-  variant    String // solid | outlined
+  variant    String // solid | outline
   shape      String // round | square
   actionType String // external | internal
   path       String // useless for the moment could be url
@@ -202,7 +202,7 @@ model ThemeButton {
 model ThemeButtonElem {
   id            Int          @id @default(autoincrement())
   name          String // primary or secondary could add morre later
-  variant       String // solid or outlined
+  variant       String // solid or outline
   shape         String // square or rounded
   ThemeButton   ThemeButton? @relation(fields: [themeButtonId], references: [id])
   themeButtonId Int?
