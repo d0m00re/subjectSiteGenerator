@@ -26,6 +26,7 @@ import ButtonLoader from '@/components/atoms/ButtonLoader';
 import { cloneDeep } from 'lodash';
 import { IThemeButton } from '@/network/website/website.entity';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Save } from 'lucide-react';
 
 function SheetTheme() {
     const [open, setOpen] = useState(true) //useState(false)
@@ -72,32 +73,38 @@ function SheetTheme() {
             <SheetTrigger>Theme manager</SheetTrigger>
             <SheetContent className='h-full flex flex-col'>
                 <Tabs defaultValue="configButton" className="w-full h-full max-h-full">
-                    <TabsList>
-                        <TabsTrigger value="configButton">button</TabsTrigger>
-                        <TabsTrigger value="configPalette">palette</TabsTrigger>
-                        <TabsTrigger value="configPolicies" className='mr-2'>font</TabsTrigger>
-                        <ButtonLoader onLoad={onLoad} onClick={onSave}>Save</ButtonLoader>
-                    </TabsList>
-                    <section className='max-h-full h-full overflow-y-auto pb-6 pt-6'>
-                    <TabsContent value="configButton">
-                        <ConfigButton
-                            buttonConfig={theme?.themeButton}
-                            setThemeButton={setThemeButton}
-                        />
-                    </TabsContent>
-                    <TabsContent value="configPalette" >
-                        <ConfigPalette
-                            themePaletteId={theme.themePaletteId}
-                            setThemePaletteId={setThemePaletteId}
-                        />
-                    </TabsContent>
-                    <TabsContent value="configPolicies">
-                        <ConfigFont
-                            currentFontId={theme.themeFontId ?? -1}
-                            themeFontId={theme.themePaletteId ?? -1}
-                            setThemeFontId={setThemeFontId}
-                        />
-                    </TabsContent>
+                    <section className='flex flex-row w-full justify-between pr-5 pl-5'>
+
+                        <TabsList className='flex flex-row '>
+                            <TabsTrigger value="configButton">button</TabsTrigger>
+                            <TabsTrigger value="configPalette">palette</TabsTrigger>
+                            <TabsTrigger value="configPolicies" className='mr-2'>font</TabsTrigger>
+                        </TabsList>
+                        <ButtonLoader onLoad={onLoad} onClick={onSave}>
+                            <Save />
+                        </ButtonLoader>
+                    </section>
+
+                    <section className='max-h-full h-full overflow-y-auto pb-6 pt-6 pr-2'>
+                        <TabsContent value="configButton">
+                            <ConfigButton
+                                buttonConfig={theme?.themeButton}
+                                setThemeButton={setThemeButton}
+                            />
+                        </TabsContent>
+                        <TabsContent value="configPalette" >
+                            <ConfigPalette
+                                themePaletteId={theme.themePaletteId}
+                                setThemePaletteId={setThemePaletteId}
+                            />
+                        </TabsContent>
+                        <TabsContent value="configPolicies">
+                            <ConfigFont
+                                currentFontId={theme.themeFontId ?? -1}
+                                themeFontId={theme.themePaletteId ?? -1}
+                                setThemeFontId={setThemeFontId}
+                            />
+                        </TabsContent>
                     </section>
                 </Tabs>
             </SheetContent>
