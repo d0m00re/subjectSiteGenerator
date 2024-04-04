@@ -57,7 +57,6 @@ const ButtonAddSection = (props: IButtonAddSection) => {
 
 function SectionWebsite(props: ISectionWebsite) {
   const [modalEdit, setModalEdit] = useState(false);
-  const [modalEditSectionStyle, setModalEditSectionStyle] = useState<IModalEditSectionStyle>(resetModalSectionEditStyle());
   const [modalAddSection, setModalAddSection] = useState<IModalCreateSection>(resetModalCreateSection())
   const [isHovered, setIsHovered] = useState(false);
   const currentWebsite = useCurrentWebsite();

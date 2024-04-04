@@ -76,7 +76,7 @@ function page() {
                 section={section} 
                 index={index}
                 themePalette={realCurrentTheme}
-              />) : <TemplateSkeleton />
+              />) : <TemplateSkeleton /> 
             }
             {/* cas with no section */}
             {

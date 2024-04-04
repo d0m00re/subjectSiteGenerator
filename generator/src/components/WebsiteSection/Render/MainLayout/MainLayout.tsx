@@ -21,4 +21,4 @@ function MainLayout(props: Props) {
   )
 }
 
-export default MainLayout
+export default MainLayout;
