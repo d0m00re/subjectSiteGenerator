@@ -1,9 +1,10 @@
 import { Button, VariantType } from '@/components/Button';
 import IconLoaderSpin from '@/components/CustomIcon/IconLoaderSpin';
+import { LucideIcon } from 'lucide-react';
 import React from 'react'
 
 type Props = {
-    children : string;
+    children : string | React.JSX.Element;
     onClick : () => void;
     onLoad : boolean;
     variant ?: VariantType;
