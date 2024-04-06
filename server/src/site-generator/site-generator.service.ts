@@ -214,8 +214,6 @@ export class SiteGeneratorService {
         await this.prisma.websiteSection.create({
             data: {
                 websiteId: websiteSection.websiteId,
-                backgroundImage: "unimplemented",
-                backgroundColor : "unimplemented",
                 configTemplateId: 1,
                 themePaletteOrder : 0,
                 websiteSectionOrder: {

@@ -1,17 +1,37 @@
+"use client"
+
 import Link from "next/link";
 import React from "react";
 import SignInButton from "./SignInButton";
-import { ActivitySquare, Home, LucideIcon, BadgePlus, LayoutDashboard } from "lucide-react";
+import { ActivitySquare, Home, LucideIcon, BadgePlus, LayoutDashboard, ExternalLink } from "lucide-react";
+import SheetTheme from "./Theme/SheetTheme/SheetTheme";
+import { redirect, usePathname } from 'next/navigation'
 
 export const Header = () => {
+  const pathname = usePathname();
+  const pathnameSplit = pathname.split("/");
+  const id = pathnameSplit[pathnameSplit.length - 1];
+
   return (
     <header className="flex flex-row justify-between gap-4 p-4 bg-gradient-to-b from-white to-gray-200 shadow sticky top-0 z-10">
       <div className="flex flex-row gap-2 items-center">
         <ActivitySquare />
         <h2 className=" text-2xl font-extrabold">Generator</h2>
       </div>
+
+      {pathname.startsWith("/dashboard/website/") ?
+        <section className="flex flex-row gap-2">
+          <SheetTheme />
+          <a href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/view/${id}`} target="_blank">
+            <section className="flex h-full flex-row items-center gap-2 cursor-pointer border-2 p-1 border-gray-500 rounded-sm">
+              <ExternalLink width={20} height={20} color='gray' />
+              <p className='text-2sm text-gray-800'>View</p>
+            </section>
+          </a>
+        </section>
+        : <></>
+      }
       <section className="flex flex-row gap-2">
-        
         <SignInButton />
       </section>
     </header>
@@ -25,7 +45,7 @@ interface ILinkInfoElem {
   href: string
 }
 
-const LinkInfoList : ILinkInfoElem[] = [
+const LinkInfoList: ILinkInfoElem[] = [
   {
     id: "home",
     icon: Home,

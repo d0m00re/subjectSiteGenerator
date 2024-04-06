@@ -18,15 +18,13 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs";
-import { Button } from '@/components/Button';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
 import { ITmpTheme, makeEmptyTmpTheme } from './SheetTheme.entity';
 import { updateTheme } from '@/network/website/website.network';
 import ButtonLoader from '@/components/atoms/ButtonLoader';
 import { cloneDeep } from 'lodash';
 import { IThemeButton } from '@/network/website/website.entity';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Save } from 'lucide-react';
+import { NotebookPen, Palette, Save } from 'lucide-react';
 
 function SheetTheme() {
     const [open, setOpen] = useState(false) //useState(false)
@@ -65,7 +63,10 @@ function SheetTheme() {
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger>Theme manager</SheetTrigger>
+            <SheetTrigger className='flex flex-row items-center gap-2 cursor-pointer border-2 p-1 border-gray-500 rounded-sm'>
+                <Palette width={20} height={20} color='gray' />
+                <p className='text-2sm text-gray-800'>Style</p>
+            </SheetTrigger>
             <SheetContent className='h-full flex flex-col'>
                 <Tabs defaultValue="configButton" className="w-full h-full max-h-full">
                     <section className='flex flex-row w-full justify-between pr-5 pl-5'>
