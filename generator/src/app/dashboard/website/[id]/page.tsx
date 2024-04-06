@@ -66,7 +66,6 @@ function page() {
     <>
       <SheetTheme />
 
-      <MainLayout>
         <>
           <section className='flex flex-col m-8 items-center'>
             {/* basic case */}
@@ -96,7 +95,6 @@ function page() {
             }
           />
         </>
-      </MainLayout>
     </>
   )
 }

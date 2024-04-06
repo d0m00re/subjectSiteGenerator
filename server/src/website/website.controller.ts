@@ -73,9 +73,6 @@ export class WebsiteController {
       themeButton : dto.themeButton
     });
 
-    console.log("returnded data")
-    console.log(data)
-
     return data;
   }
 }

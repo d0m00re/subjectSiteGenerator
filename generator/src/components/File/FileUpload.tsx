@@ -22,12 +22,10 @@ const FileUpload = (props : IFileUpload) => {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    let resp = await libraryNetwork.saveFile({
+    await libraryNetwork.saveFile({
         formData : formData
     })
 
-    console.log("resp : ");
-    console.log(resp);
     setLoading(false);
   };
 

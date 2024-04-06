@@ -3,16 +3,19 @@ import ChangeBackground from '@/components/WebsiteSection/Render/Layout/ChangeBa
 
 import { ISectionLayout } from '@/network/generateWebsite/generateWebsite.entity';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
+import { IThemePaletteElem } from '@/network/theme/themePalette/templatePalette.entity';
 
-type Props = {
+type IGlobalSectionStyle = {
     sectionId: number;
     onClose: () => void;
 
     layout: ISectionLayout;
     setLayout: React.Dispatch<React.SetStateAction<ISectionLayout>>;
+
+    palette : IThemePaletteElem[];
 }
 
-function GlobalSectionStyle(props: Props) {
+function GlobalSectionStyle(props: IGlobalSectionStyle) {
     const storeWebsite = useCurrentWebsiteStore();
     const currentSection = storeWebsite.website?.websiteSection.find(e => e.id === props.sectionId) //[props.sectionIndex];
 
@@ -21,20 +24,20 @@ function GlobalSectionStyle(props: Props) {
 
     useEffect(() => {
         props.setLayout({
-            backgroundColor: currentSection.backgroundColor,
-            backgroundImage: currentSection.backgroundImage
+            themePaletteOrder: currentSection.themePaletteOrder
         });
     }, []);
 
-    const setBackgroundColor = (bgColor: string) => {
-        props.setLayout(old => ({ ...old, backgroundColor: bgColor }));
+    const setPaletteOrder = (orderIndex : number) => {
+        props.setLayout(old => ({ ...old, themePaletteOrder : orderIndex}))
     }
 
-    return (
+    return ( 
         <section className='flex flex-col gap-2 w-full'>
             <ChangeBackground
-                backgroundColor={props.layout.backgroundColor}
-                setBackgroundColor={setBackgroundColor}
+                setPaletteOrder={setPaletteOrder}
+                palette={props.palette}
+                themePaletteOrder={props.layout.themePaletteOrder}
             />
         </section>
     )
@@ -42,4 +45,4 @@ function GlobalSectionStyle(props: Props) {
 
 //
 
-export default GlobalSectionStyle
+export default GlobalSectionStyle;

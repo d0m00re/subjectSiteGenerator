@@ -83,7 +83,5 @@ export const TemplateValidatorArray = z.array(TemplateValidator);
 export const parseTemplateConfigStringToJSON = (json: string) => {
     // todo : find a better way for that
     const parsedArray = JSON.parse(json.replaceAll("'", '"'));
-    console.log("parse that : ")
-    console.log(parsedArray)
     return TemplateValidatorArray.parse(parsedArray);
 }

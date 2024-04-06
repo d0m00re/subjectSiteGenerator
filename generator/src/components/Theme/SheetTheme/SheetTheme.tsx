@@ -29,7 +29,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Save } from 'lucide-react';
 
 function SheetTheme() {
-    const [open, setOpen] = useState(true) //useState(false)
+    const [open, setOpen] = useState(false) //useState(false)
     const storeWebsite = useCurrentWebsiteStore();
     const [theme, setTheme] = useState<ITmpTheme>(makeEmptyTmpTheme());
     const [onLoad, setOnload] = useState<boolean>(false);
@@ -44,11 +44,6 @@ function SheetTheme() {
             themeButton: cloneDeep(storeWebsite.website?.ThemeButton) ?? undefined
         })
     }, [storeWebsite])
-
-    useEffect(() => {
-        console.log("theme update =========")
-        console.log(theme)
-    }, [theme]);
 
     const onSave = async () => {
         if (storeWebsite.website?.id === undefined) return;

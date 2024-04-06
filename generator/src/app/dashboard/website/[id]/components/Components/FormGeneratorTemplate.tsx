@@ -149,8 +149,6 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
     setOnLoad(true);
     createWebsiteSectionV4(dataSubmit)
       .then((resp: any) => {
-        console.log("reset with data after create");
-        console.log(resp);
         storeWebsite.resetWtData(resp);
       })
       .catch(err => { console.log(err); })
@@ -173,7 +171,7 @@ function FormGeneratorTemplate(props: IFormGeneratorTemplate) {
 
     updateSectionV4({
       data: dataFormV4,//dataFormV2,
-      layout: { backgroundColor: currentSection.backgroundColor, backgroundImage: currentSection.backgroundImage },
+      layout: { themePaletteOrder : currentSection.themePaletteOrder },
       sectionId: currentSection.id,
     })
       .then((resp: any) => {

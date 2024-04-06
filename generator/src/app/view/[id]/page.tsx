@@ -36,7 +36,6 @@ function page() {
     let realCurrentTheme = currentTheme;
 
     return (
-        <MainLayout>
             <>
                 {(dataIsLoad) ?
                     storeWebsite?.website?.websiteSection?.map((section, index) =>
@@ -48,7 +47,6 @@ function page() {
                         </section>) : <TemplateSkeleton />
                 }
             </>
-        </MainLayout>
     )
 }
 

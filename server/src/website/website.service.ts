@@ -142,8 +142,8 @@ export class WebsiteService {
         }
 
         // moove all section order for our new section order
-        console.log("update many")
-        console.log(img);
+        //console.log("update many")
+        //console.log(img);
         await this.prisma.websiteSectionOrder.updateMany({
             where: {
                 websiteId: props.websiteId,
@@ -160,8 +160,6 @@ export class WebsiteService {
         await this.prisma.websiteSection.create({
             data: {
                 websiteId: props.websiteId,
-                backgroundImage: "unimplemented",
-                backgroundColor: "unimplemented",
                 configTemplateId: props.templateId,
                 themePaletteOrder: 0,
                 websiteSectionOrder: {
@@ -240,8 +238,7 @@ export class WebsiteService {
                 websiteSectionOrder: true
             },
             data: {
-                backgroundColor: props.layout.backgroundColor ?? "",
-                backgroundImage: props.layout.backgroundImage ?? "",
+                themePaletteOrder : props.layout.themePaletteOrder,
                 buttons: {
                     updateMany: [
                         ...buttons.map(b => ({

@@ -19,7 +19,6 @@ const storage = multer.diskStorage({
         cb(null, './cdn'); // Set the destination directory
     },
     filename: function (req, file, cb) {
-        console.log("wtf : ", file.mimetype)
         let extArray = file.mimetype.split("/");
         let extension = extArray[extArray.length - 1];
         // @ts-ignore

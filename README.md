@@ -215,3 +215,8 @@ sectionLayout : {
 * add contact form components
     email, phone, message, submit
 * ...
+-----------
+* moove global layout on each subsection and moove background color on it
+* integrate button global theme
+* view how rework img
+* remove some useless field : 

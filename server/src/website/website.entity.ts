@@ -33,8 +33,7 @@ export interface IUpdateV4 {
 }
 
 export interface ISectionLayout {
-    backgroundImage : string;
-    backgroundColor : string;
+    themePaletteOrder : number;  
 }
 
 //--------------------------------------------

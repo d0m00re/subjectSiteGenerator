@@ -20,8 +20,7 @@ export type TWebsiteSectionKind = "mainSection" | "subSection";
 
 // global section layout
 export interface ISectionLayout {
-    backgroundImage : string;
-    backgroundColor : string;
+    themePaletteOrder : number;
 }
 
 export interface A_I_WebsiteSection_E extends ISectionLayout {
@@ -36,9 +35,6 @@ export interface A_I_WebsiteSection_E extends ISectionLayout {
     themePaletteOrder : number;
 
     configTemplateId : number;
-
-    themePaletteId : number;
-    themePalette : IThemePalette;
 }
 
 export interface A_I_WebsiteSection extends A_I_WebsiteSection_E {

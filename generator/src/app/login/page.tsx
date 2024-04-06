@@ -21,11 +21,8 @@ const LoginPage = () => {
     });
     setOnLoad(false);
 
-    console.log(res)
-
     if (res.ok === false) {
       // todo : why toast not display ????
-      console.log("show me toast")
       toast("Bad login information");
     } else {
       // update me and trigger navigate to dashboard

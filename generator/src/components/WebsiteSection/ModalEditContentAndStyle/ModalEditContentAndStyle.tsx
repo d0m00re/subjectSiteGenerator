@@ -32,12 +32,11 @@ type Props = {
 function ModalEditContentAndStyle(props: Props) {
     const storeTemplate = useTemplateGroup();
     const storeWebsite = useCurrentWebsiteStore();
-
     const currentSection = storeWebsite.website?.websiteSection.find(e => e.id === props.section.id); //[props.sectionIndex];
     const currentTemplate = storeTemplate.templateVariant.find(e => e.id === currentSection?.configTemplateId);
     // dup section to edit
     const [dupSection, setDupSection] = useState<I_TemplateGen>();
-    const [layout, setLayout] = useState<ISectionLayout>({ backgroundColor: "", backgroundImage: "" });
+    const [layout, setLayout] = useState<ISectionLayout>({ themePaletteOrder : -1});
 
     // add img here
     useEffect(() => {
@@ -51,8 +50,7 @@ function ModalEditContentAndStyle(props: Props) {
             setDupSection(allElemSection);
 
             setLayout({
-                backgroundColor: currentSection.backgroundColor,
-                backgroundImage: currentSection.backgroundImage
+                themePaletteOrder : currentSection.themePaletteOrder
             });
         }
     }, []);
@@ -74,7 +72,10 @@ function ModalEditContentAndStyle(props: Props) {
         })
     }
 
-    if (!dupSection || !layout || !currentTemplate) return <></>
+    const currentTheme = storeWebsite.website?.themePalette.themePaletteElems.sort((a, b) => a.order - b.order); //[props.section.themePaletteOrder];
+
+    if (!dupSection || !layout || !currentTemplate || !currentTheme) return <></>
+
 
     return (
         <Sheet open={props.open} onOpenChange={props.setOpen}>
@@ -102,10 +103,10 @@ function ModalEditContentAndStyle(props: Props) {
                             />
                         </TabsContent>
                         <TabsContent value="globalStyle">
-                            <GlobalSectionStyle
+                            <GlobalSectionStyle  
                                 sectionId={props.section.id}
                                 onClose={() => props.setOpen(false)}
-
+                                palette={currentTheme}
                                 layout={layout}
                                 setLayout={setLayout}
                             />

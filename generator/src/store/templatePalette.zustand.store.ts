@@ -19,7 +19,6 @@ const useTemplatePalette = create<ITemplateZustand>()((set) => ({
  populate() {
     getAllThemeGroup()
     .then(resp => {
-        console.log("populate data : ")
         set((state) => ({
             ...state,
             templateGroups : resp

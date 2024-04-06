@@ -53,8 +53,6 @@ const useCurrentWebsiteStore = create<WebsiteZustand>()((set) => ({
             (s1, s2) =>
                 s1.websiteSectionOrder.order - s2.websiteSectionOrder.order);
         
-        console.log("reset with data : ")
-        console.log(data)
         set((state) => ({
             ...state,
             website : data,

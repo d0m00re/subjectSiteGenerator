@@ -1,76 +1,65 @@
-import { Button } from '@/components/Button';
 import React, { useState } from 'react'
-
-
-//  should not be here moove that inside another repertory
-interface IStyleChangeBackgroundElem {
-    name: string;
-    bgColor: string;
-}
-
-const stylesChangeBackgroundElem: IStyleChangeBackgroundElem[] = [
-    {
-        name: "white",
-        bgColor: "bg-white"
-    }, {
-        name: "basic",
-        bgColor: "bg-orange-100"
-    }, {
-        name: "basic2",
-        bgColor: "bg-orange-200"
-    }, {
-        name: "basic3",
-        bgColor: "bg-orange-300"
-    }
-];
-
-interface IChangeBackground {
-    backgroundColor: string;
-    setBackgroundColor: (newBgColor: string) => void;
-}
+import { Button } from '@/components/Button';
+import { IThemePaletteElem } from '@/network/theme/themePalette/templatePalette.entity';
 
 interface ICardBackgroundColor {
     name: string;
     backgroundColor: string;
-    onClick: (s: string) => void;
+    textColor: string;
+    setPaletteOrder: () => void;
 }
 
 function CardBackgroundColor(props: ICardBackgroundColor) {
     return (
         <section
+            style={{ color: props.textColor, backgroundColor: props.backgroundColor }}
             key={`bg-color-${props.name}`}
-            onClick={() => props.onClick(props.backgroundColor)}
-            className={`p-5 ${props.backgroundColor} cursor-pointer rounded h-20`}>
+            onClick={props.setPaletteOrder}
+            className={`p-5 cursor-pointer rounded h-20`}>
             <p>{props.name}</p>
         </section>
     )
 }
-    
+
+const textNameArr = [
+    "aa", "bb", "cc", "dd"
+];
+
+interface IChangeBackground {
+    setPaletteOrder: (orderIndex: number) => void;
+    themePaletteOrder: number;
+    palette: IThemePaletteElem[];
+}
+
 function ChangeBackground(props: IChangeBackground) {
     const [open, setOpen] = useState(false);
 
+    let currentPalette = props.palette[props.themePaletteOrder];
+
     return (
         <section>
-            <div className='flex flex-color justify-between'>
+            <div className='flex flex-color justify-between pb-2'>
                 <p>Colors</p>
                 <Button onClick={() => setOpen(old => !old)}>Change</Button>
             </div>
             <div className='flex flex-col gap-2'>
                 {open ?
-                    stylesChangeBackgroundElem.map(s =>
+                    props.palette.map((s, i) =>
                         <CardBackgroundColor
-                            onClick={() => {
-                                props.setBackgroundColor(s.bgColor);
+                            setPaletteOrder={() => {
+                                props.setPaletteOrder(s.order);
                                 setOpen(old => !old);
                             }}
-                            name={s.name}
+                            name={textNameArr[i]}
+                            textColor={s.textColor}
                             backgroundColor={s.bgColor}
                         />)
                     :
                     <CardBackgroundColor
-                        onClick={() => {}}
-                        name={props.backgroundColor}
-                        backgroundColor={props.backgroundColor}
+                        setPaletteOrder={() => { }}
+                        name={"current color"}
+                        backgroundColor={currentPalette.bgColor}
+                        textColor={currentPalette.textColor}
                     />
                 }
             </div>
