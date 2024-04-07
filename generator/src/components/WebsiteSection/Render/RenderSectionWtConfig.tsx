@@ -17,8 +17,7 @@ const RSizeThemeSectionSpacing: Record<TSizeThemeSectionSpacing, IRecordSpacing>
   "none": { margin: "0px" },
   "small": { margin: "48px" },
   "medium": { margin: "80px" },
-  "big": { margin: "128px" },
-
+  "big": { margin: "128px" }
 }
 //
 
@@ -46,15 +45,16 @@ function RenderSectionWtConfig(props: IRenderSectionWtConfig) {
   if (templateV === undefined) return <p>error retrieve template variant id {props.section.id}</p>
   if (!props.section.ThemeSectionSpacing) return <></>;
   let config = templateV.config;
-  let marginTop = RSizeThemeSectionSpacing[props.section.ThemeSectionSpacing.top];
-  let marginBottom = RSizeThemeSectionSpacing[props.section.ThemeSectionSpacing.top];
+  let paddinTop = RSizeThemeSectionSpacing[props.section.ThemeSectionSpacing.top].margin;
+  let paddinBottom = RSizeThemeSectionSpacing[props.section.ThemeSectionSpacing.bottom].margin;
 
-  console.log("let s go")
-  console.log(props.section)
-  
   return (<MainLayout
-    style={{ backgroundColor: currentThemePaletteElem.bgColor, marginBottom : marginBottom, marginTop : marginTop }}
-    >
+    style={{
+      backgroundColor: currentThemePaletteElem.bgColor,
+      paddingBottom: paddinBottom,
+      paddingTop: paddinTop
+    }}
+  >
     <>
       {
         config?.map(e => {

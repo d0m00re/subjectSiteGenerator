@@ -26,39 +26,39 @@ let optionsShape: ISelectSizeElem[] = [
 
 const CardConfigButton = (props: ICardConfigButton) => {
   return <section className='flex flex-col gap-2'>
-      <Separator className="mt-2" />
-      <h2 className='text-xl font-semibold'>Style {props.buttonConfig.name}</h2>
-      <h5>{props.buttonConfig.shape}</h5>
-      <CustomSelect
-        label={"shape"}
-        value={props.buttonConfig.shape}
-        options={optionsShape}
-        onChange={(e) => {
-          let tmp = cloneDeep(props.buttonConfig);
-          tmp.shape = e;
-          props.setThemeButtonElem(tmp, props.index);
-        }}
-      />
+    <Separator className="mt-2" />
+    <h2 className='text-xl font-semibold'>Style {props.buttonConfig.name}</h2>
+    <h5>{props.buttonConfig.shape}</h5>
+    <CustomSelect
+      label={"shape"}
+      value={props.buttonConfig.shape}
+      options={optionsShape}
+      onChange={(e) => {
+        let tmp = cloneDeep(props.buttonConfig);
+        tmp.shape = e;
+        props.setThemeButtonElem(tmp, props.index);
+      }}
+    />
 
-      <h5>{props.buttonConfig.variant}</h5>
-      <CustomSelect
-        label={"variant"}
-        value={props.buttonConfig.variant}
-        options={optionsVariant}
-        onChange={(e) => {
-          let tmp = cloneDeep(props.buttonConfig);
-          tmp.variant = e;
-          props.setThemeButtonElem(tmp, props.index);
-        }} />
+    <h5>{props.buttonConfig.variant}</h5>
+    <CustomSelect
+      label={"variant"}
+      value={props.buttonConfig.variant}
+      options={optionsVariant}
+      onChange={(e) => {
+        let tmp = cloneDeep(props.buttonConfig);
+        tmp.variant = e;
+        props.setThemeButtonElem(tmp, props.index);
+      }} />
 
-      <h3 className="text-xl font-semibold">Preview</h3>
-      <RenderButton
-        text={"hoola"}
-        size="medium"
-        variant={(props.buttonConfig.variant !== "outline") ? "default" : "outline"}
-        rounded={props.buttonConfig.shape === "rounded"}
-      />
-    </section>
+    <h3 className="text-xl font-semibold">Preview</h3>
+    <RenderButton
+      text={"hoola"}
+      size="medium"
+      variant={(props.buttonConfig.variant !== "outline") ? "default" : "outline"}
+      rounded={props.buttonConfig.shape === "rounded"}
+    />
+  </section>
 }
 
 type IConfigButton = {

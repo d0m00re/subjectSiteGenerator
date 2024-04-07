@@ -243,11 +243,10 @@ export class WebsiteService {
                     update : {
                         where : {websiteSectionId : props.sectionId},
                         data : {
-                            top : props.layout.themeSectionSpacing.top,
-                            bottom : props.layout.themeSectionSpacing.top,
-                            horizontalAlign : props.layout.themeSectionSpacing.horizontalAlign
+                            top : props.layout.ThemeSectionSpacing.top,
+                            bottom : props.layout.ThemeSectionSpacing.bottom,
+                            horizontalAlign : props.layout.ThemeSectionSpacing.horizontalAlign
                         },
-                       
                     }
                 },
                 buttons: {

@@ -34,7 +34,7 @@ export interface IUpdateV4 {
 
 export interface ISectionLayout {
     themePaletteOrder : number;
-    themeSectionSpacing : IThemeSectionSpacing;
+    ThemeSectionSpacing : IThemeSectionSpacing;
 }
 
 //--------------------------------------------
