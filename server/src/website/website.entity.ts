@@ -49,3 +49,16 @@ export interface IThemeButton {
     themeButtonArr : IThemeButtonElem[]
     websiteId : number;
 }
+
+// THEME SECTION SPACING
+export type TSizeThemeSectionSpacing = "none" | "small" | "medium" | "big";
+export type THoriAlignSectionSpacing = "left" | "center" | "right";
+export interface IThemeSectionSpacing {
+    top : TSizeThemeSectionSpacing;
+    bottom : TSizeThemeSectionSpacing;
+    horizontalAlign : THoriAlignSectionSpacing;
+}
+
+export interface IThemeSectionSpacing_db extends IThemeSectionSpacing {
+    id : number;
+}

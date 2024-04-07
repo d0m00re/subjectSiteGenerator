@@ -39,10 +39,21 @@ function GlobalSectionStyle(props: IGlobalSectionStyle) {
                 palette={props.palette}
                 themePaletteOrder={props.layout.themePaletteOrder}
             />
+
+            <ChangeSpacing />
+
         </section>
     )
 }
 
 //
 
-export default GlobalSectionStyle;
+type IChangeSpacing = {}
+
+function ChangeSpacing(props: IChangeSpacing) {
+  return (
+    <div>GlobalSectionStyle</div>
+  )
+}
+
+export default GlobalSectionStyle

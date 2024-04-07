@@ -33,7 +33,7 @@ export class WebsiteController {
   @Post("v4/section")
   async createSectionV4(@Req() req : Request, @Body() dto: dto.CreateSectionV4) {
     let userId = req.user.id;
-
+ 
     let data = await this.websiteService.createNewSectionV4({
       userId: userId,
       data: dto.data, //Object.fromEntries(dto.data),
@@ -49,7 +49,7 @@ export class WebsiteController {
   @Patch("v4/section")
   async updateSectionV4(@Req() req : Request, @Body() dto: dto.UpdateSectionV4) {
     let userId = req.user.id;
-
+ 
     let data = await this.websiteService.sectionUpdateV4({
       userId : userId,
       data : dto.data,

@@ -15,16 +15,6 @@ export class WebsiteService {
     ) { }
 
     create = async (props: { userId: number, title: string; subject: string }) => {
-        // default button
-        // default button
-        const b1 = {
-            variant: "solid",
-            shape: "rounded"
-        };
-        const b2 = {
-            variant: "outline",
-            shape: "rounded"
-        };
         //
         let newWebsite = await this.prisma.website.create({
             data: {
@@ -75,6 +65,7 @@ export class WebsiteService {
                         buttons: true,
                         typographies: true,
                         images: true,
+                        ThemeSectionSpacing : true
                         //  configTemplate : true
                     }
                 },
@@ -152,7 +143,7 @@ export class WebsiteService {
             data: {
                 order: {
                     increment: 1
-                }
+                },
             }
         });
 
@@ -166,6 +157,13 @@ export class WebsiteService {
                     create: {
                         websiteId: props.websiteId,
                         order: props.order
+                    }
+                },
+                ThemeSectionSpacing: {
+                    create: {
+                        top : "medium",
+                        bottom : "medium",
+                        horizontalAlign : "center"
                     }
                 },
                 buttons: {
@@ -195,7 +193,8 @@ export class WebsiteService {
             include: {
                 typographies: true,
                 buttons: true,
-                images: true
+                images: true,
+                ThemeSectionSpacing : true
             },
         });
 
@@ -235,7 +234,8 @@ export class WebsiteService {
                 buttons: true,
                 typographies: true,
                 images: true,
-                websiteSectionOrder: true
+                websiteSectionOrder: true,
+                ThemeSectionSpacing : true
             },
             data: {
                 themePaletteOrder : props.layout.themePaletteOrder,
@@ -282,6 +282,7 @@ export class WebsiteService {
         return dataUpdate;
     }
 
+    // update global theme
     updateThemeV1 = async (props: IUpdateThemeV1) => {
         // save new theme
         let ret = await this.prisma.website.update({
@@ -303,7 +304,7 @@ export class WebsiteService {
                     include : {
                         themeButtonArr : true
                     }
-                }
+                },
             }
         });
 

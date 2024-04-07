@@ -70,6 +70,8 @@ model WebsiteSection {
   configTemplate   TemplateVariant          @relation(fields: [configTemplateId], references: [id])
 
   themePaletteOrder Int
+
+  ThemeSectionSpacing ThemeSectionSpacing?
 }
 
 model WebsiteSectionOrder {
@@ -193,7 +195,7 @@ model ThemeButton {
   id             Int               @id @default(autoincrement())
   themeButtonArr ThemeButtonElem[]
   website        Website           @relation(fields: [websiteId], references: [id])
-  websiteId      Int @unique
+  websiteId      Int               @unique
 }
 
 model ThemeButtonElem {
@@ -203,4 +205,15 @@ model ThemeButtonElem {
   shape         String // square or rounded
   ThemeButton   ThemeButton? @relation(fields: [themeButtonId], references: [id])
   themeButtonId Int?
+}
+
+//------------------
+model ThemeSectionSpacing {
+  id              Int    @id @default(autoincrement())
+  top             String @default("medium")
+  bottom          String @default("medium")
+  horizontalAlign String @default("center")
+
+  websiteSection   WebsiteSection @relation(fields: [websiteSectionId], references: [id])
+  websiteSectionId Int @unique()
 }

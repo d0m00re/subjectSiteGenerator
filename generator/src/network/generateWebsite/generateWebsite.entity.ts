@@ -35,6 +35,8 @@ export interface A_I_WebsiteSection_E extends ISectionLayout {
     themePaletteOrder : number;
 
     configTemplateId : number;
+
+    ThemeSectionSpacing : null | IThemeSectionSpacing;
 }
 
 export interface A_I_WebsiteSection extends A_I_WebsiteSection_E {
@@ -89,3 +91,18 @@ export interface I_Website extends A_I_Website {
 //------------------------ entity network
 export type ISectionUpdate = Pick<A_I_WebsiteSection, "id">;
 export type ISectionCreate = Pick<A_I_WebsiteSection, "kind">;
+
+//
+//---------------
+// THEME SECTION SPACING
+export type TSizeThemeSectionSpacing = "none" | "small" | "medium" | "big";
+export type THoriAlignSectionSpacing = "left" | "center" | "right";
+export interface IThemeSectionSpacing {
+    top : TSizeThemeSectionSpacing;
+    bottom : TSizeThemeSectionSpacing;
+    horizontalAlign : THoriAlignSectionSpacing;
+}
+
+export interface IThemeSectionSpacing_db extends IThemeSectionSpacing {
+    id : number;
+}
