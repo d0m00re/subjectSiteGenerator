@@ -29,6 +29,12 @@ export class WebsiteController {
     return newWebsite;
   }
 
+  /**
+   * create a section element
+   * @param req 
+   * @param dto 
+   * @returns 
+   */
   @UseGuards(JwtCookieParserGuard) 
   @Post("v4/section")
   async createSectionV4(@Req() req : Request, @Body() dto: dto.CreateSectionV4) {
@@ -45,6 +51,12 @@ export class WebsiteController {
     return data;
   }
 
+  /**
+   * edit all elements relative to section
+   * @param req 
+   * @param dto 
+   * @returns 
+   */
   @UseGuards(JwtCookieParserGuard)
   @Patch("v4/section")
   async updateSectionV4(@Req() req : Request, @Body() dto: dto.UpdateSectionV4) {
@@ -60,6 +72,12 @@ export class WebsiteController {
     return data;
   }
 
+  /**
+   * edit global state
+   * @param req 
+   * @param dto 
+   * @returns 
+   */
   @UseGuards(JwtCookieParserGuard)
   @Patch("theme")
   async updateThemeV1(@Req() req : Request, @Body() dto : dto.UpdateThemeDto) {

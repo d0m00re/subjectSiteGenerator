@@ -13,7 +13,7 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs";
-import { ISectionLayout, I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
+import { ISectionLayout, IThemeSectionSpacing, I_WebsiteSection, makeEmptyThemeSectionSpacing } from '@/network/generateWebsite/generateWebsite.entity';
 import StyleEditing from '../EditStyleSection/StyleEditing';
 import EditSection from '../EditSection/EditSection';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
@@ -36,21 +36,30 @@ function ModalEditContentAndStyle(props: Props) {
     const currentTemplate = storeTemplate.templateVariant.find(e => e.id === currentSection?.configTemplateId);
     // dup section to edit
     const [dupSection, setDupSection] = useState<I_TemplateGen>();
-    const [layout, setLayout] = useState<ISectionLayout>({ themePaletteOrder : -1});
+    const [layout, setLayout] = useState<ISectionLayout>({ themePaletteOrder: -1, ThemeSectionSpacing : makeEmptyThemeSectionSpacing() });
 
     // add img here
     useEffect(() => {
-        if (currentSection) {
+        const _themeSectionSpacing = currentSection?.ThemeSectionSpacing;
+        console.log((currentSection && _themeSectionSpacing) ? console.log("validddddd") : console.log("invalidddddddd"))
+        if (currentSection && _themeSectionSpacing) {
             const allElemSection: I_TemplateGen = [
                 ...currentSection.typographies.map(e => ({ ...e, kind: "typography" as const })),
                 ...currentSection.buttons.map(e => ({ ...e, kind: "button" as const })),
-                ...currentSection.images.map(e => ({ ...e, kind : "img" as const}))
-                ]
+                ...currentSection.images.map(e => ({ ...e, kind: "img" as const }))
+            ]
                 .sort((a, b) => a.order - b.order);
             setDupSection(allElemSection);
 
+            // determine theme spacing to duplicuate or generate empty
+            let themeSectionSpacing: IThemeSectionSpacing = (_themeSectionSpacing) ? {
+                top: _themeSectionSpacing.top,
+                bottom: _themeSectionSpacing.bottom,
+                horizontalAlign: _themeSectionSpacing.horizontalAlign,
+            } : makeEmptyThemeSectionSpacing()
             setLayout({
-                themePaletteOrder : currentSection.themePaletteOrder
+                themePaletteOrder: currentSection.themePaletteOrder,
+                ThemeSectionSpacing: themeSectionSpacing
             });
         }
     }, []);
@@ -89,7 +98,7 @@ function ModalEditContentAndStyle(props: Props) {
                             <TabsTrigger value="globalStyle">Global style</TabsTrigger>
                             <TabsTrigger value="styleElem">Style</TabsTrigger>
                         </TabsList>
-                        <TabsContent value="content"> 
+                        <TabsContent value="content">
                             <EditSection
                                 selectedTemplate={currentTemplate}
                                 websiteId={props.section.websiteId}
@@ -103,7 +112,7 @@ function ModalEditContentAndStyle(props: Props) {
                             />
                         </TabsContent>
                         <TabsContent value="globalStyle">
-                            <GlobalSectionStyle  
+                            <GlobalSectionStyle
                                 sectionId={props.section.id}
                                 onClose={() => props.setOpen(false)}
                                 palette={currentTheme}

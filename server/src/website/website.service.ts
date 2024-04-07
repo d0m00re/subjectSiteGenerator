@@ -239,6 +239,17 @@ export class WebsiteService {
             },
             data: {
                 themePaletteOrder : props.layout.themePaletteOrder,
+                ThemeSectionSpacing : {
+                    update : {
+                        where : {websiteSectionId : props.sectionId},
+                        data : {
+                            top : props.layout.themeSectionSpacing.top,
+                            bottom : props.layout.themeSectionSpacing.top,
+                            horizontalAlign : props.layout.themeSectionSpacing.horizontalAlign
+                        },
+                       
+                    }
+                },
                 buttons: {
                     updateMany: [
                         ...buttons.map(b => ({

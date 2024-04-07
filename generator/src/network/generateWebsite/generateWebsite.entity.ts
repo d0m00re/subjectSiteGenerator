@@ -13,6 +13,35 @@ import { I_WebsiteSectionOrder, I_WebsiteSectionOrder_E } from "../website/websi
 import { IThemeFont } from '../theme/themeFont/themeFont.entity';
 import { IThemeButton } from '../website/website.entity';
 
+//---------------
+// THEME SECTION SPACING
+export type TSizeThemeSectionSpacing = "none" | "small" | "medium" | "big";
+export function isValidSizeThemeSectionSpacing(value: string): value is TSizeThemeSectionSpacing {
+    return ["none", "small", "medium", "big"].includes(value);
+}
+
+export type THoriAlignSectionSpacing = "none" | "left" | "center" | "right";
+export function isValidHoriAlignSectionSpacing(value : string): value is THoriAlignSectionSpacing {
+    return ["none", "left", "center", "right"].includes(value);
+}
+
+export interface IThemeSectionSpacing {
+    top : TSizeThemeSectionSpacing;
+    bottom : TSizeThemeSectionSpacing;
+    horizontalAlign : THoriAlignSectionSpacing;
+}
+
+export interface IThemeSectionSpacing_db extends IThemeSectionSpacing {
+    id : number;
+}
+
+export const makeEmptyThemeSectionSpacing = () : IThemeSectionSpacing => {
+    return {
+        top : "none",
+        bottom : "none",
+        horizontalAlign : "none"
+    }
+}
 
 // ----------------------
 // ------------- websiteSection
@@ -21,9 +50,10 @@ export type TWebsiteSectionKind = "mainSection" | "subSection";
 // global section layout
 export interface ISectionLayout {
     themePaletteOrder : number;
+    ThemeSectionSpacing : IThemeSectionSpacing;
 }
 
-export interface A_I_WebsiteSection_E extends ISectionLayout {
+export interface A_I_WebsiteSection_E {
     kind : TWebsiteSectionKind;
     backgroundImage : string;
     backgroundColor : string;
@@ -35,8 +65,8 @@ export interface A_I_WebsiteSection_E extends ISectionLayout {
     themePaletteOrder : number;
 
     configTemplateId : number;
+    ThemeSectionSpacing ?: IThemeSectionSpacing;
 
-    ThemeSectionSpacing : null | IThemeSectionSpacing;
 }
 
 export interface A_I_WebsiteSection extends A_I_WebsiteSection_E {
@@ -92,17 +122,4 @@ export interface I_Website extends A_I_Website {
 export type ISectionUpdate = Pick<A_I_WebsiteSection, "id">;
 export type ISectionCreate = Pick<A_I_WebsiteSection, "kind">;
 
-//
-//---------------
-// THEME SECTION SPACING
-export type TSizeThemeSectionSpacing = "none" | "small" | "medium" | "big";
-export type THoriAlignSectionSpacing = "left" | "center" | "right";
-export interface IThemeSectionSpacing {
-    top : TSizeThemeSectionSpacing;
-    bottom : TSizeThemeSectionSpacing;
-    horizontalAlign : THoriAlignSectionSpacing;
-}
-
-export interface IThemeSectionSpacing_db extends IThemeSectionSpacing {
-    id : number;
-}
+//I_WebsiteSection

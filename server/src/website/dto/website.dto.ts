@@ -71,6 +71,9 @@ export class UpdateSectionV3 {
     sectionId: number;
 }
 
+/**
+ * rework this dto later with a better data validation currently layout and data are not validate
+ */
 export class UpdateSectionV4 {
     @IsArray()
     data : any[];

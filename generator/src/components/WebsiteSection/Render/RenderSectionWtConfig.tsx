@@ -1,12 +1,26 @@
 import React from 'react';
 import useTemplateGroup from '@/store/templateGroup.zustand.store';
-import { I_WebsiteSection } from '@/network/generateWebsite/generateWebsite.entity';
+import { I_WebsiteSection, TSizeThemeSectionSpacing } from '@/network/generateWebsite/generateWebsite.entity';
 import RenderTypography from '@/components/WebsiteSection/Render/RenderTypography/RenderTypography';
 import RenderButton from '@/components/WebsiteSection/Render/RenderButton/RenderButton';
 import { IThemePaletteElem } from '@/network/theme/themePalette/templatePalette.entity';
 import RenderImg from './RenderImg/RenderImg';
 import MainLayout from './MainLayout/MainLayout';
 import useCurrentWebsiteStore from '@/app/dashboard/website/[id]/components/store/currentWebsite.zustand.store';
+
+//
+interface IRecordSpacing {
+  margin: string;
+}
+
+const RSizeThemeSectionSpacing: Record<TSizeThemeSectionSpacing, IRecordSpacing> = {
+  "none": { margin: "0px" },
+  "small": { margin: "48px" },
+  "medium": { margin: "80px" },
+  "big": { margin: "128px" },
+
+}
+//
 
 interface IRenderSectionWtConfig {
   section: I_WebsiteSection;
@@ -30,11 +44,17 @@ function RenderSectionWtConfig(props: IRenderSectionWtConfig) {
   console.log(currentThemePaletteElem)
   */
   if (templateV === undefined) return <p>error retrieve template variant id {props.section.id}</p>
-
+  if (!props.section.ThemeSectionSpacing) return <></>;
   let config = templateV.config;
+  let marginTop = RSizeThemeSectionSpacing[props.section.ThemeSectionSpacing.top];
+  let marginBottom = RSizeThemeSectionSpacing[props.section.ThemeSectionSpacing.top];
 
+  console.log("let s go")
+  console.log(props.section)
+  
   return (<MainLayout
-    style={{ backgroundColor: currentThemePaletteElem.bgColor }}>
+    style={{ backgroundColor: currentThemePaletteElem.bgColor, marginBottom : marginBottom, marginTop : marginTop }}
+    >
     <>
       {
         config?.map(e => {

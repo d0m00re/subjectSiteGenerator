@@ -33,7 +33,8 @@ export interface IUpdateV4 {
 }
 
 export interface ISectionLayout {
-    themePaletteOrder : number;  
+    themePaletteOrder : number;
+    themeSectionSpacing : IThemeSectionSpacing;
 }
 
 //--------------------------------------------
@@ -52,7 +53,7 @@ export interface IThemeButton {
 
 // THEME SECTION SPACING
 export type TSizeThemeSectionSpacing = "none" | "small" | "medium" | "big";
-export type THoriAlignSectionSpacing = "left" | "center" | "right";
+export type THoriAlignSectionSpacing = "none" | "left" | "center" | "right";
 export interface IThemeSectionSpacing {
     top : TSizeThemeSectionSpacing;
     bottom : TSizeThemeSectionSpacing;
