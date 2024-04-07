@@ -44,7 +44,8 @@ const ListWebsite = () => {
     <h2 className=" text-2sm">Your website :</h2>
     <div>{
       (listWebsite && listWebsite.rows) ?
-        <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-row gap-2 w-full justify-center">
           {
             listWebsite.rows.map(website =>
               <section className=" cursor-pointer">
@@ -53,6 +54,7 @@ const ListWebsite = () => {
                 />
               </section>)
           }
+          </div>
           <Pagination
             currentPage={listWebsite.info.page}
             totalPage={Math.floor(listWebsite.info.count / listWebsite.info.pageSize)}
