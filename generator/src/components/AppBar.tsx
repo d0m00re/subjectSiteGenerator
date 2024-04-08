@@ -5,7 +5,8 @@ import React from "react";
 import SignInButton from "./SignInButton";
 import { ActivitySquare, Home, LucideIcon, BadgePlus, LayoutDashboard, ExternalLink } from "lucide-react";
 import SheetTheme from "./Theme/SheetTheme/SheetTheme";
-import { redirect, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import { ButtonTextThemeHover } from "./atoms/ButtonTextThemeHover/ButtonTextThemeHover";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -23,10 +24,9 @@ export const Header = () => {
         <section className="flex flex-row gap-2">
           <SheetTheme />
           <a href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/view/${id}`} target="_blank">
-            <section className="flex h-full flex-row items-center gap-2 cursor-pointer border-2 p-1 border-gray-500 rounded-sm">
-              <ExternalLink width={20} height={20} color='gray' />
-              <p className='text-2sm text-gray-800'>View</p>
-            </section>
+            <ButtonTextThemeHover
+              Icon={ExternalLink}
+            >View</ButtonTextThemeHover>
           </a>
         </section>
         : <></>

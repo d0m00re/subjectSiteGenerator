@@ -49,7 +49,9 @@ const ButtonAddSection = (props: IButtonAddSection) => {
   return (
     (props.show) ?
       <span className="relative flex justify-center">
-        <Button className='absolute -top-5' onClick={() => props.onOpenModalAddSection(props.index)}>add section</Button>
+        <Button className='absolute -top-5 rounded' onClick={() => props.onOpenModalAddSection(props.index)}>
+          add section
+        </Button>
       </span>
       : <></>
   )

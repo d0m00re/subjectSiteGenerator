@@ -25,9 +25,9 @@ function SectionActionBar(props: Props) {
     return (
         <div className='flex flex-row gap-2 bg-white rounded-lg border border-gray-500 hover:border-blue-800 shadow-md p-4'>
             <div className='flex flex-row gap-2'>
-                <div className='flex flex-row gap-1' onClick={props.onOpenEdit}>
-                    <Pencil className={hoverStyle} />
-                    <p className=' hover:text-blue-800'>Edit</p>
+                <div className='flex flex-row gap-1 hover:text-blue-800' onClick={props.onOpenEdit}>
+                    <Pencil />
+                    <p>Edit</p>
                 </div>
                 <VerticalSeparator />
                 <Trash2

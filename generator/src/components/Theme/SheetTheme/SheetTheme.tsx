@@ -25,6 +25,7 @@ import ButtonLoader from '@/components/atoms/ButtonLoader';
 import { cloneDeep } from 'lodash';
 import { IThemeButton } from '@/network/website/website.entity';
 import { NotebookPen, Palette, Save } from 'lucide-react';
+import { ButtonTextThemeHover } from '@/components/atoms/ButtonTextThemeHover/ButtonTextThemeHover';
 
 function SheetTheme() {
     const [open, setOpen] = useState(false) //useState(false)
@@ -63,9 +64,10 @@ function SheetTheme() {
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger className='flex flex-row items-center gap-2 cursor-pointer border-2 p-1 border-gray-500 rounded-sm'>
-                <Palette width={20} height={20} color='gray' />
-                <p className='text-2sm text-gray-800'>Style</p>
+            <SheetTrigger>
+                <ButtonTextThemeHover Icon={Palette}>
+                    Style
+                </ButtonTextThemeHover>
             </SheetTrigger>
             <SheetContent className='h-full flex flex-col'>
                 <Tabs defaultValue="configButton" className="w-full h-full max-h-full">
