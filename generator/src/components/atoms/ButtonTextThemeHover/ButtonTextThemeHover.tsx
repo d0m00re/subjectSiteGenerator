@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react";
-import { LucideIcon, ExternalLink } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 interface IButtonTextTheme {
   children : string;
