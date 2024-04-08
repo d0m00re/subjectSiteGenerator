@@ -220,3 +220,10 @@ sectionLayout : {
 * integrate button global theme
 * view how rework img
 * remove some useless field : 
+
+----
+problem :
+* action bar should not impact block height
+* all button should have a load state
+* all button should be rounded except when we impact the theme
+* have scroll on all sheet / modal elements
